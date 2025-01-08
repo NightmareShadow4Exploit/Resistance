@@ -1,0 +1,131 @@
+*{
+    color: #333;
+}
+/* General Container */
+.container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    direction: rtl; /* Ensures right-to-left text direction */
+}
+
+/* Main Title */
+h1 {
+    text-align: center;
+    font-size: 2.5em;
+    margin-bottom: 20px;
+}
+
+/* Sub-Headings */
+h2 {
+    font-size: 2em;
+    color: #333;
+    margin-top: 30px;
+    border-bottom: 2px solid white;
+    padding-bottom: 10px;
+}
+
+/* Paragraphs */
+p {
+    font-size: 1.1em;
+    color: #555;
+    margin-bottom: 15px;
+}
+
+/* Ordered List */
+li {
+    font-size: 1.1em;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+/* Disclaimer Box (Modified to Red Background with White Text) */
+.disclaimer {
+    background-color: #f44336; /* Red background */
+    color: white; /* White text */
+    border-left: 5px solid #d32f2f; /* Darker red border */
+    padding: 15px;
+    margin-top: 30px;
+}
+.disclaimer *{
+    color: white;
+}
+.disclaimer p {
+    font-size: 1.1em;
+}
+
+/* Links */
+a {
+    color: red;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Horizontal Line */
+hr {
+    border: 1px solid #333;
+    margin: 20px 0;
+}
+
+/* List Styling */
+li {
+    list-style-type: none;
+    padding-right: 20px; /* Adjusted for RTL direction */
+    position: relative;
+}
+
+li::before {
+    content: "•";
+    position: absolute;
+    right: 0; /* Align the bullet to the right */
+    color: #4CAF50;
+    font-size: 1.5em;
+}
+
+/* Responsive Design for Mobile */
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
+    }
+
+    h1 {
+        font-size: 2em;
+    }
+
+    h2 {
+        font-size: 1.8em;
+    }
+
+    p, li {
+        font-size: 1em;
+    }
+}
+
+
+
+.top-links {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.top-links a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    font-size: 1em;
+    transition: color 0.3s;
+}
+
+.top-links a:hover {
+    color: #0056b3;
+}

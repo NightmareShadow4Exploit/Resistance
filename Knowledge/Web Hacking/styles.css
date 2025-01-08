@@ -1,0 +1,107 @@
+.body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    direction: rtl; /* Apply RTL for Farsi text */
+}
+
+* {
+    color: #333;
+}
+
+.top-links {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.top-links a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    font-size: 1em;
+    transition: color 0.3s;
+}
+
+.top-links a:hover {
+    color: #0056b3;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 columns */
+    grid-template-rows: repeat(4, 1fr); /* 4 rows */
+    gap: 10px;
+    width: 80%;
+    height: auto;
+}
+
+.card {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 3px;
+    margin: 0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card:hover {
+    background-color: rgb(115, 196, 115);
+    border: 1px solid #ccc;
+    color: #fff;
+}
+
+.card:hover summary {
+    background-color: rgb(115, 196, 115);
+    color: white;
+}
+
+details {
+    cursor: pointer;
+}
+
+summary {
+    padding: 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+p {
+    font-size: 0.9em;
+    color: #333;
+}
+
+.card:hover details li a {
+    color: #fff;
+}
+
+.card details a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    font-size: 1em;
+    transition: color 0.3s, text-shadow 0.3s;
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.card p,
+.card summary {
+    font-family: 'Vazir', Tahoma, sans-serif; /* Farsi-compatible font */
+}
+
+summary {
+    text-align: right; /* Align summary text to the right for RTL text */
+}
+
+.card {
+    direction: rtl; /* Apply RTL to each card individually */
+}
