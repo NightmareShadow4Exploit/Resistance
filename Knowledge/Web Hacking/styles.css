@@ -1,5 +1,10 @@
+main {
+    flex: 1; /* Ensures the main content pushes the footer to the bottom */
+}
+
 .body {
     display: flex;
+    flex-direction: column; /* For better stacking on small screens */
     justify-content: center;
     align-items: center;
     padding: 20px;
@@ -10,6 +15,7 @@
 
 * {
     color: #333;
+    box-sizing: border-box; /* Ensure padding and borders don't break layouts */
 }
 
 .top-links {
@@ -35,25 +41,25 @@
 
 .grid-container {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 columns */
-    grid-template-rows: repeat(4, 1fr); /* 4 rows */
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Responsive grid */
     gap: 10px;
-    width: 80%;
-    height: auto;
+    width: 90%; /* Adjusted for smaller screens */
+    margin: 0 auto; /* Center content */
+    padding: 10px;
 }
 
 .card {
     background-color: #fff;
     border: 1px solid #ccc;
     border-radius: 8px;
-    padding: 3px;
+    padding: 15px;
     margin: 0;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s, color 0.3s;
 }
 
 .card:hover {
     background-color: rgb(115, 196, 115);
-    border: 1px solid #ccc;
     color: #fff;
 }
 
@@ -104,4 +110,85 @@ summary {
 
 .card {
     direction: rtl; /* Apply RTL to each card individually */
+}
+
+footer {
+    text-align: center;
+    font-size: small;
+    background-color: #2e2e2e;
+    color: hsl(0, 0%, 100%);
+    padding: 40px 20px;
+}
+
+footer p {
+    color: white;
+    font-size: 1.2em;
+    margin-bottom: 20px;
+}
+
+/* Media Queries for Responsive Font Sizes */
+@media (max-width: 1024px) {
+    body {
+        font-size: 16px;
+    }
+
+    p {
+        font-size: 0.85em;
+    }
+
+    summary {
+        font-size: 1em;
+    }
+
+    .card details a {
+        font-size: 0.95em;
+    }
+
+    footer p {
+        font-size: 1em;
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        font-size: 14px;
+    }
+
+    p {
+        font-size: 0.8em;
+    }
+
+    summary {
+        font-size: 0.9em;
+    }
+
+    .card details a {
+        font-size: 0.9em;
+    }
+
+    footer p {
+        font-size: 0.9em;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        font-size: 12px;
+    }
+
+    p {
+        font-size: 0.75em;
+    }
+
+    summary {
+        font-size: 0.85em;
+    }
+
+    .card details a {
+        font-size: 0.85em;
+    }
+
+    footer p {
+        font-size: 0.8em;
+    }
 }

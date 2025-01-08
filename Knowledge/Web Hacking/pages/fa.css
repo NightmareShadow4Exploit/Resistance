@@ -84,7 +84,7 @@ li::before {
     content: "•";
     position: absolute;
     right: 0; /* Align the bullet to the right */
-    color: #4CAF50;
+    color: red;
     font-size: 1.5em;
 }
 
@@ -129,3 +129,19 @@ li::before {
 .top-links a:hover {
     color: #0056b3;
 }
+
+footer {
+    text-align: center;
+    font-size: small;
+    background-color: #2e2e2e;
+    color: #fff;
+    padding: 40px 20px;
+    position: relative;
+  }
+  
+  footer p {
+    color: white;
+    font-size: 1.2em;
+    margin-bottom: 20px;
+  }
+  
