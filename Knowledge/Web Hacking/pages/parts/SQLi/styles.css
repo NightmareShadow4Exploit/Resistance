@@ -155,3 +155,45 @@ img {
 .top-links a:hover {
     color: #0056b3;
 }
+
+
+  /* Style for tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table th, table td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+table th {
+    background-color: #f2f2f2;
+    color: #333;
+}
+
+table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+table tr:hover {
+    background-color: #f1f1f1;
+}
+
+table td {
+    color: #555;
+}
+
+/* Optional: Add spacing at the top and bottom of the table */
+table {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+/* Optional: Style the borders */
+table, th, td {
+    border: 1px solid #ddd;
+}
