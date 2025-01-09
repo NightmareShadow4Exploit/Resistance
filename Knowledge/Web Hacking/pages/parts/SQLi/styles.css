@@ -1,111 +1,137 @@
-*{
+/* General Styles */
+body {
+    font-family: 'Vazir', 'Tahoma', sans-serif; /* Use Persian-friendly fonts */
+    line-height: 1.8;
     color: #333;
-}
-/* General Container */
-.container {
-    width: 80%;
-    margin: 0 auto;
-    padding: 20px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    line-height: 1.6;
-    direction: rtl; /* Ensures right-to-left text direction */
+    margin: 0;
+    padding: 0;
+    direction: rtl; /* Set direction to RTL for Persian */
+    text-align: right; /* Align text to the right */
 }
 
-/* Main Title */
-h1 {
-    text-align: center;
-    font-size: 2.5em;
-    margin-bottom: 20px;
+h1, h3 {
+    color: #2c3e50;
+    text-align: right; /* Align headers to the right */
 }
 
-/* Sub-Headings */
-h2 {
-    font-size: 2em;
-    color: #333;
-    margin-top: 30px;
-    border-bottom: 2px solid white;
-    padding-bottom: 10px;
-}
-
-/* Paragraphs */
-p {
-    font-size: 1.1em;
-    color: #555;
-    margin-bottom: 15px;
-}
-
-/* Ordered List */
-li {
-    font-size: 1.1em;
-    color: #555;
-    margin-bottom: 10px;
-}
-
-/* Disclaimer Box (Modified to Red Background with White Text) */
-.disclaimer {
-    background-color: #f44336; /* Red background */
-    color: white; /* White text */
-    border-left: 5px solid #d32f2f; /* Darker red border */
-    padding: 15px;
-    margin-top: 30px;
-}
-.disclaimer *{
-    color: white;
-}
-.disclaimer p {
-    font-size: 1.1em;
-}
-
-/* Links */
 a {
-    color: red;
+    color: #3498db;
     text-decoration: none;
-    font-weight: bold;
+    direction: rtl; /* Ensure links follow RTL format */
 }
 
 a:hover {
     text-decoration: underline;
 }
 
-/* Horizontal Line */
-hr {
-    border: 1px solid #333;
-    margin: 20px 0;
+/* Highlight Parentheses */
+p, li {
+    font-size: 1rem;
+    color: #333;
+    text-align: right; /* Align text to the right */
 }
 
-/* List Styling */
-li {
-    list-style-type: none;
-    padding-right: 20px; /* Adjusted for RTL direction */
-    position: relative;
+p span.highlight, li span.highlight {
+    background-color: #ffeb3b;
+    font-weight: bold;
 }
 
-li::before {
-    content: "•";
-    position: absolute;
-    right: 0; /* Align the bullet to the right */
-    color: red;
-    font-size: 1.5em;
+/* Preformatted Text and Code */
+pre {
+    background-color: #272822;
+    color: #f8f8f2;
+    padding: 1rem;
+    border-radius: 5px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    direction: ltr; /* Code blocks are usually LTR */
+    text-align: left; /* Align code to the left */
 }
 
-/* Responsive Design for Mobile */
-@media (max-width: 768px) {
-    .container {
-        width: 90%;
-    }
-
-    h1 {
-        font-size: 2em;
-    }
-
-    h2 {
-        font-size: 1.8em;
-    }
-
-    p, li {
-        font-size: 1em;
-    }
+code {
+    background-color: #f4f4f4;
+    color: #c0392b;
+    padding: 0.2rem 0.4rem;
+    border-radius: 3px;
+    font-size: 0.95rem;
+    direction: ltr; /* Code snippets are LTR */
+    text-align: left;
 }
+
+/* Read More Section */
+.read_more {
+    background-color: #ecf0f1;
+    border: 1px solid #bdc3c7;
+    padding: 1rem;
+    margin: 1rem 0;
+    border-radius: 5px;
+    text-align: right;
+    direction: rtl;
+}
+
+.read_more p {
+    font-weight: bold;
+    margin: 0 0 0.5rem;
+}
+
+.read_more a {
+    color: #2980b9;
+    font-weight: bold;
+}
+
+.read_more a:hover {
+    text-decoration: underline;
+}
+
+/* Warning Section */
+.warning {
+    background-color: #fbe9e7;
+    color: #d32f2f;
+    border-right: 5px solid #d32f2f; /* Change to border-right for RTL */
+    padding: 1rem;
+    margin: 1rem 0;
+    border-radius: 5px;
+    text-align: right;
+    direction: rtl;
+}
+
+.warning p {
+    margin: 0;
+    font-weight: bold;
+}
+
+/* Container */
+.container {
+    max-width: 800px;
+    margin: auto;
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    direction: rtl; /* Ensure overall container aligns RTL */
+    text-align: right;
+}
+
+/* Topic Links */
+.container a {
+    display: inline-block;
+    margin-bottom: 0.5rem;
+}
+
+/* Images */
+img {
+    max-width: 100%;
+    height: auto;
+    margin: 1rem 0;
+}
+
+/* Thanks Section */
+.thanksPS {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #7f8c8d;
+    direction: rtl; /* Adjust alignment */
+}
+
 
 
 
@@ -129,24 +155,3 @@ li::before {
 .top-links a:hover {
     color: #0056b3;
 }
-
-footer {
-    text-align: center;
-    font-size: small;
-    background-color: #2e2e2e;
-    color: #fff;
-    padding: 40px 20px;
-    position: relative;
-  }
-  
-  footer p {
-    color: white;
-    font-size: 1.2em;
-    margin-bottom: 20px;
-  }
-  
-
-
-  .thanksPS{
-    color: #858585; font-size: smaller;
-  }

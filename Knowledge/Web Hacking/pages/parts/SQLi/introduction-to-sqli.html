@@ -8,52 +8,293 @@
 </head>
 
 <body>
+
+    <div class="top-links">
+        <a href="https://nightmareshadow4exploit.github.io/Resistance">
+
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                <!-- Roof -->
+                <path d="M2 12L12 3l10 9" fill="none" stroke="black" stroke-width="2"/>
+                <!-- House Body -->
+                <rect x="5" y="12" width="14" height="9" fill="none" stroke="black" stroke-width="2"/>
+                <!-- Door -->
+                <rect x="10" y="15" width="4" height="6" fill="none" stroke="black" stroke-width="2"/>
+              </svg>
+              
+        </a>
+        <a href="https://nightmareshadow4exploit.github.io/Resistance/Quiz/">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                <!-- Speech Bubble -->
+                <path d="M4 4h16c1.1 0 1.99.9 1.99 2L22 18c0 1.1-.89 2-1.99 2H5c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" fill="none" stroke="black" stroke-width="2"/>
+                <!-- Question Mark -->
+                <text x="12" y="16" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="black">?</text>
+              </svg>
+              
+        </a>
+    </div>
     <div class="container">
+        <h3 style="border-bottom: 2px #333 solid;">موضوعات</h3>
+        <a href="#WhatIsSqli?">SQL Injection چیست؟</a> <br>
+        <a href="#WhatIsTheImpactOfSqli">تأثیر SQL Injection چیست؟</a> <br>
+        <a href="#DetectingSQLInjectionVulnerabilties">شناسایی آسیب‌پذیری SQL Injection</a> <br>
+        <a href="#ExamplesOfSQLi">مثال‌هایی از SQL Injection</a> <br>
+        <a href="#ExaminingTheDB">بررسی پایگاه داده</a> <br>
+        <a href="#UnionAttacks">حملات Union</a> <br>
+        <a href="#BlindSQLi">SQL Injection کور</a> <br>
+        <a href="#HowToPreventSQLi?">چگونه از SQL Injection جلوگیری کنیم؟</a> <br>
+        <a target="_blank" href="https://portswigger.net/web-security/sql-injection/cheat-sheet">برگه تقلب</a> <br>
+        <a target="_blank" href="https://portswigger.net/web-security/all-topics">مشاهده همه آزمایشگاه‌ها</a> <br>
+        
 
-        <h3 style="border-bottom: 2px #333 solid;">Topics</h3>
-        <a href="#WhatIsSqli?">What is SQL Injection?</a> <br>
-        <a href="#WhatIsTheImpactOfSqli">What is the Impact of SQL Injection?</a> <br>
-        <a href="#DetectingSQLInjectionVulnerabilties">Detecting SQL Injection Vulnerability</a> <br>
-        <a href="#ExamplesOfSQLi">Example Of SQL Injection</a> <br>
-        <a href="#ExaminingTheDB">Examining The Database</a> <br>
-        <a href="#UnionAttacks">Union Attacks</a> <br>
-        <a href="#BlindSQLi">Blind SQL Injection</a> <br>
-        <a href="#HowToPreventSQLi?">How to Prevent SQL Injection</a> <br>
-        <a href="#SQLiCheatSheet">Cheat Sheet</a> <br>
-        <a href="#ViewAllLabs">View All Labs</a> <br>
 
+       <h1> SQL Injection</h1>
+       
+       <p>در این بخش، توضیح می‌دهیم:</p>
 
-       <h1> SQL injection</h1>
-<p>In this section, we explain:</p>
+<li>SQL Injection (SQLi) چیست.</li>
+<li>چگونه انواع مختلف آسیب‌پذیری‌های SQLi را پیدا کرده و از آن‌ها سوءاستفاده کنیم.</li>
+<li>چگونه از SQLi جلوگیری کنیم.</li>
 
-<li>What SQL injection (SQLi) is.</li>
-<li>How to find and exploit different types of SQLi vulnerabilities.</li>
-<li>How to prevent SQLi.</li>
 
 <img src="../imgs/sql-injection.svg" alt="">
 
+<h3 id="WhatIsSqli?">SQL Injection (SQLi) چیست؟</h3>
+<p>SQL Injection (SQLi) یک آسیب‌پذیری امنیتی وب است که به مهاجم اجازه می‌دهد در کوئری‌هایی که یک برنامه به پایگاه داده خود ارسال می‌کند، دخالت کند. این آسیب‌پذیری می‌تواند به مهاجم اجازه دهد داده‌هایی را مشاهده کند که به‌طور معمول نمی‌تواند به آن‌ها دسترسی داشته باشد. این داده‌ها ممکن است شامل اطلاعات مربوط به کاربران دیگر یا هر داده دیگری باشد که برنامه به آن دسترسی دارد. در بسیاری از موارد، مهاجم می‌تواند این داده‌ها را تغییر داده یا حذف کند و باعث تغییرات ماندگار در محتوای برنامه یا رفتار آن شود.</p>
 
-<h2 id="WhatIsSqli?">What is SQL Injection(SQLi)?</h2>
-<p>SQL injection (SQLi) is a web security vulnerability that allows an attacker to interfere with the queries that an application makes to its database. This can allow an attacker to view data that they are not normally able to retrieve. This might include data that belongs to other users, or any other data that the application can access. In many cases, an attacker can modify or delete this data, causing persistent changes to the application's content or behavior.</p>
+<p>در برخی شرایط، یک مهاجم می‌تواند حمله SQL Injection را تشدید کرده و به سرور زیرین یا دیگر زیرساخت‌های پشتیبان نفوذ کند. این حمله همچنین می‌تواند به مهاجم امکان انجام حملات انکار سرویس (Denial-of-Service) را بدهد.</p>
 
-<p>In some situations, an attacker can escalate a SQL injection attack to compromise the underlying server or other back-end infrastructure. It can also enable them to perform denial-of-service attacks.</p>
+<iframe src="../Videos/What is SQL injection_ - Web Security Academy.mp4" frameborder="0"></iframe>
+<br>
+<p>با تشکر از Port Swigger</p>
+<a href="https://www.youtube.com/watch?v=wX6tszfgYp4">می‌توانید مستقیماً اینجا تماشا کنید</a>
 
-<iframe src="../Videos" frameborder="0"></iframe>
+<br>
+<h3 id="WhatIsTheImpactOfSqli">تأثیر یک حمله موفق SQL Injection چیست؟</h3>
+<p>یک حمله موفق SQL Injection می‌تواند منجر به دسترسی غیرمجاز به داده‌های حساس شود، از جمله:</p>
+
+<li>رمزهای عبور.</li>
+<li>جزئیات کارت‌های اعتباری.</li>
+<li>اطلاعات شخصی کاربران.</li>
+<p>حملات SQL Injection در بسیاری از نفوذهای اطلاعاتی با پروفایل بالا در طول سال‌ها استفاده شده‌اند. این حملات باعث آسیب به اعتبار سازمان و جریمه‌های قانونی شده‌اند. در برخی موارد، مهاجم می‌تواند یک درب پشتی پایدار به سیستم‌های سازمان ایجاد کند، که منجر به نفوذ بلندمدتی می‌شود که ممکن است برای مدت طولانی شناسایی نشود.</p>
+
+<h3 id="DetectingSQLInjectionVulnerabilties">چگونه آسیب‌پذیری‌های SQL Injection را شناسایی کنیم</h3>
+<p>می‌توانید آسیب‌پذیری‌های SQL Injection را به‌صورت دستی با استفاده از مجموعه‌ای سیستماتیک از آزمون‌ها در هر نقطه ورودی برنامه شناسایی کنید. برای این کار، معمولاً باید موارد زیر را ارسال کنید:</p>
+<li>کاراکتر تک‌کوتیشن ( ' ) را وارد کرده و به دنبال خطاها یا ناهنجاری‌های دیگر باشید.</li>
+<li>برخی از سینتکس‌های خاص SQL که به مقدار اصلی نقطه ورود ارزیابی می‌شوند و به یک مقدار متفاوت، و به دنبال تفاوت‌های سیستماتیک در پاسخ‌های برنامه باشید.</li>
+<li>شرط‌های بولی مانند (OR 1=1) و (OR 1=2) را وارد کرده و تفاوت‌ها در پاسخ‌های برنامه را بررسی کنید.</li>
+<li>بارهای طراحی‌شده برای ایجاد تأخیر زمانی هنگام اجرا در یک کوئری SQL، و تفاوت در زمان پاسخ را بررسی کنید.</li>
+<li>بارهای OAST طراحی‌شده برای ایجاد تعامل شبکه‌ای خارج از باند هنگام اجرا در یک کوئری SQL، و نظارت بر هرگونه تعامل ایجادشده.</li>
+
+<p>به طور جایگزین، می‌توانید اکثر آسیب‌پذیری‌های SQL Injection را سریع و مطمئن با استفاده از Burp Scanner پیدا کنید.</p>
+
+<h3 id="DetectingSQLInjectionVulnerabilties">SQL Injection در بخش‌های مختلف کوئری</h3>
+
+<p>بیشتر آسیب‌پذیری‌های SQL Injection در داخل شرط WHERE یک کوئری SELECT رخ می‌دهند. اکثر تسترهای باتجربه با این نوع SQL Injection آشنا هستند.</p>
+<p>با این حال، آسیب‌پذیری‌های SQL Injection می‌توانند در هر مکانی در داخل کوئری و در انواع مختلف کوئری رخ دهند. برخی از مکان‌های دیگر که SQL Injection معمولاً در آن‌ها رخ می‌دهد عبارتند از:</p>
+
+<li>در دستورات (UPDATE)، در داخل مقادیر به‌روزرسانی‌شده یا شرط (WHERE).</li>
+<li>در دستورات (INSERT)، در داخل مقادیر واردشده.</li>
+<li>در دستورات (SELECT)، در داخل نام جدول یا ستون.</li>
+<li>در دستورات (SELECT)، در داخل شرط (ORDER BY).</li>
+
+<h3 id="ExamplesOfSQLi">
+    مثال‌های SQL Injection
+</h3>
+
+<p>آسیب‌پذیری‌ها، حملات و تکنیک‌های SQL Injection متعددی وجود دارند که در موقعیت‌های مختلف رخ می‌دهند. برخی از مثال‌های رایج SQL Injection عبارتند از:</p>
+<li>بازیابی داده‌های پنهان، جایی که می‌توانید یک کوئری SQL را تغییر دهید تا نتایج اضافی را بازگرداند.</li>
+<li>مختل کردن منطق برنامه، جایی که می‌توانید یک کوئری را تغییر دهید تا با منطق برنامه تداخل داشته باشید.</li>
+<li>حملات UNION، جایی که می‌توانید داده‌ها را از جداول مختلف پایگاه داده بازیابی کنید.</li>
+<li>SQL Injection کور، جایی که نتایج یک کوئری که شما کنترل می‌کنید در پاسخ‌های برنامه بازگردانده نمی‌شوند.</li>
+
+<h3>بازیابی داده‌های پنهان</h3>
+<p>تصور کنید یک برنامه خرید وجود دارد که محصولات را در دسته‌بندی‌های مختلف نمایش می‌دهد. زمانی که کاربر روی دسته‌بندی <span style="font-weight: bold;">هدایا</span> کلیک می‌کند، مرورگر آن‌ها URL زیر را درخواست می‌کند:</p>
+<pre><code>https://insecure-website.com/products?category=Gifts</code></pre>
+<br>
+<p>این کوئری SQL از پایگاه داده می‌خواهد که موارد زیر را بازگرداند:</p>
+
+<li>تمام جزئیات (*)</li>
+<li>از جدول محصولات</li>
+<li>جایی که دسته‌بندی "Gifts" باشد</li>
+<li>و مقدار فیلد "released" برابر با 1 باشد.</li>
+<p>محدودیت (released = 1) برای مخفی کردن محصولاتی که منتشر نشده‌اند، استفاده می‌شود. می‌توان فرض کرد که برای محصولات منتشرنشده، (released = 0) خواهد بود.</p>
+
+<p>برنامه هیچ‌گونه تدافعی در برابر حملات SQL Injection پیاده‌سازی نکرده است. این به این معنی است که یک مهاجم می‌تواند حمله‌ای مانند زیر را طراحی کند:</p>
+<br>
+<p>https://insecure-website.com/products?category=Gifts'--</p>
+<br>
+این باعث می‌شود کوئری SQL به شکل زیر باشد:
+<br>
+<pre><code>SELECT * FROM products WHERE category = 'Gifts'--' AND released = 1</code></pre>
+<br>
+<p>مهم است که توجه کنید (--) در SQL نشان‌دهنده کامنت است. این به این معنی است که بقیه کوئری به‌عنوان یک کامنت در نظر گرفته می‌شود و عملاً از آن حذف می‌شود. در این مثال، این بدان معناست که کوئری دیگر شامل (AND released = 1) نخواهد بود. در نتیجه، تمام محصولات نمایش داده می‌شوند، حتی آن‌هایی که هنوز منتشر نشده‌اند.</p>
+
+<p>شما می‌توانید از حمله مشابهی استفاده کنید تا برنامه تمامی محصولات را در هر دسته‌بندی، حتی دسته‌بندی‌هایی که آن‌ها از آن‌ها اطلاعی ندارند، نمایش دهد:</p>
+<br>
+<pre><code>https://insecure-website.com/products?category=Gifts'+OR+1=1--</code></pre>
+<br>
+<p>این باعث می‌شود کوئری SQL به شکل زیر باشد:</p>
+<br>
+<pre><code>SELECT * FROM products WHERE category = 'Gifts' OR 1=1--' AND released = 1</code></pre>
+<br>
+<p>کوئری تغییر یافته تمام مواردی را بازمی‌گرداند که یا (category) برابر با (Gifts) است، یا (1) برابر با (1) است. از آنجایی که (1=1) همیشه درست است، کوئری تمام موارد را بازمی‌گرداند.</p>
+
+<br>
+
+<div class="warning">
+    هشدار
+هنگام وارد کردن شرط OR 1=1 در یک کوئری SQL دقت کنید. حتی اگر به نظر بی‌ضرر برسد، معمولاً برنامه‌ها از داده‌های یک درخواست در کوئری‌های مختلف دیگری استفاده می‌کنند. اگر شرط شما به یک دستور UPDATE یا DELETE برسد، به‌عنوان مثال، ممکن است باعث از دست رفتن داده‌های تصادفی شود.
+</div>
+<h3>
+    مختل کردن منطق برنامه
+</h3>
+
+<p>تصور کنید یک برنامه وجود دارد که به کاربران اجازه می‌دهد با یک نام کاربری و رمز عبور وارد شوند. اگر یک کاربر نام کاربری (wiener) و رمز عبور (bluecheese) را ارسال کند، برنامه اعتبارسنجی‌ها را با انجام کوئری SQL زیر بررسی می‌کند:</p>
+
+<br>
+<pre><code>SELECT * FROM users WHERE username = 'wiener' AND password = 'bluecheese'</code></pre>
+<br>
+
+<p>اگر کوئری جزئیات یک کاربر را بازگرداند، ورود موفقیت‌آمیز است. در غیر این صورت، رد می‌شود.</p>
+
+<p>در این حالت، یک مهاجم می‌تواند به عنوان هر کاربری وارد شود بدون نیاز به رمز عبور. آن‌ها می‌توانند از دنباله کامنت SQL (--) برای حذف بررسی رمز عبور از شرط (WHERE) کوئری استفاده کنند. به عنوان مثال، ارسال نام کاربری (administrator'-- ) و یک رمز عبور خالی باعث ایجاد کوئری زیر می‌شود:</p>
+<br>
+<pre><code>SELECT * FROM users WHERE username = 'administrator'--' AND password = ''</code></pre>
+<br>
+
+<p>این کوئری کاربری را که (username) آن (administrator) است، بازمی‌گرداند و مهاجم را به‌عنوان آن کاربر وارد می‌کند.</p>
+<br>
+
+<h3>بازیابی داده‌ها از جداول دیگر پایگاه داده</h3>
+<p>در مواردی که برنامه با نتایج یک کوئری SQL پاسخ می‌دهد، یک مهاجم می‌تواند از آسیب‌پذیری SQL Injection برای بازیابی داده‌ها از جداول دیگر در داخل پایگاه داده استفاده کند. شما می‌توانید از کلمه کلیدی (UNION) برای اجرای یک کوئری (SELECT) اضافی و پیوست کردن نتایج به کوئری اصلی استفاده کنید.</p>
+<p>به عنوان مثال، اگر یک برنامه کوئری زیر را که ورودی کاربر (Gifts) را شامل می‌شود، اجرا کند:</p>
+<br>
+<pre><code>SELECT name, description FROM products WHERE category = 'Gifts'</code></pre>
+
+<p>یک مهاجم می‌تواند ورودی زیر را ارسال کند:</p>
+
+<pre><code>' UNION SELECT username, password FROM users--</code></pre>
+<p>این باعث می‌شود که برنامه تمام نام‌های کاربری و رمزهای عبور را همراه با نام‌ها و توضیحات محصولات بازگرداند.</p>
+<div class="read_more">
+    <p>بیشتر بخوانید</p>
+
+    <li id="UnionAttacks"><a href="union attack.html">حملات SQL Injection Union</a></li>
+</div>
+
+<h3>
+    آسیب‌پذیری‌های Blind SQL Injection
+</h3>
+
+<p>بسیاری از موارد SQL Injection، آسیب‌پذیری‌های کور (blind) هستند. این به این معنی است که برنامه نتایج کوئری SQL یا جزئیات هرگونه خطای پایگاه داده را در پاسخ‌های خود بازنمی‌گرداند. آسیب‌پذیری‌های کور هنوز هم می‌توانند برای دسترسی به داده‌های غیرمجاز بهره‌برداری شوند، اما تکنیک‌های مربوط به آن‌ها معمولاً پیچیده‌تر و سخت‌تر برای انجام هستند.</p>
+
+<p>تکنیک‌های زیر می‌توانند برای بهره‌برداری از آسیب‌پذیری‌های Blind SQL Injection استفاده شوند، بسته به نوع آسیب‌پذیری و پایگاه داده مورد استفاده:</p>
+
+<li>شما می‌توانید منطق کوئری را تغییر دهید تا یک تفاوت قابل شناسایی در پاسخ برنامه بر اساس صحت یک شرط خاص ایجاد کنید. این ممکن است شامل وارد کردن یک شرط جدید در منطق بولی، یا فعال کردن شرطی یک خطا مانند تقسیم بر صفر باشد.</li>
+<li>شما می‌توانید به صورت شرطی یک تأخیر زمانی در پردازش کوئری ایجاد کنید. این به شما این امکان را می‌دهد که صحت شرط را بر اساس زمانی که برنامه برای پاسخ‌دهی نیاز دارد، استنباط کنید.</li>
+<li>شما می‌توانید یک تعامل شبکه‌ای خارج از باند را فعال کنید، با استفاده از تکنیک‌های OAST. این تکنیک بسیار قدرتمند است و در موقعیت‌هایی که تکنیک‌های دیگر کار نمی‌کنند، مفید است. معمولاً می‌توانید داده‌ها را از طریق کانال خارج از باند به طور مستقیم استخراج کنید. به عنوان مثال، می‌توانید داده‌ها را در جستجوی DNS برای دامنه‌ای که شما کنترل می‌کنید قرار دهید.</li>
+
+<div class="read_more">
+    <p>بیشتر بخوانید</p>
+
+    <li id="BlindSQLi"><a href="blind-sqli.html">SQL Injection Blind SQLi</a></li>
+</div>
+<br><br><br>
+
+<h3>SQL Injection از نوع Second-order</h3>
+<p>SQL Injection از نوع First-order زمانی اتفاق می‌افتد که برنامه ورودی کاربر را از یک درخواست HTTP پردازش کرده و آن ورودی را به طور ناامن در یک کوئری SQL وارد کند.</p>
+
+<p>SQL Injection از نوع Second-order زمانی اتفاق می‌افتد که برنامه ورودی کاربر را از یک درخواست HTTP دریافت کرده و آن را برای استفاده در آینده ذخیره می‌کند. این معمولاً با قرار دادن ورودی در یک پایگاه داده انجام می‌شود، اما هیچ آسیب‌پذیری در لحظه ذخیره‌سازی داده‌ها رخ نمی‌دهد. بعداً، زمانی که یک درخواست HTTP دیگر پردازش می‌شود، برنامه داده ذخیره‌شده را بازیابی کرده و آن را به طور ناامن در یک کوئری SQL وارد می‌کند. به همین دلیل، SQL Injection از نوع Second-order همچنین به عنوان SQL Injection ذخیره‌شده شناخته می‌شود.</p>
+
+<img src="../imgs/second-order-sql-injection.svg" alt="">
+
+<p>SQL Injection از نوع Second-order اغلب در موقعیت‌هایی رخ می‌دهد که توسعه‌دهندگان از آسیب‌پذیری‌های SQL Injection آگاه هستند، بنابراین درج اولیه ورودی در پایگاه داده را به طور ایمن انجام می‌دهند. وقتی داده بعداً پردازش می‌شود، به دلیل اینکه قبلاً به‌طور ایمن در پایگاه داده قرار گرفته است، آن را ایمن در نظر می‌گیرند. در این مرحله، داده به‌طور ناامنی پردازش می‌شود، زیرا توسعه‌دهنده به اشتباه آن را به عنوان داده‌ای قابل اعتماد در نظر می‌گیرد.</p>
+
+<h3 id="ExaminingTheDB">بررسی پایگاه داده</h3>
+
+<p>برخی ویژگی‌های اصلی زبان SQL به طور مشابه در پلتفرم‌های مختلف پایگاه داده پیاده‌سازی شده‌اند، بنابراین بسیاری از روش‌های شناسایی و بهره‌برداری از آسیب‌پذیری‌های SQL Injection در پلتفرم‌های مختلف به‌طور مشابه عمل می‌کنند.</p>
+
+<p>با این حال، تفاوت‌های زیادی بین پایگاه داده‌های رایج وجود دارد. این تفاوت‌ها باعث می‌شود که برخی تکنیک‌های شناسایی و بهره‌برداری از SQL Injection در پلتفرم‌های مختلف به‌طور متفاوت عمل کنند. به عنوان مثال:</p>
+
+<li>سینتکس برای اتصال رشته‌ها.</li>
+<li>کامنت‌ها.</li>
+<li>کوئری‌های دسته‌ای (یا کوئری‌های تو در تو).</li>
+<li>API‌های خاص پلتفرم.</li>
+<li>پیام‌های خطا.</li>
+<div class="read_more">
+    <p>بیشتر بخوانید</p>
+
+    <li><a href="https://portswigger.net/web-security/sql-injection/cheat-sheet">چیت شیت SQL Injection</a></li>
+</div>
+<p>بعد از شناسایی یک آسیب‌پذیری SQL Injection، اغلب مفید است که اطلاعاتی در مورد پایگاه داده بدست آورید. این اطلاعات می‌تواند به شما در بهره‌برداری از آسیب‌پذیری کمک کند.</p>
+
+<p>شما می‌توانید جزئیات نسخه پایگاه داده را درخواست کنید. روش‌های مختلف برای انواع مختلف پایگاه داده وجود دارد. این بدان معناست که اگر روشی خاص را پیدا کنید که کار می‌کند، می‌توانید نوع پایگاه داده را استنباط کنید. به عنوان مثال، در Oracle می‌توانید دستور زیر را اجرا کنید:</p>
+<br>
+<pre><code>SELECT * FROM v$version</code></pre>
+<br>
+<p>همچنین می‌توانید شناسایی کنید که کدام جداول پایگاه داده وجود دارند و ستون‌هایی که شامل آن‌ها هستند. به عنوان مثال، در اکثر پایگاه‌های داده می‌توانید دستور زیر را برای فهرست کردن جداول اجرا کنید:</p>
+<br>
+<pre><code>SELECT * FROM information_schema.tables</code></pre>
+<br>
+
+<div class="read_more">
+    <p>بیشتر بخوانید</p>
+
+    <li><a href="https://portswigger.net/web-security/sql-injection/examining-the-database">بررسی پایگاه داده در حملات SQL Injection</a></li>
+    <li><a href="https://portswigger.net/web-security/sql-injection/cheat-sheet">چیت شیت SQL Injection</a></li>
+</div>
+
+<h3>SQL Injection در زمینه‌های مختلف</h3>
+<p>در آزمایشگاه‌های قبلی، شما از رشته کوئری برای تزریق بار SQL مخرب خود استفاده کردید. اما شما می‌توانید حملات SQL Injection را با استفاده از هر ورودی قابل کنترل که توسط برنامه به عنوان یک کوئری SQL پردازش می‌شود، انجام دهید. به عنوان مثال، برخی از وب‌سایت‌ها ورودی را در قالب JSON یا XML می‌گیرند و از آن برای پرس‌وجو از پایگاه داده استفاده می‌کنند.</p>
+
+<p>این فرمت‌های مختلف ممکن است روش‌های مختلفی برای <a href="https://portswigger.net/web-security/essential-skills/obfuscating-attacks-using-encodings#obfuscation-via-xml-encoding">پنهان‌سازی حملات</a> فراهم کنند که در غیر این صورت به دلیل فیلترهای WAF و دیگر مکانیسم‌های دفاعی مسدود می‌شوند. پیاده‌سازی‌های ضعیف معمولاً به دنبال کلمات کلیدی رایج SQL Injection در درخواست می‌گردند، بنابراین ممکن است بتوانید با رمزگذاری یا فرار دادن کاراکترها در کلمات کلیدی ممنوعه، این فیلترها را دور بزنید. به عنوان مثال، SQL Injection مبتنی بر XML زیر از یک دنباله فرار XML برای رمزگذاری حرف S در (SELECT) استفاده می‌کند:</p>
+
+<br>
+<p>
+    <br>
+    <pre><code>&#60;stockCheck&#62; <br>
+    &#60;productId>123&#60;/productId&#62; <br>
+    &#60;storeId>999 &#x53;ELECT * FROM information_schema.tables&#60;/storeId&#62; <br>
+&#60;/stockCheck&#62;</code></pre>
+</p>
+<br>
+<p>این متن قبل از ارسال به مفسر SQL در سمت سرور رمزگشایی خواهد شد.</p>
+
+<h3 id="HowToPreventSQLi?">چگونه از SQL Injection جلوگیری کنیم</h3>
+<p>شما می‌توانید اکثر موارد SQL Injection را با استفاده از کوئری‌های پارامتریک به جای اتصال رشته‌ها در داخل کوئری جلوگیری کنید. این کوئری‌های پارامتریک همچنین به نام "بیانیه‌های آماده" شناخته می‌شوند.</p>
+
+<p>کد زیر آسیب‌پذیر به SQL Injection است زیرا ورودی کاربر مستقیماً به کوئری پیوست می‌شود:</p>
+
+<br>
+<p>
+    <pre><code>String query = "SELECT * FROM products WHERE category = '"+ input + "'"; <br>
+Statement statement = connection.createStatement(); <br>
+ResultSet resultSet = statement.executeQuery(query);</code></pre>
+</p>
+
+<br>
+<p>شما می‌توانید این کد را به گونه‌ای بازنویسی کنید که از اختلال ورودی کاربر در ساختار کوئری جلوگیری شود:</p>
+<br>
+<p>
+<pre><code>PreparedStatement statement = connection.prepareStatement("SELECT * FROM products WHERE category = ?"); <br>
+statement.setString(1, input); <br>
+ResultSet resultSet = statement.executeQuery(); <br></code></pre>
+</p>
+<br>
+<p>شما می‌توانید از کوئری‌های پارامتریک برای هر موقعیتی که ورودی غیرقابل اعتماد به‌عنوان داده در داخل کوئری ظاهر می‌شود، از جمله در بخش (WHERE) و مقادیر در دستورات (INSERT) یا (UPDATE) استفاده کنید. اما این روش‌ها نمی‌توانند برای مدیریت ورودی غیرقابل اعتماد در سایر بخش‌های کوئری، مانند نام جداول یا ستون‌ها، یا بخش (ORDER BY) استفاده شوند. عملکرد برنامه که داده‌های غیرقابل اعتماد را در این بخش‌ها از کوئری قرار می‌دهد، نیاز به رویکرد متفاوتی دارد، مانند:</p>
+
+<li>لیست سفید کردن مقادیر ورودی مجاز.</li>
+<li>استفاده از منطق متفاوت برای ارائه رفتار مورد نیاز.</li>
+
+<p>برای اینکه یک کوئری پارامتریک در جلوگیری از SQL injection مؤثر باشد، رشته‌ای که در کوئری استفاده می‌شود باید همیشه یک مقدار ثابت و سخت‌کد شده باشد. هیچ‌گاه نباید شامل داده متغیر از هر منبعی باشد. وسوسه نشوید که به‌صورت موردی تصمیم بگیرید که آیا داده‌ای قابل اعتماد است یا نه و همچنان از اتصال رشته‌ها در داخل کوئری برای مواردی که به‌عنوان امن در نظر گرفته می‌شوند استفاده کنید. اشتباه در تشخیص منبع داده یا تغییرات در کدهای دیگر می‌تواند داده‌های قابل اعتماد را آلوده کند.</p>
+
+<div class="read_more">
+    <p>بیشتر بخوانید</p>
+    <li><a href="https://portswigger.net/burp/vulnerability-scanner">یافتن آسیب‌پذیری‌های SQL injection با استفاده از اسکنر آسیب‌پذیری وب Burp Suite</a></li>
+</div>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-    <p class="thanksPS">Thanks to Port Swigger. This Documentation is possible because of Port Swigger..</p>
+<p class="thanksPS">این مستندات به لطف کمک‌ها و منابع ارائه شده توسط PortSwigger امکان‌پذیر شده است.</p>
 </div>
 </body>
 </html>
