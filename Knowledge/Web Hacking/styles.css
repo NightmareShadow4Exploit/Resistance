@@ -41,7 +41,7 @@ main {
 
 .grid-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Responsive grid */
+    /* grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); */
     gap: 10px;
     width: 90%; /* Adjusted for smaller screens */
     margin: 0 auto; /* Center content */
@@ -58,15 +58,6 @@ main {
     transition: background-color 0.3s, color 0.3s;
 }
 
-.card:hover {
-    background-color: rgb(115, 196, 115);
-    color: #fff;
-}
-
-.card:hover summary {
-    background-color: rgb(115, 196, 115);
-    color: white;
-}
 
 details {
     cursor: pointer;
