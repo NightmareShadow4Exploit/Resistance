@@ -3,10 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Introduction To SQLi by Nightmare</title>
+    <title>مقدمه ای بر SQLi توسط Nightmare</title>
     <link rel="stylesheet" href="styles.css">
-</head>
+    <meta name="description" content="درباره تزریق SQL (SQLi)، تاثیر آن بر برنامه‌های وب، روش‌های شناسایی آسیب‌پذیری‌ها و نحوه جلوگیری از حملات اطلاعات کسب کنید. نمونه‌ها و تدابیر پیشگیرانه را بررسی کنید." />
+    <meta name="keywords" content="تزریق SQL، SQLi، امنیت وب، شناسایی تزریق SQL، پیشگیری از SQLi، هک اخلاقی، آسیب‌پذیری‌های امنیتی، حملات SQLi، امنیت سایبری، نمونه‌های SQLi، حملات یونین، تزریق SQL نابینا، آموزش تزریق SQL" />
+    <meta name="robots" content="index, follow">
+    
 
+
+      
+  <!-- Open Graph Meta Tags for better social sharing -->
+  <meta property="og:title" content="مقدمه ای بر SQLi توسط Nightmare">
+  <meta property="og:description" content="درباره تزریق SQL (SQLi)، تاثیر آن بر برنامه‌های وب، روش‌های شناسایی آسیب‌پذیری‌ها و نحوه جلوگیری از حملات اطلاعات کسب کنید. نمونه‌ها و تدابیر پیشگیرانه را بررسی کنید.">
+  <meta property="og:image" content="https://nightmareshadow4exploit.github.io/Resistance/logo.png"> <!-- Replace with a relevant image -->
+  <meta property="og:url" content="https://nightmareshadow4exploit.github.io/Resistance/Knowledge/Web Hacking/pages/parts/SQLi/introduction-to-sqli.html"> <!-- Replace with your website URL -->
+  <meta property="og:type" content="website">
+  
+  <!-- Twitter Card Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="مقدمه ای بر SQLi توسط Nightmare">
+  <meta name="twitter:description" content="درباره تزریق SQL (SQLi)، تاثیر آن بر برنامه‌های وب، روش‌های شناسایی آسیب‌پذیری‌ها و نحوه جلوگیری از حملات اطلاعات کسب کنید. نمونه‌ها و تدابیر پیشگیرانه را بررسی کنید.">
+  <meta name="twitter:image" content="https://nightmareshadow4exploit.github.io/Resistance/logo.png"> <!-- Replace with a relevant image -->
+  
+<script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "Introduction to SQL Injection (SQLi)",
+      "description": "Learn about SQL Injection (SQLi), its impact on web applications, methods to detect vulnerabilities, and how to prevent attacks.",
+      "author": {
+        "@type": "Person",
+        "name": "Nightmare"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Nightmare Web Security",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://example.com/logo.png"
+        }
+      },
+      "datePublished": "2025-01-09"
+    }
+    </script>
+</head>
+    
 <body>
 
     <div class="top-links">
@@ -32,6 +73,12 @@
               </svg>
               
         </a>
+
+        <a target="_blank" href="https://t.me/Nightmare_Indian_Hacker">
+          
+            <img src="../../../../../imgs/telegram.svg" alt=""Telegram>
+                
+          </a>
     </div>
     <div class="container">
         <h3 style="border-bottom: 2px #333 solid;">موضوعات</h3>
@@ -57,7 +104,7 @@
 <li>چگونه از SQLi جلوگیری کنیم.</li>
 
 
-<img src="../imgs/sql-injection.svg" alt="">
+<img src="../imgs/sql-injection.svg" alt="Diagram illustrating SQL Injection vulnerability">
 
 <h3 id="WhatIsSqli?">SQL Injection (SQLi) چیست؟</h3>
 <p>SQL Injection (SQLi) یک آسیب‌پذیری امنیتی وب است که به مهاجم اجازه می‌دهد در کوئری‌هایی که یک برنامه به پایگاه داده خود ارسال می‌کند، دخالت کند. این آسیب‌پذیری می‌تواند به مهاجم اجازه دهد داده‌هایی را مشاهده کند که به‌طور معمول نمی‌تواند به آن‌ها دسترسی داشته باشد. این داده‌ها ممکن است شامل اطلاعات مربوط به کاربران دیگر یا هر داده دیگری باشد که برنامه به آن دسترسی دارد. در بسیاری از موارد، مهاجم می‌تواند این داده‌ها را تغییر داده یا حذف کند و باعث تغییرات ماندگار در محتوای برنامه یا رفتار آن شود.</p>
@@ -206,7 +253,7 @@
 
 <p>SQL Injection از نوع Second-order زمانی اتفاق می‌افتد که برنامه ورودی کاربر را از یک درخواست HTTP دریافت کرده و آن را برای استفاده در آینده ذخیره می‌کند. این معمولاً با قرار دادن ورودی در یک پایگاه داده انجام می‌شود، اما هیچ آسیب‌پذیری در لحظه ذخیره‌سازی داده‌ها رخ نمی‌دهد. بعداً، زمانی که یک درخواست HTTP دیگر پردازش می‌شود، برنامه داده ذخیره‌شده را بازیابی کرده و آن را به طور ناامن در یک کوئری SQL وارد می‌کند. به همین دلیل، SQL Injection از نوع Second-order همچنین به عنوان SQL Injection ذخیره‌شده شناخته می‌شود.</p>
 
-<img src="../imgs/second-order-sql-injection.svg" alt="">
+<img src="../imgs/second-order-sql-injection.svg" alt="Diagram illustrating SQL Injection vulnerability">
 
 <p>SQL Injection از نوع Second-order اغلب در موقعیت‌هایی رخ می‌دهد که توسعه‌دهندگان از آسیب‌پذیری‌های SQL Injection آگاه هستند، بنابراین درج اولیه ورودی در پایگاه داده را به طور ایمن انجام می‌دهند. وقتی داده بعداً پردازش می‌شود، به دلیل اینکه قبلاً به‌طور ایمن در پایگاه داده قرار گرفته است، آن را ایمن در نظر می‌گیرند. در این مرحله، داده به‌طور ناامنی پردازش می‌شود، زیرا توسعه‌دهنده به اشتباه آن را به عنوان داده‌ای قابل اعتماد در نظر می‌گیرد.</p>
 
