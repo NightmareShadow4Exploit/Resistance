@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQLi | آزمایشگاه - 2</title>
+    <link rel="stylesheet" href="styles.css">
+    <meta name="description" content="آزمایشگاه آسیب‌پذیری تزریق SQL (SQLi) که امکان دور زدن ورود به سیستم را می‌دهد. با مراحل دقیق یاد بگیرید که چگونه یک حمله SQL انجام دهید." />
+<meta name="keywords" content="SQL Injection, تزریق SQL, دور زدن ورود, آسیب‌پذیری امنیتی, هک, امنیت سایبری, آزمایشگاه SQLi" />
+<meta name="author" content="آزمایشگاه امنیت وب" />
+
+<meta property="og:title" content="آزمایشگاه تزریق SQL | امکان دور زدن ورود" />
+<meta property="og:description" content="در این آزمایشگاه یاد بگیرید که چگونه آسیب‌پذیری تزریق SQL (SQLi) را پیدا کرده و از آن برای دور زدن ورود به سیستم استفاده کنید." />
+<meta property="og:image"
+content="https://nightmareshadow4exploit.github.io/Resistance/logo.png">
+<!-- Replace with a relevant image -->
+<meta property="og:url"
+content="http://nightmareshadow4exploit.github.io/Resistance/Knowledge/Web%20Hacking/pages/parts/SQLi/Labs/lab1.html">
+<meta property="og:image" content="https://example.com/imgs/sql-lab-cover.jpg" />
+<meta property="og:locale" content="fa_IR" />
+
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="آزمایشگاه تزریق SQL | امکان دور زدن ورود" />
+<meta name="twitter:description" content="آزمایشگاه کامل برای آموزش دور زدن ورود به سیستم از طریق آسیب‌پذیری SQL Injection. یادگیری عملی با مثال‌ها." />
+<meta name="twitter:image"
+content="https://nightmareshadow4exploit.github.io/Resistance/logo.png">
+
+<script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "آزمایشگاه تزریق SQL | امکان دور زدن ورود",
+      "description": "در این آزمایشگاه یاد بگیرید که چگونه آسیب‌پذیری تزریق SQL (SQLi) را پیدا کرده و از آن برای دور زدن ورود به سیستم استفاده کنید.",
+      "url": "http://nightmareshadow4exploit.github.io/Resistance/Knowledge/Web%20Hacking/pages/parts/SQLi/Labs/lab1.html",
+      "image": "https://nightmareshadow4exploit.github.io/Resistance/logo.png",
+      "author": {
+        "@type": "Organization",
+        "name": "آزمایشگاه امنیت وب",
+        "url": "https://nightmareshadow4exploit.github.io/Resistance/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Nightmare",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://nightmareshadow4exploit.github.io/Resistance/logo.png"
+        }
+      },
+      "inLanguage": "fa"
+    }
+    </script>
+    
+</head>
+<body>
+    <div class="top-links">
+        <a href="https://nightmareshadow4exploit.github.io/Resistance">
+
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                width="24" height="24">
+                <!-- Roof -->
+                <path d="M2 12L12 3l10 9" fill="none" stroke="black"
+                    stroke-width="2" />
+                <!-- House Body -->
+                <rect x="5" y="12" width="14" height="9" fill="none"
+                    stroke="black" stroke-width="2" />
+                <!-- Door -->
+                <rect x="10" y="15" width="4" height="6" fill="none"
+                    stroke="black" stroke-width="2" />
+            </svg>
+
+        </a>
+        <a
+            href="https://nightmareshadow4exploit.github.io/Resistance/Quiz/">
+
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                width="24" height="24">
+                <!-- Speech Bubble -->
+                <path
+                    d="M4 4h16c1.1 0 1.99.9 1.99 2L22 18c0 1.1-.89 2-1.99 2H5c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
+                    fill="none" stroke="black" stroke-width="2" />
+                <!-- Question Mark -->
+                <text x="12" y="16" font-family="Arial, sans-serif"
+                    font-size="12" text-anchor="middle"
+                    fill="black">?</text>
+            </svg>
+
+        </a>
+
+        <a target="_blank" href="https://t.me/Nightmare_Indian_Hacker">
+
+            <img src="../../../../../../imgs/telegram.svg" alt Telegram>
+
+        </a>
+    </div>
+    <div class="container">
+    <h1>SQLi | آزمایشگاه - 2</h1>
+    <hr>
+    <h2>آزمایشگاه: آسیب‌پذیری تزریق SQL که امکان دور زدن ورود به سیستم را می‌دهد</h2>
+    <a target="_blank" href="https://portswigger.net/web-security/sql-injection/lab-login-bypass">برای بازدید از سایت اینجا کلیک کنید.</a>
+
+<p>بدون معطلی بیشتر، بیایید مستقیماً به فرآیند بپردازیم و کار خود را شروع کنیم.</p>
+<hr>
+<p>بر اساس اطلاعات ارائه شده، هدف ما انجام حمله تزریق SQL (SQLi) است که به ما اجازه می‌دهد به عنوان مدیر سیستم وارد شویم.</p>
+
+<p>بعد از کلیک کردن بر روی دکمه <strong>ACCESS THE LAB</strong>، صفحه زیر به شما نمایش داده می‌شود:</p>
+<img src="imgs/2-01.png" alt="تصویری از صفحه آزمایشگاه">
+
+<hr>
+<p>از آنجا که هدف ما ورود به عنوان مدیر است، باید راهی برای دور زدن نیاز به ارائه اطلاعات ورود پیدا کنیم.</p>
+<p>تنها گزینه‌های پیمایشی قابل مشاهده در این صفحه <strong>HOME</strong> و <strong>MY ACCOUNT</strong> هستند.</p>
+
+<p>از آنجا که ما به طور پیش‌فرض در صفحه Home هستیم، گام منطقی بعدی این است که به بخش <strong>MY ACCOUNT</strong> برویم.</p>
+<p>در صفحه <strong>MY ACCOUNT</strong>، رابط ورود زیر را مشاهده خواهید کرد:</p>
+<img src="imgs/2-02.png" alt="تصویری از صفحه ورود">
+
+<hr>
+<p>فرم ورود درخواست نام کاربری و رمز عبور می‌کند. برای این مثال، نام کاربری را <strong>administrator</strong> وارد می‌کنیم و از یک رمز عبور تصادفی مانند <strong>RANDOMPASSWORD</strong> استفاده می‌کنیم:</p>
+<img src="imgs/2-03.png" alt="تصویری از خطای رمز عبور نادرست">
+
+<p>از این پاسخ می‌توان نتیجه گرفت که وقتی مقادیر نام کاربری و رمز عبور را ارسال می‌کنیم، سرور ورودی‌ها را از طریق یک پرس‌وجوی SQL پردازش می‌کند. اگر مقادیر با هیچ رکورد موجودی مطابقت نداشته باشد، سرور پیام خطا با مضمون: <em>«نام کاربری یا رمز عبور اشتباه است.»</em> ارسال می‌کند.</p>
+
+<p>پرس‌وجوی ارسال‌شده به سرور ممکن است به شکل زیر باشد:</p>
+<pre>
+    <code>
+SELECT * FROM users WHERE username = 'administrator' AND password = 'RANDOMPASSWORD';
+    </code>
+</pre>
+<hr>
+<p>در مرحله بعد، بار تزریقی خود را وارد می‌کنیم. با افزودن ساده <span class="highlight">(--')</span> به ورودی، می‌توانیم پرس‌وجوی SQL را اصلاح کنیم. بعد از این تنظیم، پرس‌وجو به شکل زیر خواهد بود:</p>
+<pre>
+    <code>
+SELECT * FROM users WHERE username = 'administrator'--' AND password = 'RANDOMPASSWORD';
+    </code>
+</pre>
+
+<p>در این پرس‌وجوی اصلاح‌شده، دنباله <span class="highlight">--</span> برای کامنت‌گذاری باقی‌مانده پرس‌وجو استفاده می‌شود. این به طور مؤثر شرط رمز عبور را نادیده می‌گیرد، زیرا پرس‌وجو فقط نام کاربری که به عنوان <strong>administrator</strong> تنظیم شده است را بررسی می‌کند.</p>
+
+<p>برای ساده‌سازی، پرس‌وجوی نهایی اکنون به این شکل است:</p>
+<pre>
+    <code>
+SELECT * FROM users WHERE username = 'administrator';
+    </code>
+</pre>
+
+<p>بخش باقی‌مانده پرس‌وجو به عنوان کامنت در نظر گرفته می‌شود و بنابراین نادیده گرفته می‌شود. این به ما اجازه می‌دهد احراز هویت رمز عبور را دور بزنیم و با موفقیت به عنوان مدیر وارد شویم.</p>
+<hr>
+<p>برای دریافت جدیدترین اخبار و منابع، به من در تلگرام بپیوندید! <a href="https://t.me/Nightmare_Indian_Hacker" target="_blank">به تلگرام بپیوندید</a></p>
+<p>بعدی: <a href="lab3.html">SQLi | آزمایشگاه - 3</a></p>
+<hr>
+</div>
+</body>
+</html>
