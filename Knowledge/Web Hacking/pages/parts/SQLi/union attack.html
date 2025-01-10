@@ -1,1 +1,202 @@
-https://portswigger.net/web-security/sql-injection/union-attacks
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Union Attack</title>
+    <meta name="keywords" content="SQL Injection, حمله SQL Injection, UNION SQL Injection, امنیت پایگاه داده, هک پایگاه داده, تزریق SQL, تست نفوذ, امنیت وب, حملات سایبری, یادگیری هک, تکنیک‌های SQL Injection">
+    <meta name="description" content="در این صفحه به تکنیک حملات SQL Injection با استفاده از کلیدواژه UNION پرداخته می‌شود. یاد بگیرید چگونه این حملات کار می‌کنند، تعداد ستون‌ها و نوع داده‌ها را شناسایی کنید و داده‌های حساس را از پایگاه داده بازیابی کنید. این مطالب به شما کمک می‌کند امنیت پایگاه داده خود را تقویت کنید.">
+    <link rel="stylesheet" href="styles.css">
+    <meta name="robots" content="index, follow">
+
+      
+  <!-- Open Graph Meta Tags for better social sharing -->
+  <meta property="og:title" content="مقدمه ای بر SQLi توسط Nightmare">
+  <meta property="og:description" content="در این صفحه به تکنیک حملات SQL Injection با استفاده از کلیدواژه UNION پرداخته می‌شود. یاد بگیرید چگونه این حملات کار می‌کنند، تعداد ستون‌ها و نوع داده‌ها را شناسایی کنید و داده‌های حساس را از پایگاه داده بازیابی کنید. این مطالب به شما کمک می‌کند امنیت پایگاه داده خود را تقویت کنید.">
+  <meta property="og:image" content="https://nightmareshadow4exploit.github.io/Resistance/logo.png"> <!-- Replace with a relevant image -->
+  <meta property="og:url" content="https://nightmareshadow4exploit.github.io/Resistance/Knowledge/Web Hacking/pages/parts/SQLi/union attack.html"> <!-- Replace with your website URL -->
+  <meta property="og:type" content="website">
+  
+  <!-- Twitter Card Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="مقدمه ای بر SQLi توسط Nightmare">
+  <meta name="twitter:description" content="در این صفحه به تکنیک حملات SQL Injection با استفاده از کلیدواژه UNION پرداخته می‌شود. یاد بگیرید چگونه این حملات کار می‌کنند، تعداد ستون‌ها و نوع داده‌ها را شناسایی کنید و داده‌های حساس را از پایگاه داده بازیابی کنید. این مطالب به شما کمک می‌کند امنیت پایگاه داده خود را تقویت کنید.">
+  <meta name="twitter:image" content="https://nightmareshadow4exploit.github.io/Resistance/logo.png"> <!-- Replace with a relevant image -->
+  
+<script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "Introduction to SQL Injection (SQLi)",
+      "description": "Learn about SQL Injection (SQLi), its impact on web applications, methods to detect vulnerabilities, and how to prevent attacks.",
+      "author": {
+        "@type": "Person",
+        "name": "Nightmare"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Nightmare Web Security",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://nightmareshadow4exploit.github.io/Resistance/logo.png"
+        }
+      },
+      "datePublished": "2025-01-09"
+    }
+    </script>
+</head>
+<body>
+    <div class="top-links">
+        <a href="https://nightmareshadow4exploit.github.io/Resistance">
+
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                <!-- Roof -->
+                <path d="M2 12L12 3l10 9" fill="none" stroke="black" stroke-width="2"/>
+                <!-- House Body -->
+                <rect x="5" y="12" width="14" height="9" fill="none" stroke="black" stroke-width="2"/>
+                <!-- Door -->
+                <rect x="10" y="15" width="4" height="6" fill="none" stroke="black" stroke-width="2"/>
+              </svg>
+              
+        </a>
+        <a href="https://nightmareshadow4exploit.github.io/Resistance/Quiz/">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                <!-- Speech Bubble -->
+                <path d="M4 4h16c1.1 0 1.99.9 1.99 2L22 18c0 1.1-.89 2-1.99 2H5c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" fill="none" stroke="black" stroke-width="2"/>
+                <!-- Question Mark -->
+                <text x="12" y="16" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="black">?</text>
+              </svg>
+              
+        </a>
+
+        <a target="_blank" href="https://t.me/Nightmare_Indian_Hacker">
+          
+            <img src="../../../../../imgs/telegram.svg" alt=""Telegram>
+                
+          </a>
+    </div>
+    <div class="container">
+        <h2>حملات SQL Injection با استفاده از UNION</h2>
+        <p>زمانی که یک برنامه به SQL Injection آسیب‌پذیر است و نتایج کوئری در پاسخ‌های برنامه نمایش داده می‌شوند، می‌توانید از کلیدواژه UNION برای بازیابی داده‌ها از جداول دیگر در پایگاه داده استفاده کنید. این نوع حمله به عنوان حمله SQL Injection با استفاده از UNION شناخته می‌شود.</p>
+    
+        <p>کلیدواژه UNION به شما امکان می‌دهد که یک یا چند کوئری SELECT اضافی را اجرا کرده و نتایج را به کوئری اصلی الحاق کنید. برای مثال:</p>
+    
+        <pre><code>SELECT a, b FROM table1 UNION SELECT c, d FROM table2</code></pre>
+        <p>این کوئری SQL یک مجموعه نتیجه با دو ستون بازمی‌گرداند که شامل مقادیر ستون‌های a و b از table1 و ستون‌های c و d از table2 می‌باشد.</p>
+    
+        <p>برای اینکه یک کوئری UNION به درستی کار کند، دو شرط اصلی باید برقرار باشد:</p>
+        <ul>
+            <li>کوئری‌های جداگانه باید تعداد ستون‌های یکسانی را بازگردانند.</li>
+            <li>نوع داده‌ها در هر ستون بین کوئری‌های جداگانه باید سازگار باشد.</li>
+        </ul>
+        <p>برای انجام یک حمله SQL Injection با استفاده از UNION، اطمینان حاصل کنید که حمله شما این دو شرط را برآورده می‌کند. این معمولاً شامل یافتن موارد زیر است:</p>
+        <ul>
+            <li>تعداد ستون‌هایی که از کوئری اصلی بازگردانده می‌شوند.</li>
+            <li>ستون‌هایی که نوع داده مناسبی برای نگهداری نتایج کوئری تزریق‌شده دارند.</li>
+        </ul>
+    
+        <h2>تعیین تعداد ستون‌های مورد نیاز</h2>
+        <p>وقتی یک حمله SQL Injection با استفاده از UNION انجام می‌دهید، دو روش موثر برای تعیین تعداد ستون‌های بازگردانده‌شده از کوئری اصلی وجود دارد.</p>
+    
+        <p>یک روش شامل تزریق مجموعه‌ای از عبارات ORDER BY و افزایش ایندکس ستون مشخص‌شده تا زمانی که خطا رخ دهد می‌باشد. برای مثال، اگر نقطه تزریق یک رشته نقل‌قول‌شده در شرط WHERE کوئری اصلی باشد، می‌توانید موارد زیر را ارسال کنید:</p>
+    
+        <pre><code>
+    ' ORDER BY 1--
+    ' ORDER BY 2--
+    ' ORDER BY 3--
+    و غیره.
+    </code></pre>
+        <p>این مجموعه از payloadها کوئری اصلی را تغییر می‌دهد تا نتایج را بر اساس ستون‌های مختلف در مجموعه نتیجه مرتب کند. ستون در عبارت ORDER BY می‌تواند با ایندکس آن مشخص شود، بنابراین نیازی به دانستن نام ستون‌ها نیست. وقتی ایندکس ستون مشخص‌شده از تعداد واقعی ستون‌ها در مجموعه نتیجه بیشتر شود، پایگاه داده یک خطا مانند زیر بازمی‌گرداند:</p>
+    
+        <pre><code>عدد موقعیت ORDER BY 3 خارج از محدوده تعداد آیتم‌ها در لیست انتخاب است.</code></pre>
+        <p>برنامه ممکن است در پاسخ HTTP خود خطای پایگاه داده را نمایش دهد، اما همچنین ممکن است یک پاسخ خطای کلی نمایش دهد. در موارد دیگر، ممکن است اصلاً هیچ نتیجه‌ای بازنگرداند. در هر صورت، تا زمانی که بتوانید تفاوتی در پاسخ تشخیص دهید، می‌توانید تعداد ستون‌های بازگردانده‌شده از کوئری را استنباط کنید.</p>
+    
+        <p>روش دوم شامل ارسال مجموعه‌ای از payloadهای UNION SELECT است که تعداد متفاوتی از مقادیر NULL را مشخص می‌کنند:</p>
+    
+        <pre><code>
+    ' UNION SELECT NULL--
+    ' UNION SELECT NULL,NULL--
+    ' UNION SELECT NULL,NULL,NULL--
+    و غیره.
+    </code></pre>
+    <p>اگر تعداد مقادیر NULL با تعداد ستون‌ها مطابقت نداشته باشد، پایگاه داده یک خطا بازمی‌گرداند، مانند:</p>
+
+    <pre><code>تمام کوئری‌هایی که با استفاده از عملگرهای UNION، INTERSECT یا EXCEPT ترکیب شده‌اند باید تعداد برابر عبارات در لیست هدف خود داشته باشند.</code></pre>
+    <p>ما از NULL به عنوان مقادیر بازگردانده شده از کوئری SELECT تزریق‌شده استفاده می‌کنیم زیرا نوع داده‌ها در هر ستون باید بین کوئری اصلی و کوئری تزریق‌شده سازگار باشد. NULL به تمام نوع‌های داده رایج قابل تبدیل است، بنابراین شانس موفقیت حمله زمانی که تعداد ستون‌ها درست باشد، حداکثر می‌شود.</p>
+    
+    <p>مانند تکنیک ORDER BY، برنامه ممکن است خطای پایگاه داده را در پاسخ HTTP خود نمایش دهد، اما ممکن است یک خطای عمومی یا هیچ نتیجه‌ای بازنگرداند. زمانی که تعداد مقادیر NULL با تعداد ستون‌ها مطابقت داشته باشد، پایگاه داده یک سطر اضافی در مجموعه نتیجه بازمی‌گرداند که در هر ستون مقادیر NULL وجود دارد. تأثیر آن بر پاسخ HTTP بستگی به کد برنامه دارد. اگر خوش‌شانس باشید، ممکن است مقداری محتوای اضافی در پاسخ ببینید، مانند یک ردیف اضافی در یک جدول HTML. در غیر این صورت، مقادیر NULL ممکن است خطای متفاوتی ایجاد کنند، مانند NullPointerException. در بدترین حالت، پاسخ ممکن است مشابه پاسخ ناشی از تعداد نادرست مقادیر NULL به نظر برسد که این روش را بی‌اثر می‌کند.</p>
+    
+    <h2>دستورهای خاص به پایگاه داده</h2>
+    <p>در Oracle، هر کوئری SELECT باید از کلیدواژه FROM استفاده کرده و یک جدول معتبر را مشخص کند. در Oracle یک جدول پیش‌فرض به نام dual وجود دارد که می‌توان از آن برای این منظور استفاده کرد. بنابراین کوئری‌های تزریق‌شده در Oracle باید به این شکل باشند:</p>
+    
+    <pre><code>' UNION SELECT NULL FROM DUAL--</code></pre>
+    <p>پیلودهای توضیح داده‌شده از دنباله توضیح دوبل -- برای کامنت کردن باقی‌مانده کوئری اصلی پس از نقطه تزریق استفاده می‌کنند. در MySQL، دنباله -- باید با یک فاصله دنبال شود. به طور جایگزین، می‌توان از کاراکتر # برای مشخص کردن یک کامنت استفاده کرد.</p>
+    
+    <p>برای جزئیات بیشتر در مورد دستورهای خاص به پایگاه داده، به <a href="https://portswigger.net/web-security/sql-injection/cheat-sheet">برگه تقلب SQL Injection</a> مراجعه کنید.</p>
+    
+    <h2>یافتن ستون‌هایی با نوع داده مفید</h2>
+    <p>یک حمله SQL Injection با استفاده از UNION به شما امکان می‌دهد نتایج کوئری تزریق‌شده را بازیابی کنید. داده‌های جالبی که می‌خواهید بازیابی کنید معمولاً به صورت رشته‌ای هستند. این به این معناست که باید یک یا چند ستون در نتایج کوئری اصلی پیدا کنید که نوع داده آن‌ها رشته باشد یا با داده‌های رشته‌ای سازگار باشد.</p>
+    
+    <p>پس از تعیین تعداد ستون‌های مورد نیاز، می‌توانید هر ستون را آزمایش کنید که آیا می‌تواند داده‌های رشته‌ای را نگه دارد یا نه. می‌توانید مجموعه‌ای از پیلودهای UNION SELECT ارسال کنید که مقدار رشته‌ای را به ترتیب در هر ستون قرار می‌دهند. برای مثال، اگر کوئری چهار ستون بازمی‌گرداند، می‌توانید ارسال کنید:</p>
+    
+    <pre><code>
+    ' UNION SELECT 'a',NULL,NULL,NULL--
+    ' UNION SELECT NULL,'a',NULL,NULL--
+    ' UNION SELECT NULL,NULL,'a',NULL--
+    ' UNION SELECT NULL,NULL,NULL,'a'--
+    </code></pre>
+    <p>اگر نوع داده ستون با داده‌های رشته‌ای سازگار نباشد، کوئری تزریق‌شده باعث ایجاد خطای پایگاه داده می‌شود، مانند:</p>
+    
+    <pre><code>تبدیل مقدار varchar 'a' به نوع داده int با شکست مواجه شد.</code></pre>
+    <p>اگر خطا رخ ندهد و پاسخ برنامه شامل مقداری محتوای اضافی باشد که شامل مقدار رشته‌ای تزریق‌شده است، ستون مربوطه برای بازیابی داده‌های رشته‌ای مناسب است.</p>
+    
+    <h2>استفاده از یک حمله SQL Injection با استفاده از UNION برای بازیابی داده‌های جالب</h2>
+    <p>زمانی که تعداد ستون‌های بازگردانده شده توسط کوئری اصلی را مشخص کردید و فهمیدید که کدام ستون‌ها می‌توانند داده‌های رشته‌ای را نگه دارند، می‌توانید داده‌های جالب را بازیابی کنید.</p>
+    
+    <p>فرض کنید که:</p>
+    <ul>
+    <li>کوئری اصلی دو ستون بازمی‌گرداند که هر دو می‌توانند داده‌های رشته‌ای را نگه دارند.</li>
+    <li>نقطه تزریق یک رشته نقل‌قول‌شده در شرط WHERE است.</li>
+    <li>پایگاه داده شامل جدولی به نام users با ستون‌هایی به نام username و password است.</li>
+    </ul>
+    <p>در این مثال، می‌توانید محتوای جدول users را با ارسال ورودی زیر بازیابی کنید:</p>
+    
+    <pre><code>' UNION SELECT username, password FROM users--</code></pre>
+    <p>برای انجام این حمله، باید بدانید که جدولی به نام users با دو ستون به نام username و password وجود دارد. بدون این اطلاعات، باید نام جداول و ستون‌ها را حدس بزنید. تمام پایگاه‌های داده مدرن روش‌هایی برای بررسی ساختار پایگاه داده و تعیین جداول و ستون‌های موجود ارائه می‌دهند.</p>
+    <div class="read_more">
+        <br><strong>مطالعه بیشتر</strong><br>
+        <a href="examining the DB.html">بررسی پایگاه داده در حملات SQL Injection</a>
+    </div>
+    
+    <h2>بازیابی چند مقدار در یک ستون</h2>
+    <p>در برخی موارد، کوئری در مثال قبلی ممکن است تنها یک ستون را بازگرداند.</p>
+    
+    <p>می‌توانید چند مقدار را در یک ستون با هم بازیابی کنید، با استفاده از الحاق مقادیر به یکدیگر. می‌توانید یک جداکننده اضافه کنید تا مقادیر ترکیب‌شده را از هم تفکیک کنید. برای مثال، در Oracle می‌توانید ورودی زیر را ارسال کنید:</p>
+    
+    <pre><code>' UNION SELECT username || '~' || password FROM users--</code></pre>
+    
+    <p>این از دنباله دو خط عمودی || استفاده می‌کند که یک عملگر الحاق رشته در Oracle است. کوئری تزریق‌شده مقادیر فیلدهای username و password را با جداکننده ~ به هم الحاق می‌کند.</p>
+    
+    <p>نتایج کوئری شامل تمام نام‌های کاربری و رمزهای عبور خواهد بود، برای مثال:</p>
+    
+    <pre><code>
+    ...
+    administrator~s3cure
+    wiener~peter
+    carlos~montoya
+    ...
+    </code></pre>
+    
+    <p>پایگاه‌های داده مختلف از سینتکس متفاوتی برای الحاق رشته‌ها استفاده می‌کنند. برای جزئیات بیشتر، به <a href="https://portswigger.net/web-security/sql-injection/cheat-sheet">برگه تقلب SQL Injection</a> مراجعه کنید.</p>
+    
+    <hr>
+    <p>برای دریافت جدیدترین اخبار و منابع، به من در تلگرام بپیوندید! <a href="https://t.me/Nightmare_Indian_Hacker" target="_blank">به تلگرام بپیوندید</a></p>
+    <p>بعدی: <a href="examining the DB.html">بررسی پایگاه داده در حملات تزریق SQL</a></p>
+    <hr>
+    </div>
+    
+</div>
+
+</body>
+</html>

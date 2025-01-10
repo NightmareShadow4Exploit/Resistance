@@ -32,15 +32,17 @@ p, li {
 }
 
 p span.highlight, li span.highlight {
-    background-color: #ffeb3b;
+    background-color: #7f8c8d;
     font-weight: bold;
+    color: white;
 }
 
 /* Preformatted Text and Code */
 pre {
-    background-color: #272822;
-    color: #f8f8f2;
+    background-color: #ebf0f2;
+    color: #333;
     padding: 1rem;
+    border: 1px solid #eaeaea;
     border-radius: 5px;
     overflow-x: auto;
     margin-bottom: 1rem;
@@ -49,8 +51,8 @@ pre {
 }
 
 code {
-    background-color: #f4f4f4;
-    color: #c0392b;
+    /* background-color: #f4f4f4; */
+    color: #333;
     padding: 0.2rem 0.4rem;
     border-radius: 3px;
     font-size: 0.95rem;
@@ -213,3 +215,4 @@ table {
 table, th, td {
     border: 1px solid #ddd;
 }
+
