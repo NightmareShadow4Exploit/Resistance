@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQLi | آزمایشگاه - 3</title>
+    <link rel="stylesheet" href="styles.css">
+    <meta name="description" content="آزمایشگاه آسیب‌پذیری تزریق SQL (SQLi) که در آن نسخه پایگاه داده Oracle را شناسایی می‌کنیم. یادگیری عملی حمله به پایگاه داده با استفاده از روش UNION." />
+<meta name="keywords" content="SQL Injection, تزریق SQL, آسیب‌پذیری امنیتی, پایگاه داده Oracle, امنیت سایبری, آزمایشگاه SQLi, هک" />
+<meta name="author" content="آزمایشگاه امنیت وب" />
+
+<meta property="og:title" content="آزمایشگاه تزریق SQL | شناسایی نسخه پایگاه داده" />
+<meta property="og:description" content="در این آزمایشگاه یاد بگیرید که چگونه آسیب‌پذیری تزریق SQL (SQLi) را شناسایی کرده و از آن برای نمایش نسخه پایگاه داده Oracle استفاده کنید." />
+<meta property="og:image"
+content="https://nightmareshadow4exploit.github.io/Resistance/logo.png">
+<!-- Replace with a relevant image -->
+<meta property="og:url"
+content="http://nightmareshadow4exploit.github.io/Resistance/Knowledge/Web%20Hacking/pages/parts/SQLi/Labs/lab3.html">
+<meta property="og:image" content="https://example.com/imgs/sql-lab-oracle.jpg" />
+<meta property="og:locale" content="fa_IR" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="آزمایشگاه تزریق SQL | شناسایی نسخه پایگاه داده" />
+<meta name="twitter:description" content="آزمایشگاه کامل برای شناسایی نسخه پایگاه داده Oracle با استفاده از آسیب‌پذیری SQL Injection. آموزش عملی با جزئیات کامل." />
+<meta name="twitter:image"
+content="https://nightmareshadow4exploit.github.io/Resistance/logo.png">
+
+<script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "آزمایشگاه تزریق SQL | شناسایی نسخه پایگاه داده",
+      "description": "در این آزمایشگاه یاد بگیرید که چگونه آسیب‌پذیری تزریق SQL (SQLi) را شناسایی کرده و از آن برای نمایش نسخه پایگاه داده Oracle استفاده کنید.",
+      "url": "http://nightmareshadow4exploit.github.io/Resistance/Knowledge/Web%20Hacking/pages/parts/SQLi/Labs/lab3.html",
+      "image": "https://nightmareshadow4exploit.github.io/Resistance/logo.png",
+      "author": {
+        "@type": "Organization",
+        "name": "آزمایشگاه امنیت وب",
+        "url": "https://nightmareshadow4exploit.github.io/Resistance/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Nightmare",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://nightmareshadow4exploit.github.io/Resistance/logo.png"
+        }
+      },
+      "inLanguage": "fa"
+    }
+</script>
+
+</head>
+<body>
+    <div class="container">
+        <h1>SQLi | آزمایشگاه - 3</h1>
+        <hr>
+        <h2>آزمایشگاه: حمله تزریق SQL - پرس‌وجوی نوع و نسخه پایگاه داده روی Oracle</h2>
+        <strong>
+            این آزمایشگاه دارای یک آسیب‌پذیری تزریق SQL در فیلتر دسته‌بندی محصولات است. 
+            با استفاده از حمله UNION، می‌توانید نتایج پرس‌وجوی تزریقی را بازیابی کنید. <br><br>
+            هدف شما ساده است: رشته نسخه پایگاه داده را نمایش دهید تا آزمایشگاه را حل کنید. <br>
+        </strong>
+    
+        <a href="https://portswigger.net/web-security/sql-injection/examining-the-database/lab-querying-database-version-oracle">
+            می‌توانید <strong>دسترسی به آزمایشگاه</strong> را از اینجا انجام دهید.
+        </a>
+        <p>بیایید وقت را تلف نکنیم و مستقیم به سراغ آن برویم!</p>
+        <hr>
+    
+        <p>در این آزمایشگاه، وظیفه ما کشف نسخه پایگاه داده است. اما قبل از آن، بیایید بفهمیم چرا دانستن نسخه پایگاه داده برای بهره‌برداری از آسیب‌پذیری‌ها مهم است.</p>
+        <p>هنگامی که نسخه‌ای دارای باگ یا نقص امنیتی است، نیاز به اصلاح دارد. اگر نسخه در حال استفاده اصلاح نشده باشد، مهاجمان می‌توانند از آسیب‌پذیری‌های شناخته شده آن نسخه برای به خطر انداختن سیستم استفاده کنند.</p>
+    
+        <strong>حالا بیایید مشکل را شناسایی کنیم.</strong>
+        <p>پس از باز کردن آزمایشگاه، رابط کاربری معمولی را خواهید دید. هنگام کاوش، چیز جالبی متوجه می‌شوید:</p>
+        <img src="imgs/3-01.png" alt="آسیب‌پذیر">
+        <strong>چرا ممکن است این آسیب‌پذیر باشد؟</strong>
+        <p>به نظر می‌رسد که پارامترهایی برای فیلتر کردن دسته‌بندی محصولات می‌پذیرد:</p>
+        <img src="imgs/3-02.png" alt="URL">
+        <hr>
+    
+        <p>حالا، بررسی می‌کنیم که آیا این URL به تزریق SQL آسیب‌پذیر است یا خیر.</p>
+        <p>برای این کار، یک نظر SQL (`--`) را به پارامتر اضافه می‌کنیم:</p>
+    
+        <p>با نظر:</p>
+        <pre><code>'--</code></pre>
+        <p>بدون نظر:</p>
+        <pre><code>'</code></pre>
+    
+        <p>نتایج به این صورت است:</p>
+        <strong>با نظر:</strong>
+        <img src="imgs/3-03.png" alt="با نظر">
+        <hr style="width: 60%;">
+        <br><br>
+        <strong>بدون نظر:</strong>
+        <img src="imgs/3-04.png" alt="بدون نظر">
+        <br><br>
+        <p>از این نتایج می‌توان نتیجه گرفت که این URL به تزریق SQL آسیب‌پذیر است.</p>
+        <hr>
+    
+        <p>حال بیایید از این آسیب‌پذیری برای بازیابی نسخه پایگاه داده استفاده کنیم. برای این کار از روش UNION استفاده خواهیم کرد. اما ابتدا باید تعداد ستون‌های موجود در پرس‌وجو را برای ساختن یک دستور UNION معتبر تعیین کنیم.</p>
+    
+        <p>می‌توانیم از روش `ORDER BY` برای یافتن تعداد ستون‌ها استفاده کنیم:</p>
+        <pre><code>' ORDER BY 1--</code></pre>
+        <p>سپس:</p>
+        <pre><code>' ORDER BY 2--</code></pre>
+        <p>و در نهایت:</p>
+        <pre><code>' ORDER BY 3--</code></pre>
+        <p>اگر در مرحله سوم خطا رخ دهد، نشان‌دهنده این است که فقط دو ستون موجود است.</p>
+    
+        <p>پس از دانستن تعداد ستون‌ها، می‌توانیم حمله UNION را انجام دهیم:</p>
+        <pre><code>' UNION SELECT VERSION(), null --</code></pre>
+        <p>اما ممکن است با خطایی مشابه مواجه شوید:</p>
+        <img src="imgs/3-05.png" alt="پایگاه داده اشتباه">
+        <hr>
+    
+        <p>این خطا نشان می‌دهد که پایگاه داده MySQL نیست. برای تعیین نوع پایگاه داده صحیح، می‌توانید از این <a href="https://portswigger.net/web-security/sql-injection/cheat-sheet">Cheat Sheet</a> استفاده کنید.</p>
+    
+        <p>از طریق این Cheat Sheet می‌توانید payload‌های خاص هر پایگاه داده را پیدا کنید:</p>
+        <img src="imgs/3-06.png" alt="پایگاه داده‌ها">
+    
+        <p>با امتحان این payload‌ها متوجه می‌شوید که مورد زیر کار می‌کند:</p>
+        <pre><code>' UNION SELECT banner, null FROM v$version --</code></pre>
+        <img src="imgs/3-07.png" alt="Oracle Works!">
+    
+        <p>تبریک می‌گویم! آزمایشگاه حل شد. اکنون صفحه اطلاعات نسخه پایگاه داده را نمایش می‌دهد:</p>
+        <img src="imgs/3-08.png" alt="نتایج">
+        <img src="imgs/3-09.png" alt="نتایج">
+    
+        <p>به محتوای غیرضروری توجه نکنید و روی کار اصلی تمرکز کنید.</p>
+    </div>
+    <hr>
+    <p>برای دریافت جدیدترین اخبار و منابع، به من در تلگرام بپیوندید! <a href="https://t.me/Nightmare_Indian_Hacker" target="_blank">به تلگرام بپیوندید</a></p>
+    <p>بعدی: <a href="lab4.html">SQLi | آزمایشگاه - 4</a></p>
+    <hr>    
+
+
+
+
+</div>
+</body>
+</html>
