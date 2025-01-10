@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="fa">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>SQLi | آزمایشگاه - 1</title>
+        <link rel="stylesheet" href="styles.css">
+        <meta name="description"
+            content="با آزمایشگاه SQL Injection (SQLi) آسیب‌پذیری‌های SQL را شناسایی و بهره‌برداری کنید. در این آموزش، نحوه شبیه‌سازی و حمله به برنامه‌های آسیب‌پذیر را به‌طور عملی خواهید آموخت و با مفاهیم امنیتی در سناریوهای واقعی آشنا خواهید شد." />
+        <meta name="keywords"
+            content="آزمایشگاه SQL Injection, آسیب‌پذیری SQLi, حمله SQL Injection, آموزش SQL Injection, آزمایشگاه امنیت وب, تمرین SQL Injection, تست آسیب‌پذیری SQL, چالش امنیتی SQLi, امنیت وب‌سایت, تست آسیب‌پذیری‌های وب, بررسی آسیب‌پذیری SQL, آزمایشگاه امنیتی پور سوگر, آموزش تست امنیتی, آشنایی با SQL Injection, SQLi در برنامه‌های وب" />
+        <meta name="robots" content="index, follow">
+
+        <!-- Open Graph Meta Tags for better social sharing -->
+        <meta property="og:title"
+            content="SQLi | آزمایشگاه - 1">
+        <meta property="og:description"
+            content="با آزمایشگاه SQL Injection (SQLi) آسیب‌پذیری‌های SQL را شناسایی و بهره‌برداری کنید. در این آموزش، نحوه شبیه‌سازی و حمله به برنامه‌های آسیب‌پذیر را به‌طور عملی خواهید آموخت و با مفاهیم امنیتی در سناریوهای واقعی آشنا خواهید شد.">
+        <meta property="og:image"
+            content="https://nightmareshadow4exploit.github.io/Resistance/logo.png">
+        <!-- Replace with a relevant image -->
+        <meta property="og:url"
+            content="http://nightmareshadow4exploit.github.io/Resistance/Knowledge/Web%20Hacking/pages/parts/SQLi/Labs/lab1.html">
+        <!-- Replace with your website URL -->
+        <meta property="og:type" content="website">
+
+        <!-- Twitter Card Meta Tags -->
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title"
+            content="SQLi | آزمایشگاه - 1">
+        <meta name="twitter:description"
+            content="با آزمایشگاه SQL Injection (SQLi) آسیب‌پذیری‌های SQL را شناسایی و بهره‌برداری کنید. در این آموزش، نحوه شبیه‌سازی و حمله به برنامه‌های آسیب‌پذیر را به‌طور عملی خواهید آموخت و با مفاهیم امنیتی در سناریوهای واقعی آشنا خواهید شد.">
+        <meta name="twitter:image"
+            content="https://nightmareshadow4exploit.github.io/Resistance/logo.png">
+        <!-- Replace with a relevant image -->
+
+        <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": ="SQLi | آزمایشگاه - 1",
+      "description": "با آزمایشگاه SQL Injection (SQLi) آسیب‌پذیری‌های SQL را شناسایی و بهره‌برداری کنید. در این آموزش، نحوه شبیه‌سازی و حمله به برنامه‌های آسیب‌پذیر را به‌طور عملی خواهید آموخت و با مفاهیم امنیتی در سناریوهای واقعی آشنا خواهید شد.",
+      "author": {
+        "@type": "Person",
+        "name": "Nightmare"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Nightmare",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://nightmareshadow4exploit.github.io/Resistance/logo.png"
+        }
+      },
+      "datePublished": "2025-01-10"
+    }
+    </script>
+    </head>
+    <body>
+        <div class="top-links">
+            <a href="https://nightmareshadow4exploit.github.io/Resistance">
+
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                    width="24" height="24">
+                    <!-- Roof -->
+                    <path d="M2 12L12 3l10 9" fill="none" stroke="black"
+                        stroke-width="2" />
+                    <!-- House Body -->
+                    <rect x="5" y="12" width="14" height="9" fill="none"
+                        stroke="black" stroke-width="2" />
+                    <!-- Door -->
+                    <rect x="10" y="15" width="4" height="6" fill="none"
+                        stroke="black" stroke-width="2" />
+                </svg>
+
+            </a>
+            <a
+                href="https://nightmareshadow4exploit.github.io/Resistance/Quiz/">
+
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                    width="24" height="24">
+                    <!-- Speech Bubble -->
+                    <path
+                        d="M4 4h16c1.1 0 1.99.9 1.99 2L22 18c0 1.1-.89 2-1.99 2H5c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
+                        fill="none" stroke="black" stroke-width="2" />
+                    <!-- Question Mark -->
+                    <text x="12" y="16" font-family="Arial, sans-serif"
+                        font-size="12" text-anchor="middle"
+                        fill="black">?</text>
+                </svg>
+
+            </a>
+
+            <a target="_blank" href="https://t.me/Nightmare_Indian_Hacker">
+
+                <img src="../../../../../../imgs/telegram.svg" alt Telegram>
+
+            </a>
+        </div>
+        <div class="container">
+          <h1>SQLi | آزمایشگاه - 1</h1>
+          <hr>
+          <p>در این آزمایشگاه، ما شروع به تمرین با حل آسیب‌پذیری‌های مختلف در محیط ارائه‌شده خواهیم کرد.</p>
+          <p>تمرین برای درک نحوه تست آسیب‌پذیری‌ها در سناریوهای واقعی ضروری است.</p>
+          <p>این آزمایشگاه توسط Port Swigger ارائه شده است و برای هر کسی که می‌خواهد تمرین کند در دسترس است.</p>
+          <p>برای آزمایشگاه اول، می‌توانید با مراجعه به <a href="https://portswigger.net/web-security/sql-injection/lab-retrieve-hidden-data">اینجا</a> به آن دسترسی پیدا کنید.</p>
+          <p>توجه داشته باشید که ممکن است بارگذاری سایت کمی زمان ببرد، پس اگر بلافاصله به نظر رسید که کار نمی‌کند نگران نباشید.</p>
+          <hr>
+          <p>سعی کنید چالش‌ها را به تنهایی حل کنید. با این حال، اگر گیر کردید، مراحل زیر را دنبال کنید تا به راه‌حل برسید. مطمئن شوید که فرایند را درک کنید و بدانید چرا چیزها به این شکل عمل می‌کنند.</p>
+          <br>
+          <p>هنگام بازدید از آزمایشگاه، این پیغام را خواهید دید:</p>
+          <strong>این آزمایشگاه شامل یک آسیب‌پذیری SQL injection در فیلتر دسته‌بندی محصولات است. هنگامی که کاربر یک دسته را انتخاب می‌کند، برنامه یک درخواست SQL مانند زیر اجرا می‌کند:</strong>
+          <pre><code>SELECT * FROM products WHERE category = 'Gifts' AND released = 1</code></pre>
+
+          <strong>برای حل آزمایشگاه، یک حمله SQL injection انجام دهید که باعث شود برنامه یک یا چند محصول منتشر نشده را نمایش دهد.</strong>
+          <p>آن‌ها قبلاً نکاتی درباره محل مشکل داده‌اند، اما در دنیای واقعی، شما باید آسیب‌پذیری‌ها را خودتان پیدا کنید، یا می‌توانید از اسکنر آسیب‌پذیری مانند Burp Suite استفاده کنید.</p> <p>با این حال، زیاد به اسکنرها تکیه نکنید چون گاهی اوقات اطلاعات نادرستی ارائه می‌دهند. بهتر است خودتان آسیب‌پذیری‌ها را کشف کنید.</p> <br> <p>در این مورد، آسیب‌پذیری در فیلتر دسته‌بندی محصولات قرار دارد. برای حل آزمایشگاه، باید یک حمله SQL injection انجام دهید که محصولات منتشر نشده را نشان دهد.</p> <h2>راه‌حل</h2> <p class="thanksPS">اول، در آزمایشگاه ثبت‌نام کنید یا وارد شوید. پس از ورود، روی دکمه نارنجی با برچسب "ACCESS THE LAB" کلیک کنید تا وارد آزمایشگاه شوید.</p> <p>پس از دسترسی به آزمایشگاه، شما باید صفحه‌ای مشابه این را ببینید:</p> <img src="imgs/01.png" alt="First Sight of Page"> <p>به نظر می‌رسد یک صفحه عادی باشد و در واقع همینطور است! با این حال، مشکلی وجود دارد که باید شناسایی کنیم.</p> <h2>یافتن آسیب‌پذیری</h2> <p>برای شناسایی آسیب‌پذیری، باید سعی کنید با تمام چیزهایی که در صفحه می‌بینید تعامل کنید.</p> <br> <p>در حین تست، شما جستجو کردید و این را یافتید:</p> <img src="imgs/02.png" alt> <p>در این نقطه، متوجه می‌شوید که این URL ممکن است به SQL injection آسیب‌پذیر باشد چون به ما اجازه می‌دهد آزمایش کنیم که آیا آسیب‌پذیر است یا نه:</p>
+          <img src="imgs/03.png" alt="product Id"> <br>
+          <pre><code> https://0a490058046721ee8017265d00ac00c0.web-security-academy.net/filter?category=Gifts </code></pre>
+          <p>برای بررسی اینکه آیا آسیب‌پذیر است یا نه، یک کوتیشن‌تکی <span class="highlight"> '</span> در انتهای URL اضافه کنید، مانند این:</p> <img src="imgs/04.png" alt="adding ' in the last">
+          <p>وقتی این کار را می‌کنید، وب‌سایت کوتیشن‌تکی را با 27% جایگزین می‌کند. این رفتار عادی است اگر شما با HTML و JavaScript آشنا باشید. بیشتر در این مورد بعداً بحث خواهیم کرد.</p> <p>اضافه کردن کوتیشن‌تکی به URL باعث می‌شود سرور یک خطای داخلی را برگرداند:</p> <img src="imgs/05.png" alt="Error"> <p>برای درک آنچه که اتفاق افتاده است، بیایید به درخواست SQL پشت برنامه نگاه کنیم.</p> <p>وب‌سایت سعی دارد تمام محصولات از دسته "Gifts" را نمایش دهد.</p> <p>بر اساس این، می‌توانیم استنباط کنیم که درخواست SQL ممکن است به این شکل باشد:</p>
+          <pre><code> SELECT * FROM products WHERE category = 'Gifts' </code></pre>
+
+          <p>با این حال، وب‌سایت فقط محصولات منتشر شده را نشان می‌دهد، بنابراین درخواست SQL احتمالاً چیزی شبیه این است:</p>
+          <pre><code> SELECT * FROM products WHERE category = 'Gifts' AND released = 1 </code></pre>
+          
+          <p><strong>SQL Query:</strong></p>
+<pre><code>SELECT * FROM products WHERE category = 'Gifts' AND released = 1;</code></pre>
+
+<h2>1. <code>SELECT * </code></h2>
+<p><strong>SELECT</strong> یک دستور SQL است که برای بازیابی داده‌ها از پایگاه داده استفاده می‌شود. ستاره <code>*</code> یک نماد است که به معنای "انتخاب همه ستون‌ها" است و به پایگاه داده دستور می‌دهد تمام اطلاعات موجود را برای هر ردیفی که شرایط آن را برآورده می‌کند بازگرداند.</p>
+
+<h2>2. <code>FROM products</code></h2>
+<p><strong>FROM</strong> جدولی را که باید داده‌ها از آن بازیابی شوند مشخص می‌کند. در این مورد، <code>products</code> جدولی است که اطلاعات محصول، مانند نام‌ها، قیمت‌ها، دسته‌ها و وضعیت انتشار را در خود دارد.</p>
+
+<h2>3. <code>WHERE</code></h2>
+<p><strong>WHERE</strong> برای فیلتر کردن داده‌ها بر اساس شرایط خاص استفاده می‌شود. این دستور، ردیف‌هایی که شرایط داده شده را برآورده می‌کنند محدود می‌کند.</p>
+
+<h2>4. <code>category = 'Gifts'</code></h2>
+<p>این شرط ردیف‌ها را فیلتر می‌کند تا فقط محصولاتی که ستون <code>category</code> آن‌ها برابر با <code>'Gifts'</code> است نمایش داده شوند. فقط محصولات دسته‌بندی شده به عنوان "هدایا" انتخاب خواهند شد.</p>
+
+<h2>5. <code>AND</code></h2>
+<p><strong>AND</strong> یک عملگر منطقی است که برای ترکیب چندین شرط استفاده می‌شود. برای اینکه یک ردیف در نتیجه گنجانده شود، باید هر دو شرط درست باشند. در این مورد، دسته‌بندی باید "هدایا" باشد و محصول نیز باید به عنوان منتشر شده علامت‌گذاری شده باشد.</p>
+
+<h2>6. <code>released = 1</code></h2>
+<p>این شرط محصولات را فیلتر می‌کند تا فقط آن‌هایی را نمایش دهد که ستون <code>released</code> آن‌ها برابر با <code>1</code> باشد، به این معنی که محصول منتشر شده است. در برخی پایگاه‌های داده، <code>1</code> نمایانگر وضعیت درست یا فعال است، در حالی که <code>0</code> نمایانگر وضعیت غلط یا غیرفعال است.</p>
+
+          <p>زمانی که کوتیشن‌تکی را به URL اضافه کردیم، درخواست به این شکل در آمد:</p>
+          <pre><code> SELECT * FROM products WHERE category = 'Gifts'' AND released = 1 </code></pre>
+          <p>در نتیجه، درخواست شکست خورد چون یک کوتیشن‌تکی بدون بسته شدن باقی ماند که باعث ایجاد یک خطای نحوی در SQL شد.</p> <p>حالا، بیایید سعی کنیم بعد از کوتیشن‌تکی یک کامنت اضافه کنیم:</p> <img src="imgs/06.png" alt="adding ' --"> <p>حالا هیچ خطایی وجود ندارد:</p> <img src="imgs/07.png" alt="No Error with ' and --">
+          <p>درخواست اکنون به این شکل است:</p>
+          <pre><code> SELECT * FROM products WHERE category = 'Gifts'--' AND released = 1 </code></pre>
+          <p>با قرار دادن کامنت (--) در اینجا، تمام چیزی که بعد از آن می‌آید از نظر SQL نادیده گرفته می‌شود، به طور مؤثر بخش دوم درخواست که محصولات منتشر شده را فیلتر می‌کرد حذف می‌شود.</p>
+
+          <strong>از این، می‌توانیم نتیجه بگیریم که این URL به SQL injection (SQLi) آسیب‌پذیر است.</strong>
+          <h2>یافتن محصولات منتشر نشده</h2> <p>برای تکمیل آزمایشگاه، URL را با این payload تغییر خواهیم داد:</p>
+          <pre><code>' or 1=1--</code></pre> <p>با انجام این کار، آزمایشگاه حل خواهد شد، اما بیایید بفهمیم چرا این کار می‌کند.</p> <p>زمانی که این payload را اضافه می‌کنیم، درخواست به این شکل در می‌آید:</p>
+          <pre><code>SELECT * FROM products WHERE category = 'Gifts' or 1=1--' AND released = 1</pre>
+          <p>در اینجا، ما می‌گوییم که می‌خواهیم محصولاتی را نمایش دهیم که دسته‌بندی آن‌ها "هدایا" است و شرط "1=1" همیشه درست است. در نتیجه، تمام محصولات نمایش داده خواهند شد زیرا درخواست دیگر شرط "AND released = 1" را در نظر نمی‌گیرد.</p> <p>بیایید نتایج را مقایسه کنیم:</p>
+
+          <strong>قبل از SQLi:</strong>
+          <hr> <img src="imgs/08.png" alt="released products 1"> <img src="imgs/09.png" alt="released products 2">
+
+          <strong>بعد از SQLi:</strong>
+          <hr> <img src="imgs/10.png" alt="unreleased products 1"> <img src="imgs/11.png" alt="unreleased products 2"> <img src="imgs/12.png" alt="unreleased products 3">
+
+          <strong>حال، شما به وضوح تفاوت را می‌بینید.</strong>
+          <hr> <p>اگر در مورد تفاوت بین "OR" و "AND" گیج شده‌اید، در اینجا یک توضیح سریع:</p> <p>با "OR"، شرط درست است اگر حداقل یکی از شرایط معتبر باشد. اگر دو شرط داده شده باشد، برنامه زمانی که هر کدام درست باشد اجرا خواهد شد.</p> <p>با "AND"، برنامه تنها زمانی اجرا می‌شود که هر دو شرط درست باشند. اگر حتی یکی از شرایط غلط باشد، برنامه اجرا نخواهد شد.</p>
+          <br>
+          <br>
+              </code>
+          <hr>
+          <p>برای دریافت جدیدترین اخبار و منابع، به من در تلگرام بپیوندید! <a href="https://t.me/Nightmare_Indian_Hacker" target="_blank">به تلگرام بپیوندید</a></p>
+          <p>بعدی: <a href="union attack.html">مقدمه‌ای بر SQLi</a></p>
+          <hr>
+      </div>
+
+    </body>
+</html>
