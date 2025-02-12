@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="fa" direction="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Title for SEO --> 
+    <title>Stored XSS - اسکریپت بین سایتی ذخیره‌شده | آموزش امنیت وب</title>
+    
+    <!-- Meta description for SEO -->
+    <meta name="description" content="آموزش جامع اسکریپت بین سایتی ذخیره‌شده (Stored XSS) و تکنیک‌های شناسایی و بهره‌برداری از آسیب‌پذیری‌های امنیتی در وب‌سایت‌ها. یادگیری نحوه تزریق و اجرای اسکریپت در پاسخ‌های HTTP ذخیره‌شده.">
+    
+    <!-- Meta keywords for SEO -->
+    <meta name="keywords" content="Stored XSS, اسکریپت بین سایتی ذخیره‌شده, Cross-Site Scripting, web security, cybersecurity, HTTP injection, persistent script vulnerability, امنیت وب, حملات وب, penetration testing">
+    
+    <!-- Open Graph Meta Tags for better social sharing -->
+    <meta property="og:title" content="Stored XSS - اسکریپت بین سایتی ذخیره‌شده | آموزش امنیت وب">
+    <meta property="og:description" content="آموزش جامع اسکریپت بین سایتی ذخیره‌شده (Stored XSS) و تکنیک‌های شناسایی و بهره‌برداری از آسیب‌پذیری‌های امنیتی در وب‌سایت‌ها. یادگیری نحوه تزریق و اجرای اسکریپت در پاسخ‌های HTTP ذخیره‌شده.">
+    <meta property="og:image" content="https://nightmareshadow4exploit.github.io/Resistance/logo.png">
+    <meta property="og:url" content="https://nightmareshadow4exploit.github.io/Resistance/Knowledge/Web%20Hacking/">
+    <meta property="og:type" content="website">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Nightmare">
+    <meta name="twitter:description" content="یادگیری آزمایش نفوذ وب‌سایت و امنیت سایبری از Nightmare. آموزش نحوه نفوذ و محافظت از وب‌سایت‌ها با جدیدترین روش‌ها و تکنیک‌ها.">
+    <meta name="twitter:image" content="https://nightmareshadow4exploit.github.io/Resistance/logo.png">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Vazir&display=swap" rel="stylesheet">
+
+    <!-- Link to your custom CSS -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- JSON-LD Structured Data for the Course -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Course",
+        "name": "Stored XSS - اسکریپت بین سایتی ذخیره‌شده",
+        "description": "آموزش جامع اسکریپت بین سایتی ذخیره‌شده (Stored XSS) و تکنیک‌های شناسایی و بهره‌برداری از آسیب‌پذیری‌های امنیتی در وب‌سایت‌ها. این دوره شامل آموزش نحوه تزریق و اجرای اسکریپت در پاسخ‌های HTTP ذخیره‌شده می‌باشد.",
+        "provider": {
+            "@type": "Organization",
+            "name": "Nightmare",
+            "url": "https://nightmareshadow4exploit.github.io/Resistance/",
+            "logo": "https://nightmareshadow4exploit.github.io/Resistance/logo.png"
+        },
+        "courseMode": "Online",
+        "educationalCredentialAwarded": "Certificate of Completion",
+        "offers": {
+            "@type": "Offer",
+            "url": "https://nightmareshadow4exploit.github.io/Resistance/Knowledge/Web%20Hacking/",
+            "priceCurrency": "IRR",
+            "price": "Free",
+            "availability": "https://schema.org/InStock"
+        },
+        "audience": {
+            "@type": "Audience",
+            "audienceType": "Ethical Hackers, Cybersecurity Enthusiasts"
+        },
+        "image": "https://nightmareshadow4exploit.github.io/Resistance/logo.png"
+    }
+    </script>
+</head>
+
+<body>
+    <div class="page-links">
+        <a href="https://nightmareshadow4exploit.github.io/Resistance" class="link home-link">Home</a>
+        <a href="https://t.me/Nightmare_Indian_Hacker" class="link telegram-link">Telegram</a>
+        <a href="https://nightmareshadow4exploit.github.io/Resistance/Knowledge/Web%20Hacking/index.html" class="link index-link">Index</a>
+    </div>
+    
+    <div class="section theme-white">
+
+        <h1 class="heading-2">XSS ذخیره‌شده</h1><p>
+            در این بخش، ما XSS ذخیره‌شده را توضیح خواهیم داد، تأثیر حملات XSS ذخیره‌شده را شرح خواهیم داد و روش پیدا کردن آسیب‌پذیری‌های XSS ذخیره‌شده را بیان خواهیم کرد.
+        </p><h2 id="what-is-stored-cross-site-scripting">XSS ذخیره‌شده چیست؟</h2><p>
+            XSS ذخیره‌شده (که به آن XSS مرتبه دوم یا XSS دائمی نیز گفته می‌شود) زمانی رخ می‌دهد که یک برنامه داده‌هایی را از یک منبع غیرمعتبر دریافت می‌کند و آن داده‌ها را به‌طور غیر ایمن در پاسخ‌های HTTP بعدی خود گنجانده می‌کند.
+        </p><p>
+            فرض کنید یک وب‌سایت به کاربران این امکان را می‌دهد که نظرات خود را در پست‌های وبلاگ ارسال کنند که به دیگر کاربران نمایش داده می‌شود. کاربران نظرات خود را با استفاده از یک درخواست HTTP مانند موارد زیر ارسال می‌کنند:
+        </p><code class="code-scrollable">POST /post/comment HTTP/1.1
+Host: vulnerable-website.com
+Content-Length: 100
+
+postId=3&amp;comment=This+post+was+extremely+helpful.&amp;name=Carlos+Montoya&amp;email=carlos%40normal-user.net</code><p>
+            پس از ارسال این نظر، هر کاربری که به پست وبلاگ مراجعه کند، محتوای زیر را در پاسخ برنامه دریافت خواهد کرد:
+        </p><code class="code-scrollable">&lt;p&gt;This post was extremely helpful.&lt;/p&gt;</code><p>
+            فرض بر این است که برنامه هیچ پردازش دیگری بر روی داده‌ها انجام نمی‌دهد، یک مهاجم می‌تواند نظری مخرب مانند این ارسال کند:
+        </p><code class="code-scrollable">&lt;script&gt;/* Bad stuff here... */&lt;/script&gt;</code><p>
+            در درخواست مهاجم، این نظر به‌صورت URL-encoded به شکل زیر خواهد بود:
+        </p><code class="code-scrollable">comment=%3Cscript%3E%2F*%2BBad%2Bstuff%2Bhere...%2B*%2F%3C%2Fscript%3E</code><p>
+            هر کاربری که به پست وبلاگ مراجعه کند، اکنون محتوای زیر را در پاسخ برنامه دریافت خواهد کرد:
+        </p><code class="code-scrollable">&lt;p&gt;&lt;script&gt;/* Bad stuff here... */&lt;/script&gt;&lt;/p&gt;</code><p>
+            اسکریپت ارائه شده توسط مهاجم سپس در مرورگر کاربر قربانی اجرا خواهد شد، در زمینه جلسه او با برنامه.
+        </p>
+
+    
+<h2 id="impact-of-stored-xss-attacks">تأثیر حملات XSS ذخیره‌شده</h2><p>
+            اگر مهاجم بتواند یک اسکریپت را که در مرورگر قربانی اجرا می‌شود کنترل کند، معمولاً می‌تواند آن کاربر را به‌طور کامل به خطر بیندازد. مهاجم می‌تواند هر یک از اقداماتی را که در تأثیر آسیب‌پذیری‌های <a href="/web-security/cross-site-scripting/reflected">XSS بازتابی</a> قابل انجام است، انجام دهد.
+        </p><p>
+            از نظر قابلیت سوءاستفاده، تفاوت اصلی بین XSS بازتابی و ذخیره‌شده این است که آسیب‌پذیری XSS ذخیره‌شده حملاتی را فعال می‌کند که در خود برنامه محصور هستند. مهاجم نیازی به پیدا کردن روش خارجی برای متقاعد کردن سایر کاربران به انجام یک درخواست خاص که حاوی حمله او است ندارد. بلکه مهاجم بهره‌برداری خود را در خود برنامه قرار می‌دهد و به سادگی منتظر می‌ماند تا کاربران با آن مواجه شوند.
+        </p><p>
+            ماهیت محصور حملات XSS ذخیره‌شده به‌ویژه در موقعیت‌هایی اهمیت دارد که آسیب‌پذیری XSS فقط کاربران وارد شده به برنامه را تحت تأثیر قرار می‌دهد. اگر XSS بازتابی باشد، حمله باید به‌طور تصادفی و با زمان‌بندی خاصی انجام شود: کاربری که برای انجام درخواست مهاجم در زمانی که وارد نشده است تحریک شود، تحت تأثیر قرار نخواهد گرفت. در مقابل، اگر XSS ذخیره‌شده باشد، کاربر تضمین شده است که در زمانی که با بهره‌برداری مواجه می‌شود وارد سیستم است.
+        </p><div class="highlightedarea">
+            <h4>بیشتر بخوانید</h4>
+            
+        <ul><li><a href="/web-security/cross-site-scripting/exploiting">بهره‌برداری از آسیب‌پذیری‌های XSS</a></li></ul></div><h2 id="stored-xss-in-different-contexts">XSS ذخیره‌شده در زمینه‌های مختلف</h2><p>
+            انواع مختلفی از XSS ذخیره‌شده وجود دارد. مکان داده ذخیره‌شده در پاسخ برنامه مشخص می‌کند که برای بهره‌برداری از آن چه نوع بار payload لازم است و ممکن است影响 آسیب‌پذیری را تحت تأثیر قرار دهد.
+        </p><p>
+            علاوه بر این، اگر برنامه هرگونه اعتبارسنجی یا پردازش دیگری روی داده‌ها قبل از ذخیره‌سازی یا در زمانی که داده ذخیره‌شده در پاسخ‌ها گنجانده می‌شود، انجام دهد، معمولاً این بر نوع payload XSS مورد نیاز تأثیر خواهد گذاشت.
+        </p><div class="highlightedarea">
+            <h4>بیشتر بخوانید</h4>
+            
+        <ul><li><a href="/web-security/cross-site-scripting/contexts">زمینه‌های XSS</a></li></ul></div><h2 id="how-to-find-and-test-for-stored-xss-vulnerabilities">چگونه آسیب‌پذیری‌های XSS ذخیره‌شده را پیدا و آزمایش کنیم</h2><p>
+            بسیاری از آسیب‌پذیری‌های XSS ذخیره‌شده را می‌توان با استفاده از اسکنر آسیب‌پذیری وب Burp Suite یافت.
+        </p><p>
+            آزمایش آسیب‌پذیری‌های XSS ذخیره‌شده به‌صورت دستی می‌تواند چالش‌برانگیز باشد. شما باید تمام "نقاط ورودی" مربوطه که داده‌های قابل کنترل مهاجم می‌تواند وارد پردازش برنامه شود، و تمام "نقاط خروجی" که آن داده‌ها ممکن است در پاسخ‌های برنامه ظاهر شوند، را آزمایش کنید.
+        </p><p>
+            نقاط ورودی به پردازش برنامه شامل موارد زیر است:
+        </p><ul>
+            <li>
+                پارامترها یا داده‌های دیگر در رشته کوئری URL و بدنه پیام.
+            </li>
+            <li>
+                مسیر فایل URL.
+            </li>
+            <li>
+                هدرهای درخواست HTTP که ممکن است در ارتباط با XSS بازتابی قابل سوءاستفاده نباشند.
+            </li>
+            <li>
+                هر مسیر خارج از باند که مهاجم می‌تواند داده‌ها را به برنامه ارسال کند. مسیرهایی که وجود دارند کاملاً به عملکردی که توسط برنامه پیاده‌سازی شده بستگی دارند: یک برنامه ایمیل وب داده‌های دریافتی از ایمیل‌ها را پردازش خواهد کرد؛ یک برنامه نمایش‌دهنده فید توییتر ممکن است داده‌های موجود در توییت‌های شخص ثالث را پردازش کند؛ و یک جمع‌آوری‌کننده اخبار داده‌های موجود در وب‌سایت‌های دیگر را شامل خواهد شد.
+            </li>
+        </ul><p>
+            نقاط خروجی برای حملات XSS ذخیره‌شده تمام پاسخ‌های HTTP ممکن است که به هر نوع کاربر برنامه در هر موقعیتی بازگردانده شوند.
+        </p><p>
+            اولین قدم در آزمایش برای آسیب‌پذیری‌های XSS ذخیره‌شده، شناسایی لینک‌ها بین نقاط ورودی و خروجی است که داده ارسال شده به یک نقطه ورودی از یک نقطه خروجی منتشر می‌شود. دلایلی که این می‌تواند چالش‌برانگیز باشد این است که:
+        </p><ul>
+            <li>
+                داده‌ای که به هر نقطه ورودی ارسال می‌شود می‌تواند به‌طور اصولی از هر نقطه خروجی منتشر شود. به‌عنوان مثال، نام‌های نمایشی که توسط کاربر ارائه می‌شود می‌تواند در یک لاگ حسابرسی مبهم که فقط برای برخی از کاربران برنامه قابل مشاهده است، ظاهر شود.
+            </li>
+            <li>
+                داده‌هایی که در حال حاضر توسط برنامه ذخیره شده‌اند معمولاً به دلیل سایر اقداماتی که در داخل برنامه انجام می‌شود، در معرض خطر بازنویسی قرار دارند. به‌عنوان مثال، یک عملکرد جستجو ممکن است فهرستی از جستجوهای اخیر را نمایش دهد که به‌سرعت با جستجوهای دیگر جایگزین می‌شوند.
+            </li>
+        </ul><p>
+            برای شناسایی جامع لینک‌ها بین نقاط ورودی و خروجی باید هر ترکیب را به‌طور جداگانه آزمایش کنید، یک مقدار خاص را به نقطه ورودی ارسال کنید، مستقیماً به نقطه خروجی بروید و بررسی کنید که آیا مقدار آنجا ظاهر می‌شود یا نه. با این حال، این روش در یک برنامه با بیش از چند صفحه عملی نیست.
+        </p><p>
+            در عوض، یک رویکرد واقعی‌تر این است که به‌طور سیستماتیک از طریق نقاط ورودی داده پیش بروید، یک مقدار خاص را در هرکدام ارسال کنید و پاسخ‌های برنامه را برای شناسایی مواردی که مقدار ارسال‌شده ظاهر می‌شود، نظارت کنید. توجه خاصی می‌توان به عملکردهای مربوطه برنامه، مانند نظرات در پست‌های وبلاگ، داشت. زمانی که مقدار ارسال‌شده در یک پاسخ مشاهده شد، شما باید تعیین کنید که آیا داده واقعاً در میان درخواست‌های مختلف ذخیره شده است یا فقط در پاسخ فوری بازتاب شده است.
+        </p><p>
+            زمانی که لینک‌ها بین نقاط ورودی و خروجی در پردازش برنامه شناسایی شد، هر لینک باید به‌طور خاص آزمایش شود تا مشخص شود که آیا آسیب‌پذیری XSS ذخیره‌شده وجود دارد یا نه. این شامل تعیین زمینه‌ای در پاسخ است که داده ذخیره‌شده در آن ظاهر می‌شود و آزمایش payloadهای XSS مناسب برای آن زمینه است. در این مرحله، روش‌شناسی آزمایش به‌طور کلی مشابه روش یافتن آسیب‌پذیری‌های <a href="/web-security/cross-site-scripting/reflected">XSS بازتابی</a> است.
+        </p>
+
+</div>
+
+        
+
+    
+    </div>
+
+<div class="navigation-links">
+  <a href="reflected.html" class="prev">« Previous</a>
+    <a href="../../../index.html" class="index">Index</a>
+    <a href="dom-based.html"  class="next">Next »</a>
+</div>
+</body>
+</html>

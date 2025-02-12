@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="fa" direction="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Title for SEO --> <!-- the whole site is written by مجتبی -->
+    <title>XSS Contexts - زمینه های اسکریپت بین سایتی | آموزش امنیت وب</title>
+    
+    <!-- Meta description for SEO -->
+    <meta name="description" content="آموزش جامع زمینه‌های اسکریپت بین سایتی (XSS) و تکنیک‌های نفوذ در وب‌سایت‌ها. یادگیری شناسایی و آزمایش آسیب‌پذیری‌های XSS در محیط‌های مختلف وب.">
+    
+    <!-- Meta keywords for SEO -->
+    <meta name="keywords" content="XSS, Cross-Site Scripting, اسکریپت بین سایتی, زمینه‌های XSS, HTML injection, web security, cybersecurity, penetration testing, امنیت وب">
+    
+    <!-- Open Graph Meta Tags for better social sharing -->
+    <meta property="og:title" content="XSS Contexts - زمینه های اسکریپت بین سایتی | آموزش امنیت وب">
+    <meta property="og:description" content="آموزش جامع زمینه‌های اسکریپت بین سایتی (XSS) و تکنیک‌های نفوذ در وب‌سایت‌ها. یادگیری شناسایی و آزمایش آسیب‌پذیری‌های XSS در محیط‌های مختلف وب.">
+    <meta property="og:image" content="https://nightmareshadow4exploit.github.io/Resistance/logo.png">
+    <meta property="og:url" content="https://nightmareshadow4exploit.github.io/Resistance/Knowledge/Web%20Hacking/">
+    <meta property="og:type" content="website">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Nightmare">
+    <meta name="twitter:description" content="یادگیری آزمایش نفوذ وب‌سایت و امنیت سایبری از Nightmare. آموزش نحوه نفوذ و محافظت از وب‌سایت‌ها با جدیدترین روش‌ها و تکنیک‌ها.">
+    <meta name="twitter:image" content="https://nightmareshadow4exploit.github.io/Resistance/logo.png">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Vazir&display=swap" rel="stylesheet">
+
+    <!-- Link to your custom CSS -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- JSON-LD Structured Data for the Course -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Course",
+        "name": "XSS Contexts - زمینه های اسکریپت بین سایتی",
+        "description": "آموزش جامع زمینه‌های اسکریپت بین سایتی (XSS) و تکنیک‌های نفوذ در وب‌سایت‌ها. این دوره شامل آموزش شناسایی، آزمایش و مقابله با آسیب‌پذیری‌های XSS در محیط‌های مختلف وب می‌باشد.",
+        "provider": {
+            "@type": "Organization",
+            "name": "Nightmare",
+            "url": "https://nightmareshadow4exploit.github.io/Resistance/",
+            "logo": "https://nightmareshadow4exploit.github.io/Resistance/logo.png"
+        },
+        "courseMode": "Online",
+        "educationalCredentialAwarded": "Certificate of Completion",
+        "offers": {
+            "@type": "Offer",
+            "url": "https://nightmareshadow4exploit.github.io/Resistance/Knowledge/Web%20Hacking/",
+            "priceCurrency": "IRR",
+            "price": "Free",
+            "availability": "https://schema.org/InStock"
+        },
+        "audience": {
+            "@type": "Audience",
+            "audienceType": "Ethical Hackers, Cybersecurity Enthusiasts"
+        },
+        "image": "https://nightmareshadow4exploit.github.io/Resistance/logo.png"
+    }
+    </script>
+</head>
+
+<body>
+    <div class="page-links">
+        <a href="https://nightmareshadow4exploit.github.io/Resistance" class="link home-link">Home</a>
+        <a href="https://t.me/Nightmare_Indian_Hacker" class="link telegram-link">Telegram</a>
+        <a href="https://nightmareshadow4exploit.github.io/Resistance/Knowledge/Web%20Hacking/index.html" class="link index-link">Index</a>
+    </div>
+    <div class="section theme-white">
+
+        <h1 class="heading-2">زمینه های اسکریپت بین سایتی</h1><p>
+            هنگام آزمایش برای <a href="reflected.html">انعکاس</a> و <a href="stored.html">ذخیره شده</a> XSS، یک کار کلیدی شناسایی زمینه XSS است:
+        </p><ul>
+            <li>
+                مکانی در پاسخ که در آن داده های قابل کنترل توسط مهاجم ظاهر می شود.
+            </li>
+            <li>
+                هر گونه اعتبارسنجی ورودی یا پردازش دیگری که روی آن داده توسط برنامه انجام می شود.
+            </li>
+        </ul><p>
+            بر اساس این جزئیات، سپس می توانید یک یا چند بار نامزد XSS را انتخاب کنید و آزمایش کنید که آیا آنها موثر هستند یا خیر.
+        </p><div class="highlightedarea">
+            <h4>یادداشت</h4>
+            <p>ما یک <a href="https://portswigger.net/web-security/cross-site-scripting/cheat-sheet">برگ تقلب XSS</a> را برای کمک به آزمایش برنامه‌ها و فیلترهای وب ایجاد کرده‌ایم. می توانید بر اساس رویدادها و برچسب ها فیلتر کنید و ببینید کدام بردارها به تعامل کاربر نیاز دارند. برگه تقلب همچنین حاوی Escape های Sandbox AngularJS و بسیاری از بخش های دیگر برای کمک به تحقیقات XSS است.</p>
+        </div><h2 id="xss-between-html-tags">XSS بین تگ های HTML</h2><p>
+            هنگامی که زمینه XSS متنی بین تگ های HTML است، باید چند تگ HTML جدید را معرفی کنید که برای اجرای جاوا اسکریپت طراحی شده اند.
+        </p><p>
+            چند روش مفید برای اجرای جاوا اسکریپت عبارتند از:
+        </p><code class="code-scrollable">&lt;script&gt;alert(document.domain)&lt;/script&gt;
+&lt;img src=1 onerror=alert(1)&gt;</code>
+
+   
+
+
+  
+
+
+    
+    </div>
+<h2 id="xss-in-html-tag-attributes">XSS در HTML tag attributes</h2><p>
+    هنگامی که زمینه XSS در یک مقدار مشخصه تگ HTML است، ممکن است گاهی اوقات بتوانید مقدار مشخصه را خاتمه دهید، تگ را ببندید و یک تگ جدید معرفی کنید. به عنوان مثال:
+        </p><code class="code-scrollable">"&gt;&lt;script&gt;alert(document.domain)&lt;/script&gt;</code><p>
+            معمولاً در این شرایط، براکت‌های زاویه مسدود یا کدگذاری می‌شوند، بنابراین ورودی شما نمی‌تواند از برچسبی که در آن ظاهر می‌شود خارج شود. به شرطی که بتوانید مقدار مشخصه را خاتمه دهید، معمولاً می توانید یک ویژگی جدید را معرفی کنید که یک زمینه قابل اسکریپت ایجاد می کند، مانند یک کنترل کننده رویداد. به عنوان مثال:
+        </p><code class="code-scrollable">" autofocus onfocus=alert(document.domain) x="</code><p>
+            محموله فوق ایجاد یک <code>onfocus</code> رویدادی که وقتی عنصر فوکوس را دریافت می کند جاوا اسکریپت را اجرا می کند و همچنین آن را اضافه می کند<code>autofocus</code> ویژگی تلاش برای راه اندازی<code>onfocus</code> رویداد به طور خودکار بدون هیچ گونه تعامل کاربر. در نهایت می افزاید<code>x="</code> تا به‌خوبی نشانه‌گذاری زیر را تعمیر کنید.
+        </p>
+
+<p>
+    گاهی اوقات زمینه XSS در یک نوع ویژگی تگ HTML قرار می گیرد که خود می تواند یک زمینه قابل اسکریپت ایجاد کند. در اینجا، می توانید جاوا اسکریپت را بدون نیاز به پایان دادن به مقدار مشخصه اجرا کنید. به عنوان مثال، اگر زمینه XSS در<code>href</code> attribute of an anchor tag, شما می توانید از شبه پروتکل <code>javascript</code> برای اجرای اسکریپت استفاده کنید. به عنوان مثال:
+        </p><code class="code-scrollable">&lt;a href="javascript:alert(document.domain)"&gt;</code>
+
+  
+<p>
+    ممکن است با وب‌سایت‌هایی روبرو شوید که براکت‌های زاویه را رمزگذاری می‌کنند، اما همچنان به شما اجازه می‌دهند تا ویژگی‌ها را تزریق کنید. گاهی اوقات، این تزریق‌ها حتی در برچسب‌هایی که معمولاً رویدادها را به طور خودکار انجام نمی‌دهند، مانند تگ متعارف، امکان‌پذیر است. می‌توانید با استفاده از کلیدهای دسترسی و تعامل کاربر در Chrome از این رفتار سوء استفاده کنید. کلیدهای دسترسی به شما این امکان را می دهند که میانبرهای صفحه کلیدی را ارائه دهید که به یک عنصر خاص اشاره می کنند. را<code>accesskey</code>ویژگی > به شما امکان می دهد حرفی را تعریف کنید که با فشار دادن آن در ترکیب با کلیدهای دیگر (این کلیدها در پلتفرم های مختلف متفاوت هستند)، باعث ایجاد رویدادها می شود. در آزمایشگاه بعدی می توانید با کلیدهای دسترسی آزمایش کنید و از یک تگ متعارف سوء استفاده کنید.
+            <a href="https://portswigger.net/research/xss-in-hidden-input-fields">شما می توانید XSS را در فیلدهای ورودی مخفی با استفاده از تکنیکی که توسط PortSwigger Research ابداع شده است، بهره برداری کنید</a>.
+		</p>
+
+ 
+<h2 id="xss-into-javascript">XSS into JavaScript</h2><p>
+    هنگامی که زمینه XSS یک جاوا اسکریپت موجود در پاسخ باشد، موقعیت‌های بسیار متنوعی می‌تواند رخ دهد، با تکنیک‌های متفاوتی که برای انجام یک اکسپلویت موفق لازم است.
+</p><h3 id="terminating-the-existing-script">خاتمه دادن به اسکریپت موجود</h3><p>
+    در ساده ترین حالت، این امکان وجود دارد که به سادگی تگ اسکریپتی را که جاوا اسکریپت موجود را در بر می گیرد، ببندید و برخی تگ های HTML جدید را معرفی کنید که اجرای جاوا اسکریپت را آغاز می کنند. به عنوان مثال، اگر زمینه XSS به صورت زیر باشد:
+        </p><code class="code-scrollable">&lt;script&gt;
+...
+var input = 'controllable data here';
+...
+&lt;/script&gt;</code><p>
+    سپس می توانید از payload زیر برای شکستن جاوا اسکریپت موجود و اجرای خود استفاده کنید:
+        </p><code class="code-scrollable">&lt;/script&gt;&lt;img src=1 onerror=alert(document.domain)&gt;</code><p>
+            دلیل این کار این است که مرورگر ابتدا تجزیه HTML را برای شناسایی عناصر صفحه از جمله بلوک‌های اسکریپت انجام می‌دهد و تنها بعداً تجزیه جاوا اسکریپت را برای درک و اجرای اسکریپت‌های تعبیه‌شده انجام می‌دهد. محموله فوق اسکریپت اصلی را شکسته می‌گذارد، با یک رشته بدون پایان به معنای واقعی کلمه. اما این مانع از تجزیه و اجرای اسکریپت بعدی به روش عادی نمی شود.
+        </p>
+
+<h3 id="breaking-out-of-a-javascript-string">Breaking out of a JavaScript string</h3><p>
+    دلیل این کار این است که مرورگر ابتدا تجزیه HTML را برای شناسایی عناصر صفحه از جمله بلوک‌های اسکریپت انجام می‌دهد و تنها بعداً تجزیه جاوا اسکریپت را برای درک و اجرای اسکریپت‌های تعبیه‌شده انجام می‌دهد. محموله فوق اسکریپت اصلی را شکسته می‌گذارد، با یک رشته بدون پایان به معنای واقعی کلمه. اما این مانع از تجزیه و اجرای اسکریپت بعدی به روش عادی نمی شود.
+    <p>برخی از روش‌های مفید برای خروج از یک رشته متنی عبارتند از:</p>
+    <code class="code-scrollable">'-alert(document.domain)-'
+    ';alert(document.domain)//</code>
+    
+    <p>برخی از برنامه‌ها تلاش می‌کنند تا از خروج ورودی از رشته جاوا اسکریپت جلوگیری کنند، این کار را با اضافه کردن یک بک‌اسلش قبل از هر علامت نقل قول انجام می‌دهند. بک‌اسلش قبل از یک کاراکتر به مفسر جاوا اسکریپت می‌گوید که آن کاراکتر باید به صورت معمولی تفسیر شود و نه به عنوان یک کاراکتر خاص مانند یک خاتمه‌دهنده رشته. در این حالت، برنامه‌ها اغلب این اشتباه را مرتکب می‌شوند که خود کاراکتر بک‌اسلش را فراموش می‌کنند که باید از آن فرار کنند. این بدان معناست که یک مهاجم می‌تواند از بک‌اسلش خود برای خنثی کردن بک‌اسلش اضافه‌شده توسط برنامه استفاده کند.</p>
+    
+    <p>برای مثال، فرض کنید که ورودی:</p>
+    <code class="code-scrollable">';alert(document.domain)//</code>
+    
+    <p>به این مقدار تبدیل می‌شود:</p>
+    <code class="code-scrollable">\';alert(document.domain)//</code>
+    
+    <p>اکنون می‌توانید از این پیلود جایگزین استفاده کنید:</p>
+    <code class="code-scrollable">\';alert(document.domain)//</code>
+    
+    <p>که به مقدار زیر تبدیل می‌شود:</p>
+    <code class="code-scrollable">\\';alert(document.domain)//</code>
+    
+    <p>اینجا، اولین بک‌اسلش باعث می‌شود که بک‌اسلش دوم به عنوان یک کاراکتر معمولی تفسیر شود، نه به عنوان یک کاراکتر خاص. این بدان معناست که علامت نقل قول اکنون به عنوان خاتمه‌دهنده رشته تفسیر می‌شود و حمله موفقیت‌آمیز خواهد بود.</p>
+    
+    <h3 id="making-use-of-html-encoding">استفاده از کدگذاری HTML</h3>
+    <p>وقتی که زمینه XSS درون یک جاوا اسکریپت موجود در یک ویژگی تگ نقل‌شده مانند یک رویداد (event handler) باشد، می‌توان از کدگذاری HTML برای دور زدن برخی فیلترهای ورودی استفاده کرد.</p>
+    
+    <p>به عنوان مثال، اگر زمینه XSS به این صورت باشد:</p>
+    <code class="code-scrollable">&lt;a href="#" onclick="... var input='controllable data here'; ..."&gt;</code>
+    
+    <p>و برنامه کاراکترهای نقل قول را مسدود یا فرار دهد، می‌توانید از پیلود زیر استفاده کنید:</p>
+    <code class="code-scrollable">&amp;apos;-alert(document.domain)-&amp;apos;</code>
+    
+    <p>توالی <code>&amp;apos;</code> یک موجودیت HTML است که نشان‌دهنده یک آپوستروف یا علامت نقل قول منفرد است. از آنجایی که مرورگر مقدار ویژگی <code>onclick</code> را قبل از تفسیر جاوا اسکریپت رمزگشایی می‌کند، این کاراکترها به عنوان نقل قول تفسیر شده و حمله موفق خواهد بود.</p>
+    
+    <h3 id="xss-in-javascript-template-literals">XSS در قالب‌های متنی جاوا اسکریپت</h3>
+    <p>قالب‌های متنی جاوا اسکریپت، رشته‌هایی هستند که اجازه می‌دهند عبارات جاوا اسکریپت درون آنها گنجانده شوند. این عبارات پردازش شده و معمولاً در متن پیرامون درج می‌شوند.</p>
+    
+    <p>برای مثال، کد زیر یک پیام خوشامدگویی شامل نام نمایشی کاربر را چاپ می‌کند:</p>
+    <code class="code-scrollable">document.getElementById('message').innerText = `Welcome, ${user.displayName}.`;</code>
+    
+    <p>وقتی زمینه XSS درون یک قالب متنی جاوا اسکریپت باشد، نیازی به خاتمه دادن رشته نیست، بلکه کافی است از سینتکس <code>${...}</code> استفاده کنید تا یک عبارت جاوا اسکریپت اجرا شود. به عنوان مثال، اگر زمینه به این صورت باشد:</p>
+    <code class="code-scrollable">&lt;script&gt;
+    ...
+    var input = `controllable data here`;
+    ...
+    &lt;/script&gt;</code>
+    
+    <p>می‌توانید از پیلود زیر برای اجرای جاوا اسکریپت بدون خاتمه دادن رشته استفاده کنید:</p>
+    <code class="code-scrollable">${alert(document.domain)}</code>
+    
+    <h2 id="xss-via-client-side-template-injection">XSS از طریق تزریق قالب در سمت کاربر</h2>
+    <p>برخی از وب‌سایت‌ها از یک فریمورک قالب‌سازی سمت کاربر، مانند AngularJS، برای رندر پویا صفحات وب استفاده می‌کنند. اگر این وب‌سایت‌ها ورودی کاربر را به صورت ناامن درون این قالب‌ها قرار دهند، مهاجم ممکن است بتواند عبارات مخرب خود را تزریق کند که منجر به حمله XSS شود.</p>
+    
+    <div class="highlightedarea"> 
+    <h4>مطالعه بیشتر</h4> 
+    <ul>
+    <li><a href="contexts-client-side-template-injection.html">تزریق قالب در سمت کاربر</a></li>
+    </ul>
+    </div>
+    
+
+    
+    </div>
+
+<div class="navigation-links">
+  <a href="dangling-markup.html" class="prev">« Previous</a>
+    <a href="../../../index.html" class="index">Index</a>
+    <a href="contexts-client-side-template-injection.html"  class="next">Next »</a>
+</div>
+</body>
+</html>

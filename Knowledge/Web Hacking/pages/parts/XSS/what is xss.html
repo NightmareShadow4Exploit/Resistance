@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Title for SEO -->
+    <title>آموزش جامع XSS: اسکریپت بین سایتی و آسیب‌پذیری‌های امنیتی وب | توسط مجتبی</title>
+    
+    <!-- Meta description for SEO -->
+    <meta name="description" content="راهنمای کامل آسیب‌پذیری اسکریپت بین سایتی (XSS). یادگیری انواع حملات XSS، تأثیرات، روش‌های شناسایی و پیشگیری از حملات XSS در وب‌سایت‌ها.">
+    
+    <!-- Meta keywords for SEO -->
+    <meta name="keywords" content="XSS, اسکریپت بین سایتی, آسیب‌پذیری وب, امنیت وب, حملات سایبری, هک امنیتی, نفوذ وب, جاوا اسکریپت مخرب">
+    
+    <!-- Open Graph Meta Tags for better social sharing -->
+    <meta property="og:title" content="آموزش جامع XSS: اسکریپت بین سایتی و آسیب‌پذیری‌های امنیتی وب">
+    <meta property="og:description" content="راهنمای کامل آسیب‌پذیری اسکریپت بین سایتی (XSS). یادگیری انواع حملات XSS، تأثیرات، روش‌های شناسایی و پیشگیری از حملات XSS در وب‌سایت‌ها.">
+    <meta property="og:image" content="https://nightmareshadow4exploit.github.io/Resistance/logo.png">
+    <meta property="og:url" content="https://nightmareshadow4exploit.github.io/Resistance/Knowledge/Web%20Hacking/">
+    <meta property="og:type" content="website">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Nightmare: آموزش XSS">
+    <meta name="twitter:description" content="یادگیری آزمایش نفوذ وب‌سایت و امنیت سایبری از Nightmare. آموزش نحوه نفوذ و محافظت از وب‌سایت‌ها با جدیدترین روش‌ها و تکنیک‌ها.">
+    <meta name="twitter:image" content="https://nightmareshadow4exploit.github.io/Resistance/logo.png">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Vazir&display=swap" rel="stylesheet">
+
+    <!-- Link to your custom CSS -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- JSON-LD Structured Data for the Course -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Course",
+        "name": "آموزش جامع آسیب‌پذیری اسکریپت بین سایتی (XSS)",
+        "description": "دوره تخصصی آموزش انواع حملات XSS، شناسایی و پیشگیری از آسیب‌پذیری‌های اسکریپت بین سایتی در وب‌سایت‌ها",
+        "provider": {
+            "@type": "Organization",
+            "name": "Nightmare",
+            "url": "https://nightmareshadow4exploit.github.io/Resistance/",
+            "logo": "https://nightmareshadow4exploit.github.io/Resistance/logo.png"
+        },
+        "courseMode": "Online",
+        "educationalCredentialAwarded": "گواهی تکمیل دوره امنیت وب",
+        "offers": {
+            "@type": "Offer",
+            "url": "https://nightmareshadow4exploit.github.io/Resistance/Knowledge/Web%20Hacking/",
+            "priceCurrency": "IRR",
+            "price": "0",
+            "availability": "https://schema.org/InStock"
+        },
+        "audience": {
+            "@type": "Audience",
+            "audienceType": "هکرهای اخلاقی، علاقه‌مندان به امنیت سایبری"
+        },
+        "image": "https://nightmareshadow4exploit.github.io/Resistance/logo.png"
+    }
+    </script>
+</head>
+<body>
+    <div class="page-links">
+        <a href="https://nightmareshadow4exploit.github.io/Resistance" class="link home-link">Home</a>
+        <a href="https://t.me/Nightmare_Indian_Hacker" class="link telegram-link">Telegram</a>
+        <a href="https://nightmareshadow4exploit.github.io/Resistance/Knowledge/Web%20Hacking/index.html" class="link index-link">Index</a>
+    </div>
+    <div class="section theme-white">
+        <h1 class="heading-2">اسکریپت بین سایتی</h1>
+        <p>
+            در این بخش توضیح خواهیم داد که اسکریپت بین سایتی چیست، انواع مختلف آسیب پذیری های اسکریپت نویسی متقابل را شرح می دهیم و نحوه یافتن و جلوگیری از اسکریپت های متقابل سایت را توضیح می دهیم.
+        </p>
+        <h2 id="what-is-cross-site-scripting-xss">اسکریپت بین سایتی (XSS) چیست؟</h2>
+        <p>
+            اسکریپت بین سایتی (همچنین به عنوان XSS شناخته می شود) یک آسیب پذیری امنیتی وب است که به مهاجم اجازه می دهد تا تعاملات کاربران با یک برنامه آسیب پذیر را به خطر بیندازد. این به مهاجم اجازه می دهد تا سیاست مبدا یکسانی را که برای جداسازی وب سایت های مختلف از یکدیگر طراحی شده است، دور بزند. آسیب‌پذیری‌های اسکریپت بین سایتی معمولاً به مهاجم این امکان را می‌دهند تا خود را به عنوان یک کاربر قربانی درآورد، هر اقدامی را که کاربر قادر به انجام آن است انجام دهد و به هر یک از داده‌های کاربر دسترسی پیدا کند. اگر کاربر قربانی دسترسی ممتازی به برنامه داشته باشد، ممکن است مهاجم بتواند کنترل کاملی بر تمام عملکردها و داده های برنامه داشته باشد.
+        </p>
+        <h2 id="how-does-xss-work">XSS چگونه کار می کند؟</h2>
+        <p>
+            برنامه نویسی بین سایتی با دستکاری یک وب سایت آسیب پذیر عمل می کند تا جاوا اسکریپت مخرب را به کاربران برگرداند. هنگامی که کد مخرب در داخل مرورگر قربانی اجرا می شود، مهاجم می تواند به طور کامل تعامل آنها با برنامه را به خطر بیندازد.
+        </p>
+        <img alt="Cross-site scripting" src="imgs/cross-site-scripting.svg">
+        <div class="highlightedarea">
+            <p>
+                متأسفانه، اگر از Chrome استفاده می کنید، مشکلی جزئی وجود دارد. از نسخه 92 به بعد (20 ژوئیه 2021)، آیفریم های متقاطع از فراخوانی <code>alert()</code> جلوگیری می کنند. از آنجایی که از اینها برای ساختن برخی از حملات پیشرفته‌تر XSS استفاده می‌شود، گاهی اوقات باید از یک بار دیگر PoC استفاده کنید. در این سناریو، ما تابع <code>print()</code> را توصیه می کنیم. اگر مایلید درباره این تغییر بیشتر بدانید و چرا ما <code>print()</code> را دوست داریم، <a href="https://portswigger.net/research/alert-is-dead-long-live-print">پست وبلاگ ما را بررسی کنید</a> در مورد این موضوع.
+            </p>
+            <p>
+                از آنجایی که قربانی شبیه‌سازی‌شده در آزمایشگاه‌های ما از Chrome استفاده می‌کند، ما آزمایشگاه‌های آسیب‌دیده را اصلاح کرده‌ایم تا بتوان آنها را با استفاده از <code>print()</code> نیز حل کرد. ما این را در دستورالعمل‌ها در هر جا که مربوط باشد نشان داده‌ایم.
+            </p>
+        </div>
+        <h2 id="what-are-the-types-of-xss-attacks">انواع حملات XSS چیست؟</h2>
+        <p>
+            سه نوع اصلی از حملات XSS وجود دارد. اینها عبارتند از:
+        </p>
+        <ul>
+            <li>
+                <a href="#reflected-cross-site-scripting">XSS منعکس شده</a>، جایی که اسکریپت مخرب از درخواست فعلی HTTP می آید.
+            </li>
+            <li>
+                <a href=" #stored-cross-site-scripting">XSS ذخیره شده</a>، جایی که اسکریپت مخرب از پایگاه داده وب سایت می آید.
+            </li>
+            <li>
+                <a href=" #dom-based-cross-site-scripting">XSS مبتنی بر DOM</a>، که در آن آسیب‌پذیری در کد سمت کلاینت به جای کد سمت سرور وجود دارد.
+            </li>
+        </ul>
+        <h2 id="reflected-cross-site-scripting">اسکریپت نویسی بین سایتی منعکس شده</h2>
+        <p>
+            Reflected XSS ساده ترین نوع اسکریپت نویسی بین سایتی است. زمانی ایجاد می‌شود که یک برنامه داده‌ها را در یک درخواست HTTP دریافت می‌کند و آن داده‌ها را در پاسخ فوری به روشی ناامن شامل می‌شود.
+        </p>
+        <p>
+            در اینجا یک مثال ساده از آسیب پذیری XSS منعکس شده است:
+        </p>
+        <code class="code-scrollable">https://insecure-website.com/status?message=All+is+well.
+    &lt;p&gt;Status: All is well.&lt;/p&gt;</code>
+        <p>برنامه هیچ پردازش دیگری از داده ها را انجام نمی دهد، بنابراین یک مهاجم می تواند به راحتی حمله ای مانند زیر بسازد:</p>
+        <code class="code-scrollable">https://insecure-website.com/status?message=&lt;script&gt;/*+Bad+stuff+here...+*/&lt;/script&gt;
+    &lt;p&gt;Status: &lt;script&gt;/* Bad stuff here... */&lt;/script&gt;&lt;/p&gt;</code>
+        <p>
+            اگر کاربر از URL ساخته‌شده توسط مهاجم بازدید کند، اسکریپت مهاجم در مرورگر کاربر اجرا می‌شود، در زمینه جلسه کاربر با برنامه. در این مرحله، اسکریپت می‌تواند هر اقدامی انجام دهد و هر داده‌ای که کاربر به آن دسترسی دارد را بازیابی کند.
+        </p>
+        <div class="highlightedarea">
+            <h4>Read more</h4>
+            <ul>
+                <li><a href="reflected.html">Reflected cross-site scripting</a></li>
+                <li><a href="https://portswigger.net/web-security/cross-site-scripting/cheat-sheet">Cross-site scripting cheat sheet</a></li>
+            </ul>
+        </div>
+        <h2 id="stored-cross-site-scripting">XSS ذخیره شده</h2>
+        <p>
+            XSS ذخیره شده (که به عنوان XSS پایدار یا XSS مرتبه دوم نیز شناخته می‌شود) زمانی ایجاد می‌شود که یک برنامه داده‌ها را از یک منبع غیرقابل اعتماد دریافت کرده و آن داده‌ها را به صورت ناامن در پاسخ‌های HTTP بعدی خود گنجانده است.
+        </p>
+        <p>
+            داده‌های مربوطه ممکن است از طریق درخواست‌های HTTP به برنامه ارسال شوند؛ به عنوان مثال، نظرات در یک پست وبلاگ، نام‌های مستعار کاربران در یک اتاق گفتگو، یا جزئیات تماس در یک سفارش مشتری. در موارد دیگر، داده‌ها ممکن است از منابع غیرقابل اعتماد دیگر بیایند؛ به عنوان مثال، یک برنامه ایمیل وب که پیام‌های دریافتی از طریق SMTP را نمایش می‌دهد، یک برنامه بازاریابی که پست‌های رسانه‌های اجتماعی را نمایش می‌دهد، یا یک برنامه نظارت شبکه که داده‌های بسته از ترافیک شبکه را نمایش می‌دهد.
+        </p>
+        <p>
+            در اینجا یک مثال ساده از آسیب‌پذیری XSS ذخیره شده آمده است. یک برنامه تابلو پیام به کاربران اجازه می‌دهد پیام‌هایی ارسال کنند که به سایر کاربران نمایش داده می‌شود:
+        </p>
+        <code class="code-scrollable">&lt;p&gt;Hello, this is my message!&lt;/p&gt;</code>
+        <p>
+            برنامه هیچ پردازش دیگری از داده ها را انجام نمی دهد، بنابراین یک مهاجم می‌تواند به راحتی پیامی ارسال کند که به سایر کاربران حمله کند:
+        </p>
+        <code class="code-scrollable">&lt;p&gt;&lt;script&gt;/* Bad stuff here... */&lt;/script&gt;&lt;/p&gt;</code>
+        <div class="highlightedarea">
+            <h4>Read more</h4>
+            <ul>
+                <li><a href=" stored".html>Stored cross-site scripting</a></li>
+                <li><a href="https://portswigger.net/web-security/cross-site-scripting/cheat-sheet">Cross-site scripting cheat sheet</a></li>
+            </ul>
+        </div>
+        <h2 id="dom-based-cross-site-scripting">XSS مبتنی بر DOM</h2>
+        <p>
+            XSS مبتنی بر DOM (که به عنوان XSS DOM نیز شناخته می‌شود) زمانی ایجاد می‌شود که یک برنامه حاوی جاوا اسکریپت سمت کلاینت است که داده‌ها را از یک منبع غیرقابل اعتماد به صورت ناامن پردازش می‌کند، معمولاً با نوشتن داده‌ها در DOM.
+        </p>
+        <p>
+            در مثال زیر، یک برنامه از جاوا اسکریپت برای خواندن مقدار از یک فیلد ورودی و نوشتن آن مقدار در یک عنصر داخل HTML استفاده می‌کند:
+        </p>
+        <code class="code-scrollable">var search = document.getElementById('search').value;
+    var results = document.getElementById('results');
+    results.innerHTML = 'You searched for: ' + search;</code>
+        <p>
+            اگر مهاجم بتواند مقدار فیلد ورودی را کنترل کند، به راحتی می‌تواند یک مقدار مخرب بسازد که باعث اجرای اسکریپت خود شود:
+        </p>
+        <code class="code-scrollable">You searched for: &lt;img src=1 onerror='/* Bad stuff here... */'&gt;</code>
+        <p>
+            در یک حالت معمولی، فیلد ورودی از بخشی از درخواست HTTP پر می‌شود، مانند پارامتر رشته پرس و جو در URL، که به مهاجم اجازه می‌دهد حمله‌ای با استفاده از یک URL مخرب ایجاد کند، به همان شیوه‌ای که در XSS منعکس شده است.
+        </p>
+        <div class="highlightedarea">
+            <h4>Read more</h4>
+            <ul>
+                <li><a href="dom-based.html">DOM-based cross-site scripting</a></li>
+            </ul>
+        </div>
+        <h2 id="what-can-xss-be-used-for">XSS برای چه مواردی می‌تواند استفاده شود؟</h2>
+        <p>
+            مهاجم که از آسیب‌پذیری اسکریپت بین سایتی بهره‌برداری می‌کند معمولاً قادر است:
+        </p>
+        <ul>
+            <li>
+                خود را به جای کاربر قربانی شبیه‌سازی یا پنهان کند.
+            </li>
+            <li>
+                هر عملی را که کاربر قادر به انجام آن است، انجام دهد.
+            </li>
+            <li>
+                هر داده‌ای را که کاربر به آن دسترسی دارد بخواند.
+            </li>
+            <li>
+                اعتبارسنجی ورود کاربر را ضبط کند.
+            </li>
+            <li>
+                عملیات بی‌احترامی مجازی در وب سایت انجام دهد.
+            </li>
+            <li>
+                قابلیت‌های تروجان را به وب سایت تزریق کند.
+            </li>
+        </ul>
+        <h2 id="impact-of-xss-vulnerabilities">تأثیر آسیب‌پذیری‌های XSS</h2>
+        <p>
+            تأثیر واقعی یک حمله XSS معمولاً به نوع برنامه، عملکرد و داده‌های آن، و وضعیت کاربر آسیب‌دیده بستگی دارد. به عنوان مثال:
+        </p>
+        <ul>
+            <li>
+                در یک برنامه بروشور، جایی که همه کاربران ناشناس هستند و تمام اطلاعات عمومی است، تأثیر اغلب کم است.
+            </li>
+            <li>
+                در یک برنامه که داده‌های حساس را نگهداری می‌کند، مانند تراکنش‌های بانکی، ایمیل‌ها، یا سوابق بهداشتی، تأثیر معمولاً جدی است.
+            </li>
+            <li>
+                اگر کاربر آسیب‌دیده دارای امتیازات بالایی در برنامه باشد، تأثیر معمولاً بحرانی است و به مهاجم این امکان را می‌دهد تا کنترل کامل برنامه آسیب‌دیده را به دست گیرد و تمام کاربران و داده‌های آنها را تحت‌الشعاع قرار دهد.
+            </li>
+        </ul>
+        <div class="highlightedarea">
+            <h4>Read more</h4>
+            <ul>
+                <li><a href="exploiting.html">Exploiting cross-site scripting vulnerabilities</a></li>
+            </ul>
+        </div>
+        <h2 id="how-to-find-and-test-for-xss-vulnerabilities">چگونه آسیب‌پذیری‌های XSS را پیدا کرده و آزمایش کنیم</h2>
+        <p>
+            اکثر آسیب‌پذیری‌های XSS را می‌توان به سرعت و با اطمینان با استفاده از اسکنر آسیب‌پذیری وب Burp Suite پیدا کرد.
+        </p>
+        <p>
+            آزمایش دستی برای XSS منعکس شده و ذخیره شده معمولاً شامل ارسال ورودی منحصر به فرد ساده (مانند یک رشته کوتاه الفبایی-عددی) به هر نقطه ورودی در برنامه است، شناسایی هر محلی که ورودی ارسال شده در پاسخ‌های HTTP برگشت داده می‌شود، و آزمایش هر موقعیت به صورت جداگانه برای تعیین اینکه آیا ورودی مناسب ساخته شده می‌تواند برای اجرای جاوا اسکریپت دلخواه استفاده شود یا خیر. به این ترتیب، شما می‌توانید <a href=" /contexts">زمینه</a>‌ای که XSS در آن اتفاق می‌افتد را تعیین کرده و یک بارگذاری مناسب را برای بهره‌برداری از آن انتخاب کنید.
+        </p>
+        <p>
+            آزمایش دستی برای XSS مبتنی بر DOM که از پارامترهای URL ناشی می‌شود یک فرآیند مشابه دارد: قرار دادن مقادیر غیرعادی در پارامترهای URL که به نظر می‌رسد مستقیماً در DOM نوشته می‌شوند.
+        </p>
+    </div>
+    
+        
+        
+
+    
+    </div>
+<div class="navigation-links">
+    <span></span>
+    <a href="../../../index.html" class="index">Index</a>
+    <a href= "reflected.html"  class="next">Next »</a>
+</div>
+</body>
+</html>

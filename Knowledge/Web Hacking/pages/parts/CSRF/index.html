@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta content="IE=edge" http-equiv="X-UA-Compatible">
+        <meta content="width=device-width, initial-scale=1" name="viewport">
+        <title>What is CSRF (Cross-site request forgery)? Tutorial &amp; Examples | Web Security Academy</title>
+        <meta content="In this section, we&#x27;ll explain what cross-site request forgery is, describe some examples of common CSRF vulnerabilities, and explain how to prevent CSRF ..." name="description">
+        <!-- Twitter data -->
+
+
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="What is CSRF (Cross-site request forgery)? Tutorial &amp; Examples | Web Security Academy">
+    <meta name="twitter:description" content="In this section, we&#x27;ll explain what cross-site request forgery is, describe some examples of common CSRF vulnerabilities, and explain how to prevent CSRF ...">
+<meta name="twitter:image" content="https://nightmareshadow4exploit.github.io/Resistance/logo.png">
+
+<!-- Open Graph data -->
+<meta property="og:title" content="What is CSRF (Cross-site request forgery)? Tutorial &amp; Examples | Web Security Academy" />
+    <meta property="og:description" content="In this section, we&#x27;ll explain what cross-site request forgery is, describe some examples of common CSRF vulnerabilities, and explain how to prevent CSRF ...">
+<meta property="og:url" content="https://nightmareshadow4exploit.github.io/Resistance/" />
+<meta property="og:image" content="https://nightmareshadow4exploit.github.io/Resistance/logo.png"/>
+<meta property="og:type" content="website"/>
+
+        <link href="styles.css" rel="stylesheet" type="text/css">
+        
+<script nonce="gFLg8t7F/vK9fTRwtfmHd3RaAoddFNAW">
+    const dimensionName = "dimension2";
+    const userRef = "";
+</script>
+
+<style>body{text-align: right; background-color: white;}</style>
+    </head>
+    <body class="theme-">
+        
+
+        <div class="wrapper-large">
+            <div class="container-academy">
+                
+                <input class="nav-lhs-toggle-input" type="checkbox" id="nav-lhs-toggle">
+      
+                <main>
+                    
+
+
+
+                    <ul class="breadcrumb-list" itemscope itemtype="http://schema.org/BreadcrumbList"><li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem"><a itemscope itemtype="http://schema.org/Thing" itemprop="item" href="/web-security"><span itemprop="name">Web Security Academy</span></a><meta itemprop="position" content="1" /></li><li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem"><a itemscope itemtype="http://schema.org/Thing" itemprop="item" href="/web-security/csrf"><span itemprop="name">CSRF</span></a><meta itemprop="position" content="2" /></li></ul>    <div class="section theme-white">
+
+                        <h1 class="heading-2">جعل درخواست بین سایتی (CSRF)</h1>
+                        <p>
+                            در این بخش، توضیح می‌دهیم که جعل درخواست بین سایتی چیست، نمونه‌هایی از آسیب‌پذیری‌های رایج CSRF را شرح می‌دهیم و توضیح می‌دهیم چگونه از حملات CSRF جلوگیری کنیم.
+                        </p>
+                        <h2 id="what-is-csrf">CSRF چیست؟</h2>
+                        <p>
+                            جعل درخواست بین سایتی (که با نام CSRF نیز شناخته می‌شود) یک آسیب‌پذیری امنیتی وب است که به مهاجم اجازه می‌دهد کاربران را به انجام اقداماتی که قصد انجام آن‌ها را ندارند، وادار کند. این آسیب‌پذیری به مهاجم اجازه می‌دهد به‌طور جزئی سیاست مبدا مشترک (same origin policy) را دور بزند، که برای جلوگیری از دخالت وب‌سایت‌های مختلف در یکدیگر طراحی شده است.
+                        </p>
+                        <img alt="CSRF" src="cross-site request forgery.svg">
+                        <div class="highlightedarea">
+                            <h4>آزمایشگاه‌ها</h4>
+                            <p>
+                                اگر با مفاهیم اساسی آسیب‌پذیری‌های CSRF آشنا هستید و فقط می‌خواهید آن‌ها را در اهداف واقعی و عمدتاً آسیب‌پذیر تمرین کنید، می‌توانید از طریق لینک زیر به تمام آزمایشگاه‌های این موضوع دسترسی پیدا کنید.
+                            </p>
+                        
+                            <ul>
+                                <li><a href="/web-security/all-labs#cross-site-request-forgery-csrf">مشاهده تمام آزمایشگاه‌های CSRF</a></li>
+                            </ul>
+                        </div>
+                        <h2 id="what-is-the-impact-of-a-csrf-attack">تأثیر یک حمله CSRF چیست؟</h2>
+                        <p>
+                            در یک حمله موفق CSRF، مهاجم باعث می‌شود کاربر قربانی به‌طور ناخواسته یک اقدام انجام دهد. برای مثال، این اقدام ممکن است تغییر آدرس ایمیل در حساب کاربری، تغییر رمز عبور یا انتقال وجه باشد. بسته به نوع اقدام، مهاجم ممکن است کنترل کامل حساب کاربری کاربر را به دست آورد. اگر کاربر قربانی دارای نقش مدیریتی در برنامه باشد، مهاجم ممکن است کنترل کامل بر داده‌ها و عملکردهای برنامه را به دست آورد.
+                        </p>
+                        <h2 id="how-does-csrf-work">CSRF چگونه کار می‌کند؟</h2>
+                        <p>
+                            برای اینکه یک حمله CSRF امکان‌پذیر باشد، سه شرط کلیدی باید وجود داشته باشد:
+                        </p>
+                        <ul>
+                            <li>
+                                <strong>یک اقدام مرتبط.</strong> در برنامه یک اقدام وجود دارد که مهاجم دلیلی برای تحریک آن دارد. این اقدام ممکن است یک اقدام دارای دسترسی ویژه (مانند تغییر مجوزها برای کاربران دیگر) یا هر اقدامی بر روی داده‌های خاص کاربر (مانند تغییر رمز عبور خود کاربر) باشد.
+                            </li>
+                            <li>
+                                <strong>مدیریت نشست مبتنی بر کوکی.</strong> انجام این اقدام شامل صدور یک یا چند درخواست HTTP می‌شود و برنامه صرفاً به کوکی‌های نشست برای شناسایی کاربری که درخواست‌ها را صادر کرده متکی است. هیچ مکانیزم دیگری برای ردیابی نشست‌ها یا اعتبارسنجی درخواست‌های کاربر وجود ندارد.
+                            </li>
+                            <li>
+                                <strong>عدم وجود پارامترهای غیرقابل پیش‌بینی در درخواست‌ها.</strong> درخواست‌هایی که اقدام را انجام می‌دهند، هیچ پارامتری ندارند که مقدار آن‌ها برای مهاجم غیرقابل تعیین یا غیرقابل حدس باشد. برای مثال، هنگامی که کاربری رمز عبور خود را تغییر می‌دهد، این تابع آسیب‌پذیر نیست اگر مهاجم نیاز به دانستن مقدار رمز عبور فعلی داشته باشد.
+                            </li>
+                        </ul>
+                        <p id="how-does-csrf-work-K6D1">
+                            برای مثال، فرض کنید یک برنامه دارای تابعی است که به کاربر اجازه می‌دهد آدرس ایمیل خود را تغییر دهد. هنگامی که یک کاربر این اقدام را انجام می‌دهد، یک درخواست HTTP مشابه زیر ایجاد می‌کند:
+                        </p>
+                        <code class="code-scrollable">POST /email/change HTTP/1.1
+                        Host: vulnerable-website.com
+                        Content-Type: application/x-www-form-urlencoded
+                        Content-Length: 30
+                        Cookie: session=yvthwsztyeQkAPzeQ5gHgTvlyxHfsAfE
+                        
+                        email=wiener@normal-user.com</code>
+                        <p>
+                            این شرایط موردنیاز برای CSRF را برآورده می‌کند:
+                        </p>
+                        <ul>
+                            <li>
+                                اقدام به تغییر آدرس ایمیل در حساب کاربر برای مهاجم جذاب است. پس از انجام این اقدام، مهاجم معمولاً قادر خواهد بود یک بازنشانی رمز عبور را تحریک کند و کنترل کامل حساب کاربر را به دست آورد.
+                            </li>
+                            <li>
+                                برنامه از یک کوکی نشست برای شناسایی کاربری که درخواست را صادر کرده استفاده می‌کند. هیچ نشانه یا مکانیزم دیگری برای ردیابی نشست‌های کاربران وجود ندارد.
+                            </li>
+                            <li>
+                                مهاجم می‌تواند به‌راحتی مقادیر پارامترهای درخواست موردنیاز برای انجام اقدام را تعیین کند.
+                            </li>
+                        </ul>
+                        <p id="how-does-csrf-work-A0S0">
+                            با وجود این شرایط، مهاجم می‌تواند یک صفحه وب شامل HTML زیر بسازد:
+                        </p>
+                        <code class="code-scrollable">&lt;html&gt;
+                            &lt;body&gt;
+                                &lt;form action=&quot;https://vulnerable-website.com/email/change&quot; method=&quot;POST&quot;&gt;
+                                    &lt;input type=&quot;hidden&quot; name=&quot;email&quot; value=&quot;pwned@evil-user.net&quot; /&gt;
+                                &lt;/form&gt;
+                                &lt;script&gt;
+                                    document.forms[0].submit();
+                                &lt;/script&gt;
+                            &lt;/body&gt;
+                        &lt;/html&gt;</code>
+                        <p id="how-does-csrf-work-G3L8">
+                            اگر یک کاربر قربانی از صفحه وب مهاجم بازدید کند، موارد زیر اتفاق خواهد افتاد:
+                        </p>
+                        <ul>
+
+   <ul>
+    <li>
+        صفحه مهاجم یک درخواست HTTP به وب‌سایت آسیب‌پذیر ارسال خواهد کرد.
+    </li>
+    <li>
+        اگر کاربر در وب‌سایت آسیب‌پذیر وارد شده باشد، مرورگر او به‌طور خودکار کوکی نشست او را در درخواست ارسال خواهد کرد (مشروط بر اینکه <a href="/web-security/csrf#common-defences-against-csrf">کوکی‌های SameSite</a> استفاده نشوند).
+    </li>
+    <li>
+        وب‌سایت آسیب‌پذیر درخواست را به‌طور عادی پردازش می‌کند، آن را به‌عنوان درخواستی از طرف کاربر قربانی در نظر می‌گیرد و آدرس ایمیل او را تغییر می‌دهد.
+    </li>
+</ul>
+<div class="highlightedarea">
+    <h4>توجه</h4>
+    <p>
+        اگرچه CSRF معمولاً در ارتباط با مدیریت نشست مبتنی بر کوکی توصیف می‌شود، اما در سایر مواردی نیز رخ می‌دهد که برنامه به‌طور خودکار برخی از اطلاعات کاربری را به درخواست‌ها اضافه می‌کند، مانند احراز هویت HTTP Basic و احراز هویت مبتنی بر گواهی.
+    </p>
+</div>
+<h2 id="how-to-construct-a-csrf-attack">چگونه یک حمله CSRF ایجاد کنیم</h2>
+<p>
+    ایجاد دستی HTML موردنیاز برای بهره‌برداری CSRF می‌تواند خسته‌کننده باشد، به‌ویژه زمانی که درخواست موردنظر شامل تعداد زیادی پارامتر باشد یا ویژگی‌های خاص دیگری در درخواست وجود داشته باشد. ساده‌ترین راه برای ساخت یک بهره‌برداری CSRF استفاده از <a href="/burp/documentation/desktop/tools/engagement-tools/generate-csrf-poc">مولد CSRF PoC</a> است که در Burp Suite Professional تعبیه شده است:
+</p>
+<ul>
+    <li>
+        یک درخواست را در هر کجای Burp Suite Professional که می‌خواهید آزمایش یا بهره‌برداری کنید، انتخاب کنید.
+    </li>
+    <li>
+        از منوی کلیک راست، گزینه Engagement tools / Generate CSRF PoC را انتخاب کنید.
+    </li>
+    <li>
+        Burp Suite یک کد HTML تولید خواهد کرد که درخواست انتخاب‌شده را فعال می‌کند (به استثنای کوکی‌ها که به‌طور خودکار توسط مرورگر قربانی اضافه می‌شوند).
+    </li>
+    <li>
+        شما می‌توانید تنظیمات مختلفی را در مولد CSRF PoC انجام دهید تا جنبه‌های حمله را دقیق‌تر کنید. ممکن است در شرایط خاص نیاز به این کار داشته باشید تا با ویژگی‌های خاص درخواست‌ها مقابله کنید.
+    </li>
+    <li>
+        کد HTML تولید‌شده را در یک صفحه وب قرار دهید، آن را در مرورگری که به وب‌سایت آسیب‌پذیر وارد شده است مشاهده کنید، و آزمایش کنید که آیا درخواست موردنظر به‌درستی ارسال شده و اقدام دلخواه انجام می‌شود.
+    </li>
+</ul>
+<div class="widgetcontainer-lab-link">
+    <span>آزمایشگاه</span>
+    <div class="flex-columns">
+        <span class="label-light-green-small">مبتدی</span>
+        <a href="/web-security/csrf/lab-no-defenses">آسیب‌پذیری CSRF بدون دفاع</a>
+    </div>
+</div>
+<h2 id="how-to-deliver-a-csrf-exploit">چگونه یک بهره‌برداری CSRF ارائه کنیم</h2>
+<p>
+    مکانیزم‌های ارائه حملات جعل درخواست بین سایتی عملاً مشابه حملات XSS منعکس‌شده است. معمولاً مهاجم HTML مخرب را در یک وب‌سایت که کنترل می‌کند قرار می‌دهد و سپس قربانیان را به بازدید از آن وب‌سایت ترغیب می‌کند. این کار ممکن است از طریق ارسال لینکی به کاربر به‌وسیله ایمیل یا پیام در شبکه‌های اجتماعی انجام شود. یا اگر حمله در یک وب‌سایت محبوب (مثلاً در بخش نظرات کاربران) قرار داده شود، ممکن است منتظر بماند تا کاربران از آن وب‌سایت بازدید کنند.
+</p>
+<p>
+    توجه داشته باشید که برخی از بهره‌برداری‌های ساده CSRF از روش GET استفاده می‌کنند و می‌توانند به‌صورت کاملاً مستقل با یک URL در وب‌سایت آسیب‌پذیر انجام شوند. در این حالت، مهاجم ممکن است نیازی به استفاده از یک سایت خارجی نداشته باشد و می‌تواند به‌طور مستقیم URL مخرب را به قربانیان ارائه دهد. در مثال قبلی، اگر درخواست تغییر آدرس ایمیل با روش GET انجام شود، حمله مستقل به این صورت خواهد بود:
+</p>
+<code class="code-scrollable">&lt;img src=&quot;https://vulnerable-website.com/email/change?email=pwned@evil-user.net&quot;&gt;</code>
+<div class="highlightedarea">
+    <h4>مطالعه بیشتر</h4>
+    <ul>
+        <li><a href="/web-security/csrf/xss-vs-csrf">XSS در مقابل CSRF</a></li>
+    </ul>
+</div>
+<h2 id="common-defences-against-csrf">دفاع‌های رایج در برابر CSRF</h2>
+<p>
+    امروزه، پیدا کردن و بهره‌برداری موفقیت‌آمیز از آسیب‌پذیری‌های CSRF معمولاً شامل دور زدن مکانیزم‌های ضد-CSRF است که توسط وب‌سایت هدف، مرورگر قربانی، یا هر دو اجرا شده‌اند. رایج‌ترین دفاع‌هایی که با آن‌ها مواجه خواهید شد به شرح زیر است:
+</p>
+<ul>
+    <li>
+        <p>
+            <strong>توکن‌های CSRF</strong> - توکن CSRF یک مقدار یکتا، مخفی و غیرقابل پیش‌بینی است که توسط برنامه سمت سرور تولید و با کلاینت به اشتراک گذاشته می‌شود. هنگام تلاش برای انجام یک اقدام حساس، مانند ارسال یک فرم، کلاینت باید توکن CSRF صحیح را در درخواست وارد کند. این کار ساخت یک درخواست معتبر از طرف قربانی توسط مهاجم را بسیار دشوار می‌کند.
+        </p>
+    </li>
+    <li>
+        <p>
+            <strong>کوکی‌های SameSite</strong> - SameSite یک مکانیزم امنیتی مرورگر است که تعیین می‌کند کوکی‌های یک وب‌سایت چه زمانی در درخواست‌های منشأ گرفته از سایر وب‌سایت‌ها گنجانده شوند. از آنجا که درخواست‌ها برای انجام اقدامات حساس معمولاً به یک کوکی نشست احراز هویت‌شده نیاز دارند، محدودیت‌های مناسب SameSite ممکن است مانع از اجرای این اقدامات بین سایتی توسط مهاجم شود. از سال 2021، Chrome به‌طور پیش‌فرض محدودیت‌های SameSite با مقدار <code>Lax</code> را اجرا می‌کند. از آنجایی که این استاندارد پیشنهادی است، انتظار می‌رود مرورگرهای اصلی دیگر نیز این رفتار را اتخاذ کنند.
+        </p>
+    </li>
+    <li>
+        <p>
+            <strong>اعتبارسنجی مبتنی بر Referer</strong> - برخی برنامه‌ها از هدر HTTP Referer برای دفاع در برابر حملات CSRF استفاده می‌کنند، معمولاً با تأیید اینکه درخواست از دامنه برنامه منشأ گرفته است. این روش معمولاً کمتر از اعتبارسنجی توکن CSRF مؤثر است.
+        </p>
+    </li>
+</ul>
+<p id="common-defences-against-csrf-L2P8">
+    برای توضیح مفصل‌تر هر یک از این دفاع‌ها و نحوه بالقوه دور زدن آن‌ها، به منابع زیر مراجعه کنید. این منابع شامل آزمایشگاه‌های تعاملی است که به شما امکان می‌دهد آموخته‌های خود را بر روی اهداف واقعی و عمداً آسیب‌پذیر تمرین کنید.
+</p>
+<div class="highlightedarea">
+    <h4>مطالعه بیشتر</h4>
+    <ul>
+        <li>
+            <a href="/web-security/csrf/bypassing-token-validation"><span class="label-light-green-small">آزمایشگاه‌ها</span> دور زدن اعتبارسنجی توکن CSRF</a>
+        </li>
+        <li>
+            <a href="/web-security/csrf/bypassing-samesite-restrictions"><span class="label-light-green-small">آزمایشگاه‌ها</span> دور زدن محدودیت‌های کوکی SameSite</a>
+        </li>
+        <li>
+            <a href="/web-security/csrf/bypassing-referer-based-defenses"><span class="label-light-green-small">آزمایشگاه‌ها</span> دور زدن دفاع‌های مبتنی بر Referer</a>
+        </li>
+    </ul>
+</div>
+<p>
+    برای جزئیات بیشتر در مورد نحوه اجرای صحیح این دفاع‌ها برای جلوگیری از برخی از این مشکلات در وب‌سایت‌های خود، به <a href="/web-security/csrf/preventing">چگونه از آسیب‌پذیری‌های CSRF جلوگیری کنیم</a> مراجعه کنید.
+</p>
+
+        
+   
+    
+    </div>
+
+
+     
+        
+  
+    <a href="#top" class="back-to-top"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26"><polygon points="4.07 14.7 5.03 15.78 12.48 9.13 19.94 15.78 20.9 14.7 12.48 7.2 4.07 14.7" fill="#f63" /><path d="M13,0A13,13,0,1,0,26,13,13,13,0,0,0,13,0Zm0,24.56A11.56,11.56,0,1,1,24.56,13,11.58,11.58,0,0,1,13,24.56Z" fill="#f63" /></svg></a>
+
+    </body>
+</html>

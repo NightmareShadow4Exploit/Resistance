@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="fa" direction="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Title for SEO --> 
+    <title>DOM-based XSS - اسکریپت بین سایتی مبتنی بر DOM | آموزش امنیت وب</title>
+    
+    <!-- Meta description for SEO -->
+    <meta name="description" content="آموزش جامع XSS مبتنی بر DOM و تکنیک‌های پیشرفته نفوذ در وب‌سایت‌ها. یادگیری شناسایی و بهره‌برداری از آسیب‌پذیری‌های DOM XSS در منابع و سینک‌های مختلف.">
+    
+    <!-- Meta keywords for SEO -->
+    <meta name="keywords" content="DOM-based XSS, اسکریپت بین سایتی مبتنی بر DOM, web security, cybersecurity, XSS vulnerabilities, DOM manipulation, امنیت وب, حملات وب, penetration testing">
+    
+    <!-- Open Graph Meta Tags for better social sharing -->
+    <meta property="og:title" content="DOM-based XSS - اسکریپت بین سایتی مبتنی بر DOM | آموزش امنیت وب">
+    <meta property="og:description" content="آموزش جامع XSS مبتنی بر DOM و تکنیک‌های پیشرفته نفوذ در وب‌سایت‌ها. یادگیری شناسایی و بهره‌برداری از آسیب‌پذیری‌های DOM XSS در منابع و سینک‌های مختلف.">
+    <meta property="og:image" content="https://nightmareshadow4exploit.github.io/Resistance/logo.png">
+    <meta property="og:url" content="https://nightmareshadow4exploit.github.io/Resistance/Knowledge/Web%20Hacking/">
+    <meta property="og:type" content="website">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Nightmare">
+    <meta name="twitter:description" content="یادگیری آزمایش نفوذ وب‌سایت و امنیت سایبری از Nightmare. آموزش نحوه نفوذ و محافظت از وب‌سایت‌ها با جدیدترین روش‌ها و تکنیک‌ها.">
+    <meta name="twitter:image" content="https://nightmareshadow4exploit.github.io/Resistance/logo.png">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Vazir&display=swap" rel="stylesheet">
+
+    <!-- Link to your custom CSS -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- JSON-LD Structured Data for the Course -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Course",
+        "name": "DOM-based XSS - اسکریپت بین سایتی مبتنی بر DOM",
+        "description": "آموزش جامع XSS مبتنی بر DOM و تکنیک‌های پیشرفته نفوذ در وب‌سایت‌ها. این دوره شامل آموزش شناسایی، بهره‌برداری و مقابله با آسیب‌پذیری‌های DOM XSS در منابع و سینک‌های مختلف می‌باشد.",
+        "provider": {
+            "@type": "Organization",
+            "name": "Nightmare",
+            "url": "https://nightmareshadow4exploit.github.io/Resistance/",
+            "logo": "https://nightmareshadow4exploit.github.io/Resistance/logo.png"
+        },
+        "courseMode": "Online",
+        "educationalCredentialAwarded": "Certificate of Completion",
+        "offers": {
+            "@type": "Offer",
+            "url": "https://nightmareshadow4exploit.github.io/Resistance/Knowledge/Web%20Hacking/",
+            "priceCurrency": "IRR",
+            "price": "Free",
+            "availability": "https://schema.org/InStock"
+        },
+        "audience": {
+            "@type": "Audience",
+            "audienceType": "Ethical Hackers, Cybersecurity Enthusiasts"
+        },
+        "image": "https://nightmareshadow4exploit.github.io/Resistance/logo.png"
+    }
+    </script>
+</head>
+
+<body>
+    <div class="page-links">
+        <a href="https://nightmareshadow4exploit.github.io/Resistance" class="link home-link">Home</a>
+        <a href="https://t.me/Nightmare_Indian_Hacker" class="link telegram-link">Telegram</a>
+        <a href="https://nightmareshadow4exploit.github.io/Resistance/Knowledge/Web%20Hacking/index.html" class="link index-link">Index</a>
+    </div>
+    <div class="section theme-white">
+
+		<h1 class="heading-2">XSS مبتنی بر DOM</h1><p>
+            در این بخش به توضیح خواهیم پرداخت DOM-based cross-site scripting (DOM XSS), نحوه یافتن آسیب‌پذیری‌های DOM XSS را توضیح دهید و در مورد نحوه بهره‌برداری از DOM XSS با منابع و سینک‌های مختلف صحبت کنید.
+        </p><h2 id="what-is-dom-based-cross-site-scripting">What is DOM-based cross-site scripting? </h2><p>
+			آسیب‌پذیری‌های XSS مبتنی بر DOM معمولاً زمانی ایجاد می‌شوند که جاوا اسکریپت داده‌ها را از یک منبع قابل کنترل توسط مهاجم، مانند URL، دریافت می‌کند و آن را به سینکی ارسال می‌کند که از اجرای کد پویا پشتیبانی می‌کند، مانند <code>eval()</code> یا <code>innerHTML</code>. این به مهاجمان امکان می دهد جاوا اسکریپت مخرب را اجرا کنند، که معمولاً به آنها اجازه می دهد تا حساب های دیگر کاربران را ربوده کنند.
+		</p><p>
+			برای ارائه یک حمله XSS مبتنی بر DOM، باید داده ها را در یک منبع قرار دهید تا به یک سینک منتشر شود و باعث اجرای جاوا اسکریپت دلخواه شود.
+		</p><p>
+			رایج ترین منبع برای DOM XSS URL است که معمولاً با شی <code>window.location</code> قابل دسترسی است. مهاجم می‌تواند پیوندی ایجاد کند تا قربانی را به صفحه آسیب‌پذیر با باری در رشته پرس و جو و بخش‌هایی از URL ارسال کند. در شرایط خاص، مانند زمانی که یک صفحه 404 را هدف قرار می دهید یا یک وب سایت دارای PHP است، payload را نیز می توان در مسیر قرار داد.
+		</p><p>
+			برای توضیح دقیق جریان لکه‌دار بین منابع و سینک‌ها، لطفاً به صفحه <a href="dom-based.html">آسیب‌پذیری‌های مبتنی بر DOM</a> مراجعه کنید.
+		</p><h2 id="how-to-test-for-dom-based-cross-site-scripting">نحوه تست اسکریپت نویسی متقابل مبتنی بر DOM</h2><p>
+			اکثر آسیب‌پذیری‌های DOM XSS را می‌توان به سرعت و با اطمینان با استفاده از اسکنر آسیب‌پذیری وب Burp Suite پیدا کرد. برای آزمایش دستی اسکریپت نویسی متقابل مبتنی بر DOM، معمولاً باید از مرورگری با ابزارهای توسعه دهنده مانند Chrome استفاده کنید. شما باید به نوبه خود از طریق هر منبع موجود کار کنید و هر کدام را جداگانه آزمایش کنید.
+		</p><h3 id="testing-html-sinks">آزمایش سینک های HTML</h3><p>
+            برای آزمایش DOM XSS در یک سینک HTML، یک رشته الفبای عددی تصادفی را در منبع قرار دهید (مانند <code>location.search</code>)، سپس از ابزارهای توسعه دهنده برای بررسی HTML و پیدا کردن جایی که رشته شما ظاهر می شود استفاده کنید. توجه داشته باشید که گزینه "مشاهده منبع" مرورگر برای آزمایش DOM XSS کار نمی کند زیرا تغییراتی را که در HTML توسط جاوا اسکریپت انجام شده است در نظر نمی گیرند. در ابزارهای برنامه‌نویس Chrome، می‌توانید از <code>Control+F</code> (یا <code>Command+F</code> در MacOS) برای جستجوی DOM برای رشته خود استفاده کنید.
+		</p><p>
+			برای هر مکانی که رشته شما در DOM ظاهر می شود، باید زمینه را شناسایی کنید. بر اساس این زمینه، باید ورودی خود را اصلاح کنید تا ببینید چگونه پردازش می شود. به عنوان مثال، اگر رشته شما در یک ویژگی دو نقل قول ظاهر می شود، سعی کنید کوتیشن های دوگانه را در رشته خود وارد کنید تا ببینید آیا می توانید از ویژگی خارج شوید.
+		</p><p>
+			توجه داشته باشید که مرورگرها در رابطه با رمزگذاری URL رفتار متفاوتی دارند، کروم، فایرفاکس و سافاری <code>location.search</code> و <code>location.hash</code> را با URL-encode رمزگذاری می کنند، در حالی که IE11 و Microsoft Edge (قبل از Chromium) این منابع را URL-encode نمی کنند. اگر داده‌های شما قبل از پردازش با URL کدگذاری شوند، حمله XSS بعید است که کار کند.
+        </p><h3 id="testing-javascript-execution-sinks">آزمایش سینک های اجرای جاوا اسکریپت</h3><p>
+        	آزمایش سینک های اجرای جاوا اسکریپت برای XSS مبتنی بر DOM کمی سخت تر است. با این سینک‌ها، ورودی شما لزوماً در هیچ کجای DOM ظاهر نمی‌شود، بنابراین نمی‌توانید آن را جستجو کنید. در عوض باید از اشکال‌زدای جاوا اسکریپت برای تعیین اینکه آیا ورودی شما به یک سینک ارسال می‌شود یا خیر، استفاده کنید.
+		</p><p>
+			برای هر منبع بالقوه، مانند <code>location</code>، ابتدا باید مواردی را در کد جاوا اسکریپت صفحه پیدا کنید که منبع در آن ارجاع داده شده است. در ابزارهای توسعه‌دهنده Chrome، می‌توانید از <code>Control+Shift+F</code> (یا <code>Command+Alt+F</code> در MacOS) برای جستجوی همه کد جاوا اسکریپت صفحه برای منبع استفاده کنید.
+		</p><p>
+			هنگامی که محل خواندن منبع را پیدا کردید، می‌توانید از اشکال‌زدای جاوا اسکریپت برای اضافه کردن نقطه شکست استفاده کنید و نحوه استفاده از مقدار منبع را دنبال کنید. ممکن است متوجه شوید که منبع به متغیرهای دیگر اختصاص داده شده است. اگر اینطور است، باید از تابع جستجو دوباره برای ردیابی این متغیرها استفاده کنید و ببینید آیا آنها به یک سینک منتقل می شوند یا خیر. وقتی سینکی را پیدا می‌کنید که داده‌هایی از منبع به آن اختصاص داده شده است، می‌توانید از اشکال‌زدا برای بررسی مقدار با نگه داشتن ماوس روی متغیر استفاده کنید تا مقدار آن را قبل از ارسال به سینک نشان دهید. سپس، مانند سینک های HTML، باید ورودی خود را اصلاح کنید تا ببینید آیا می توانید یک حمله XSS موفق انجام دهید یا خیر.
+		</p><h3 id="testing-for-dom-xss-using-dom-invader">تست برای DOM XSS با استفاده از DOM Invader</h3><p>
+			شناسایی و بهره‌برداری از DOM XSS در طبیعت می‌تواند یک فرآیند خسته‌کننده باشد، که اغلب شما را ملزم می‌کند تا به صورت دستی از طریق جاوا اسکریپت پیچیده و کوچک‌شده عبور کنید. با این حال، اگر از مرورگر Burp استفاده می‌کنید، می‌توانید از پسوند داخلی DOM Invader استفاده کنید، که کارهای سخت زیادی را برای شما انجام می‌دهد.
+		</p><div class="highlightedarea">
+			<h4>بیشتر بخوانید</h4>
+		<ul><li><a href="https://portswigger.net/burp/documentation/desktop/tools/dom-invader">DOM Invader documentation</a></li></ul></div><h2 id="exploiting-dom-xss-with-different-sources-and-sinks">Exploiting DOM XSS with different sources and sinks</h2><p>
+			در اصل، اگر یک مسیر اجرایی وجود داشته باشد که از طریق آن داده ها از منبعی به سینک منتشر شوند، یک وب سایت در برابر اسکریپت های متقابل مبتنی بر DOM آسیب پذیر است. در عمل، منابع و سینک های مختلف خواص و رفتار متفاوتی دارند که می تواند بر قابلیت بهره برداری تأثیر بگذارد و تعیین کند که چه تکنیک هایی لازم است. علاوه بر این، اسکریپت‌های وب‌سایت ممکن است اعتبارسنجی یا پردازش دیگری از داده‌ها را انجام دهند که باید هنگام تلاش برای سوء استفاده از یک آسیب‌پذیری در نظر گرفته شوند. سینک‌های مختلفی وجود دارند که مربوط به آسیب‌پذیری‌های مبتنی بر DOM هستند. لطفاً برای جزئیات به <a href="/web-security/cross-site-scripting/dom-based#which-sinks-can-lead-to-dom-xss-vulnerabilities">لیست</a> زیر مراجعه کنید.
+        </p><p>
+            را <code>document.write</code> سینک با <code>script</code> عناصر، بنابراین می توانید از یک بار ساده استفاده کنید، مانند مورد زیر:
+        </p><code class="code-scrollable">document.write('... &lt;script&gt;alert(document.domain)&lt;/script&gt; ...');</code>
+
+   
+<p>با این حال، توجه داشته باشید که در برخی شرایط، محتوایی که در <code>document.write</code> نوشته می‌شود، شامل زمینه‌های اطراف می‌شود که باید در بهره‌برداری خود در نظر بگیرید. به عنوان مثال، ممکن است لازم باشد برخی از عناصر موجود را قبل از استفاده از بارگیری جاوا اسکریپت خود ببندید.
+</p>
+
+<p>سینک <code>innerHTML</code> عناصر <code>script</code> را در هیچ مرورگر مدرنی نمی‌پذیرد، و رویدادهای <code>svg onload</code> را نیز فعال نمی‌کند. این بدان معنی است که شما باید از عناصر جایگزین مانند <code>img</code> یا <code>iframe</code> استفاده کنید. کنترل‌کننده‌های رویداد مانند <code>onload</code> و <code>onerror</code> را می‌توان در ارتباط با این عناصر استفاده کرد. به عنوان مثال:
+</p><code class="code-scrollable">element.innerHTML='... &lt;img src=1 onerror=alert(document.domain)&gt; ...'</code>
+<h3 id="sources-and-sinks-in-third-party-dependencies">منابع و غرق در وابستگی های شخص ثالث</h3><p>
+	برنامه های کاربردی وب مدرن معمولاً با استفاده از تعدادی کتابخانه و چارچوب های شخص ثالث ساخته می شوند که اغلب عملکردها و قابلیت های اضافی را برای توسعه دهندگان فراهم می کنند. مهم است که به یاد داشته باشید که برخی از اینها نیز منابع بالقوه و سینک برای DOM XSS هستند.
+</p><h4 id="dom-xss-in-jquery">DOM XSS in jQuery</h4><p>
+	اگر از یک کتابخانه جاوا اسکریپت مانند jQuery استفاده می شود، به دنبال سینک هایی باشید که می توانند عناصر DOM را در صفحه تغییر دهند. به عنوان مثال، تابع <code>attr()</code> jQuery می تواند ویژگی های عناصر DOM را تغییر دهد. اگر داده ها از یک منبع کنترل شده توسط کاربر مانند URL خوانده شوند، سپس به تابع <code>attr()</code> منتقل شوند، ممکن است بتوان مقدار ارسال شده را برای ایجاد XSS دستکاری کرد. به عنوان مثال، در اینجا جاوا اسکریپتی داریم که ویژگی <code>href</code> عنصر لنگر را با استفاده از داده‌های URL تغییر می‌دهد:        </p><code class="code-scrollable">$(function() {
+	$('#backLink').attr("href",(new URLSearchParams(window.location.search)).get('returnUrl'));
+});</code><p>می توانید با تغییر URL از این مورد سوء استفاده کنید تا منبع <code>location.search</code> حاوی URL مخرب جاوا اسکریپت باشد. پس از اینکه جاوا اسکریپت صفحه این URL مخرب را در <code>href</code> پیوند پشتی اعمال کرد، با کلیک بر روی پیوند پشتی آن را اجرا می‌کنیم:
+</p><code class="code-scrollable">?returnUrl=javascript:alert(document.domain)</code>
+    
+<p><p>
+    یک منبع بالقوه دیگر که باید مراقب آن باشید، تابع انتخاب‌گر <code>$()</code> در jQuery است که می‌تواند برای تزریق اشیاء مخرب به DOM استفاده شود.
+</p>
+<p>
+    jQuery زمانی بسیار محبوب بود، و یک آسیب‌پذیری کلاسیک XSS در DOM به دلیل استفاده وب‌سایت‌ها از این انتخاب‌گر در ترکیب با منبع <code>location.hash</code> برای انیمیشن‌ها یا اسکرول خودکار به یک عنصر خاص در صفحه رخ می‌داد. این رفتار معمولاً با استفاده از یک هندلر رویداد آسیب‌پذیر <code>hashchange</code> پیاده‌سازی می‌شد که مشابه کد زیر بود:
+</p>
+<code class="code-scrollable">$(window).on('hashchange', function() {
+    var element = $(location.hash);
+    element[0].scrollIntoView();
+});</code>
+<p>
+    از آنجا که <code>hash</code> توسط کاربر قابل کنترل است، یک مهاجم می‌تواند از این ویژگی برای تزریق یک بردار XSS به منبع انتخاب‌گر <code>$()</code> استفاده کند. نسخه‌های جدیدتر jQuery این آسیب‌پذیری خاص را با جلوگیری از تزریق HTML به یک انتخاب‌گر زمانی که ورودی با کاراکتر هش (<code>#</code>) شروع می‌شود، رفع کرده‌اند. با این حال، ممکن است هنوز کدهای آسیب‌پذیر در دنیای واقعی پیدا کنید.
+</p>
+<p>
+    برای بهره‌برداری از این آسیب‌پذیری کلاسیک، باید راهی پیدا کنید تا رویداد <code>hashchange</code> را بدون تعامل کاربر تحریک کنید. یکی از ساده‌ترین روش‌ها برای انجام این کار این است که بهره‌برداری خود را از طریق یک <code>iframe</code> ارسال کنید:
+</p>
+<code class="code-scrollable">&lt;iframe src="https://vulnerable-website.com#" onload="this.src+='&lt;img src=1 onerror=alert(1)&gt;'"&gt;</code>
+<p>
+    در این مثال، ویژگی <code>src</code> به صفحه آسیب‌پذیر با یک مقدار هش خالی اشاره دارد. هنگامی که <code>iframe</code> بارگذاری می‌شود، یک بردار XSS به هش اضافه می‌شود و باعث فعال شدن رویداد <code>hashchange</code> می‌شود.
+</p>
+<div class="highlightedarea">
+    <h4>توجه</h4>
+    <p>
+        حتی نسخه‌های جدیدتر jQuery نیز هنوز ممکن است از طریق منبع انتخاب‌گر <code>$()</code> آسیب‌پذیر باشند، به شرطی که شما کنترل کامل ورودی آن را از منبعی که به پیشوند <code>#</code> نیاز ندارد، داشته باشید.
+    </p>
+</div>
+
+<h4 id="dom-xss-in-angularjs">DOM XSS در AngularJS</h4>
+<p>
+    اگر از یک فریم‌ورک مانند AngularJS استفاده شود، ممکن است بتوان بدون استفاده از براکت زاویه‌ای یا رویدادها، جاوااسکریپت را اجرا کرد. زمانی که یک سایت از ویژگی <code>ng-app</code> در یک عنصر HTML استفاده می‌کند، این ویژگی توسط AngularJS پردازش می‌شود. در این حالت، AngularJS جاوااسکریپت را در داخل آکولادهای دوتایی اجرا می‌کند که می‌تواند مستقیماً در HTML یا داخل ویژگی‌ها ظاهر شود.
+</p>
+
+<h2 id="dom-xss-combined-with-reflected-and-stored-data">ترکیب DOM XSS با داده‌های منعکس‌شده و ذخیره‌شده</h2>
+<p>
+    برخی از آسیب‌پذیری‌های مبتنی بر DOM به طور مستقل در یک صفحه واحد وجود دارند. اگر یک اسکریپت داده‌ای را از URL بخواند و آن را به یک منبع خطرناک بنویسد، آن آسیب‌پذیری کاملاً از نوع سمت کلاینت است.
+</p>
+<p>
+    با این حال، منابع محدود به داده‌هایی که مستقیماً توسط مرورگرها افشا می‌شوند نیستند – آن‌ها همچنین می‌توانند از سایت منشاء بگیرند. برای مثال، وب‌سایت‌ها اغلب پارامترهای URL را در پاسخ HTML از سرور بازتاب می‌دهند. این معمولاً با XSS عادی مرتبط است، اما می‌تواند منجر به آسیب‌پذیری‌های DOM XSS بازتاب‌شده نیز شود.
+</p>
+<p>
+    در یک آسیب‌پذیری DOM XSS بازتاب‌شده، سرور داده‌ها را از درخواست پردازش می‌کند و داده‌ها را در پاسخ بازتاب می‌دهد. داده‌های بازتاب‌شده ممکن است در داخل یک رشته جاوااسکریپت، یا یک مورد داده‌ای در داخل DOM، مانند یک فیلد فرم قرار گیرند. سپس یک اسکریپت در صفحه داده‌های بازتاب‌شده را به روشی ناامن پردازش می‌کند و در نهایت آن را به یک منبع خطرناک می‌نویسد.
+</p>
+<code class="code-scrollable">eval('var data = "reflected string"');</code>
+
+<p>
+    وب‌سایت‌ها همچنین ممکن است داده‌ها را روی سرور ذخیره کرده و آن‌ها را در جای دیگری بازتاب دهند. در یک آسیب‌پذیری DOM XSS ذخیره‌شده، سرور داده‌ها را از یک درخواست دریافت کرده، آن را ذخیره می‌کند و سپس داده‌ها را در پاسخ بعدی وارد می‌کند. یک اسکریپت در پاسخ بعدی شامل یک منبع است که سپس داده‌ها را به روشی ناامن پردازش می‌کند.
+</p>
+<code class="code-scrollable">element.innerHTML = comment.author</code>
+
+<h2 id="which-sinks-can-lead-to-dom-xss-vulnerabilities">کدام منابع می‌توانند منجر به آسیب‌پذیری‌های DOM-XSS شوند؟</h2>
+<p>
+    موارد زیر برخی از منابع اصلی هستند که می‌توانند منجر به آسیب‌پذیری‌های DOM-XSS شوند:
+</p>
+<code class="code-scrollable">document.write()
+document.writeln()
+document.domain
+element.innerHTML
+element.outerHTML
+element.insertAdjacentHTML
+element.onevent</code>
+<p>
+    همچنین توابع jQuery زیر منابعی هستند که می‌توانند منجر به آسیب‌پذیری‌های DOM-XSS شوند:
+</p>
+<code class="code-scrollable">add()
+after()
+append()
+animate()
+insertAfter()
+insertBefore()
+before()
+html()
+prepend()
+replaceAll()
+replaceWith()
+wrap()
+wrapInner()
+wrapAll()
+has()
+constructor()
+init()
+index()
+jQuery.parseHTML()
+$.parseHTML()</code>
+<h2 id="how-to-prevent-dom-xss-vulnerabilities">چگونه از آسیب‌پذیری‌های DOM-XSS جلوگیری کنیم</h2>
+<p>
+    علاوه بر اقدامات عمومی توضیح داده شده در صفحه <a href="dom-based.html">آسیب‌پذیری‌های مبتنی بر DOM</a>، باید از اجازه دادن به داده‌ها از هر منبع غیرقابل اعتماد برای نوشتن دینامیکی به سند HTML خودداری کنید.
+</p>
+
+
+    
+    </div>
+    
+
+<div class="navigation-links">
+  <a href="stored.html" class="prev">« Previous</a>
+    <a href="../../../index.html" class="index">Index</a>
+    <a href="exploiting.html"  class="next">Next »</a>
+</div>
+</body>
+</html>

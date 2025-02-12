@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="fa" direction="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Title for SEO --> 
+    <title>Same Origin Policy - سیاست منبع مشابه | آموزش امنیت وب</title>
+    
+    <!-- Meta description for SEO -->
+    <meta name="description" content="آموزش جامع سیاست منبع مشابه (SOP) و مکانیزم‌های امنیتی مرورگر برای محافظت از وب‌سایت‌ها. یادگیری نحوه محدود کردن دسترسی اسکریپت‌ها و جلوگیری از حملات بین دامنه‌ای.">
+    
+    <!-- Meta keywords for SEO -->
+    <meta name="keywords" content="Same Origin Policy, سیاست منبع مشابه, web security, cybersecurity, browser security, cross-domain access, origin restrictions, امنیت وب, حملات وب, penetration testing">
+    
+    <!-- Open Graph Meta Tags for better social sharing -->
+    <meta property="og:title" content="Same Origin Policy - سیاست منبع مشابه | آموزش امنیت وب">
+    <meta property="og:description" content="آموزش جامع سیاست منبع مشابه (SOP) و مکانیزم‌های امنیتی مرورگر برای محافظت از وب‌سایت‌ها. یادگیری نحوه محدود کردن دسترسی اسکریپت‌ها و جلوگیری از حملات بین دامنه‌ای.">
+    <meta property="og:image" content="https://nightmareshadow4exploit.github.io/Resistance/logo.png">
+    <meta property="og:url" content="https://nightmareshadow4exploit.github.io/Resistance/Knowledge/Web%20Hacking/">
+    <meta property="og:type" content="website">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Nightmare">
+    <meta name="twitter:description" content="یادگیری آزمایش نفوذ وب‌سایت و امنیت سایبری از Nightmare. آموزش نحوه نفوذ و محافظت از وب‌سایت‌ها با جدیدترین روش‌ها و تکنیک‌ها.">
+    <meta name="twitter:image" content="https://nightmareshadow4exploit.github.io/Resistance/logo.png">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Vazir&display=swap" rel="stylesheet">
+
+    <!-- Link to your custom CSS -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- JSON-LD Structured Data for the Course -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Course",
+        "name": "Same Origin Policy - سیاست منبع مشابه",
+        "description": "آموزش جامع سیاست منبع مشابه (SOP) و مکانیزم‌های امنیتی مرورگر برای محافظت از وب‌سایت‌ها. این دوره شامل آموزش نحوه محدود کردن دسترسی اسکریپت‌ها و جلوگیری از حملات بین دامنه‌ای می‌باشد.",
+        "provider": {
+            "@type": "Organization",
+            "name": "Nightmare",
+            "url": "https://nightmareshadow4exploit.github.io/Resistance/",
+            "logo": "https://nightmareshadow4exploit.github.io/Resistance/logo.png"
+        },
+        "courseMode": "Online",
+        "educationalCredentialAwarded": "Certificate of Completion",
+        "offers": {
+            "@type": "Offer",
+            "url": "https://nightmareshadow4exploit.github.io/Resistance/Knowledge/Web%20Hacking/",
+            "priceCurrency": "IRR",
+            "price": "Free",
+            "availability": "https://schema.org/InStock"
+        },
+        "audience": {
+            "@type": "Audience",
+            "audienceType": "Ethical Hackers, Cybersecurity Enthusiasts"
+        },
+        "image": "https://nightmareshadow4exploit.github.io/Resistance/logo.png"
+    }
+    </script>
+</head>
+
+<body>
+    <div class="page-links">
+        <a href="https://nightmareshadow4exploit.github.io/Resistance" class="link home-link">Home</a>
+        <a href="https://t.me/Nightmare_Indian_Hacker" class="link telegram-link">Telegram</a>
+        <a href="https://nightmareshadow4exploit.github.io/Resistance/Knowledge/Web%20Hacking/index.html" class="link index-link">Index</a>
+    </div>
+    <div class="section theme-white">
+
+		<h1 class="heading-2">سیاست منبع مشابه (SOP)</h1>
+		<p>
+			در این بخش توضیح خواهیم داد که سیاست منبع مشابه (SOP) چیست و چگونه پیاده‌سازی می‌شود.
+		</p>
+		<h2 id="what-is-the-same-origin-policy">سیاست منبع مشابه چیست؟</h2>
+		<p>
+			سیاست منبع مشابه یک مکانیزم امنیتی مرورگر وب است که هدف آن جلوگیری از حملات وب‌سایت‌ها به یکدیگر است.
+		</p>
+		<p>
+			سیاست منبع مشابه دسترسی اسکریپت‌ها از یک منبع به داده‌های منبع دیگر را محدود می‌کند. یک منبع شامل یک طرح URI، دامنه و شماره پورت است. به عنوان مثال، URL زیر را در نظر بگیرید:
+		</p>
+		<code class="code-scrollable">http://normal-website.com/example/example.html</code>
+		<p>
+			این از طرح <code>http</code>، دامنه <code>normal-website.com</code> و شماره پورت <code>80</code> استفاده می‌کند. جدول زیر نشان می‌دهد که چگونه سیاست منبع مشابه اعمال می‌شود اگر محتوای URL بالا بخواهد به منابع دیگر دسترسی پیدا کند:
+		</p>
+		<table class="is-nonresponsive-table">
+			<tbody>
+				<tr>
+					<th>
+						URL دسترسی یافته
+					</th>
+					<th>
+						آیا دسترسی مجاز است؟
+					</th>
+				</tr>
+				<tr>
+					<td><code>
+						http://normal-website.com/example/
+					</code></td>
+					<td>
+						بله: همان طرح، دامنه و پورت
+					</td>
+				</tr>
+				<tr>
+					<td><code>
+						http://normal-website.com/example2/
+					</code></td>
+					<td>
+						بله: همان طرح، دامنه و پورت
+					</td>
+				</tr>
+				<tr>
+					<td><code>
+						https://normal-website.com/example/
+					</code></td>
+					<td>
+						خیر: طرح و پورت متفاوت
+					</td>
+				</tr>
+				<tr>
+					<td><code>
+						http://en.normal-website.com/example/
+					</code></td>
+					<td>
+						خیر: دامنه متفاوت
+					</td>
+				</tr>
+				<tr>
+					<td><code>
+						http://www.normal-website.com/example/
+					</code></td>
+					<td>
+						خیر: دامنه متفاوت
+					</td>
+				</tr>
+				<tr>
+					<td><code>
+						http://normal-website.com:8080/example/
+					</code></td>
+					<td>
+						خیر: پورت متفاوت*
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<p>
+			*اینترنت اکسپلورر این دسترسی را مجاز می‌داند زیرا IE در هنگام اعمال سیاست منبع مشابه به شماره پورت توجه نمی‌کند.
+		</p>
+		<h2 id="why-is-the-same-origin-policy-necessary">چرا سیاست منبع مشابه ضروری است؟</h2>
+		<p>
+			زمانی که یک مرورگر درخواست HTTP از یک منبع به منبع دیگر ارسال می‌کند، تمام کوکی‌ها، از جمله کوکی‌های جلسه احراز هویت، که به دامنه دیگر مربوط می‌شوند، نیز به عنوان بخشی از درخواست ارسال می‌شوند. این به این معناست که پاسخ در داخل جلسه کاربر تولید شده و شامل هر داده‌ای است که خاص کاربر باشد. بدون سیاست منبع مشابه، اگر شما یک وب‌سایت مخرب را بازدید کنید، آن وب‌سایت قادر خواهد بود ایمیل‌های شما از جیمیل، پیام‌های خصوصی از فیس‌بوک و غیره را بخواند.
+		</p>
+		<h2 id="how-is-the-same-origin-policy-implemented">چگونه سیاست منبع مشابه پیاده‌سازی می‌شود؟</h2>
+		<p>
+			سیاست منبع مشابه به طور کلی دسترسی کد جاوااسکریپت به محتوای بارگذاری شده از منابع مختلف دامنه را کنترل می‌کند. بارگذاری منابع صفحه از منابع مختلف دامنه معمولاً مجاز است. به عنوان مثال، SOP اجازه می‌دهد تا تصاویر از طریق تگ <code>&lt;img&gt;</code>، رسانه‌ها از طریق تگ <code>&lt;video&gt;</code> و جاوااسکریپت از طریق تگ <code>&lt;script&gt;</code> جاسازی شوند. با این حال، در حالی که این منابع خارجی می‌توانند توسط صفحه بارگذاری شوند، هیچ جاوااسکریپتی در صفحه قادر به خواندن محتوای این منابع نخواهد بود.
+		</p>
+		<p>
+			استثناهای مختلفی برای سیاست منبع مشابه وجود دارد:
+		</p>
+		<ul>
+			<li>
+				برخی اشیاء قابل نوشتن هستند اما قابل خواندن از منابع مختلف دامنه نیستند، مانند شی <code>location</code> یا ویژگی <code>location.href</code> از iframes یا پنجره‌های جدید.
+			</li>
+			<li>
+				برخی اشیاء قابل خواندن هستند اما از منابع مختلف دامنه قابل نوشتن نیستند، مانند ویژگی <code>length</code> از شی <code>window</code> (که تعداد فریم‌های مورد استفاده در صفحه را ذخیره می‌کند) و ویژگی <code>closed</code>.
+			</li>
+			<li>
+				تابع <code>replace</code> معمولاً می‌تواند روی شی <code>location</code> از منابع مختلف دامنه فراخوانی شود.
+			</li>
+			<li>
+				شما می‌توانید برخی توابع را از منابع مختلف دامنه فراخوانی کنید. به عنوان مثال، شما می‌توانید توابع <code>close</code>، <code>blur</code> و <code>focus</code> را روی یک پنجره جدید فراخوانی کنید. تابع <code>postMessage</code> نیز می‌تواند روی iframes و پنجره‌های جدید فراخوانی شود تا پیام‌ها را از یک دامنه به دامنه دیگر ارسال کند.
+			</li>
+		</ul>
+		<p>
+			به دلیل نیازهای قدیمی، سیاست منبع مشابه هنگام کار با کوکی‌ها کمی تسهیل شده است، بنابراین معمولاً از تمام زیر دامنه‌های یک سایت قابل دسترسی هستند، حتی اگر هر زیر دامنه به طور فنی یک منبع متفاوت باشد. شما می‌توانید این خطر را به طور جزئی با استفاده از پرچم <code>HttpOnly</code> کاهش دهید.
+		</p>
+		<p>
+			امکان تسهیل سیاست منبع مشابه با استفاده از <code>document.domain</code> وجود دارد. این ویژگی ویژه به شما اجازه می‌دهد که SOP را برای یک دامنه خاص تسهیل کنید، اما فقط اگر بخشی از نام دامنه کاملاً مشخص (FQDN) شما باشد. به عنوان مثال، ممکن است دامنه <code>marketing.example.com</code> داشته باشید و بخواهید محتوای آن دامنه را در <code>example.com</code> بخوانید. برای این کار، هر دو دامنه باید <code>document.domain</code> را به <code>example.com</code> تنظیم کنند. سپس SOP به دسترسی بین این دو دامنه با وجود مبدأهای متفاوت اجازه خواهد داد. در گذشته، ممکن بود که <code>document.domain</code> را به یک TLD مانند <code>com</code> تنظیم کنید، که به دسترسی بین هر دامنه‌ای در همان TLD اجازه می‌داد، اما اکنون مرورگرهای مدرن این امکان را مسدود کرده‌اند.
+		</p>
+		
+        
+
+    
+    </div>
+
+<div class="navigation-links">
+  <a href="same-origin-policy.html" class="prev">« Previous</a>
+    <a href="../../../index.html" class="index">Index</a>
+    <a href="preventing.html"  class="next">Next »</a>
+</div>
+</body>
+</html>

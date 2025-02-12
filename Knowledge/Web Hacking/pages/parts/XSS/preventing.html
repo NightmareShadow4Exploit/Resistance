@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="fa" direction="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Title for SEO --> 
+    <title>Preventing XSS - جلوگیری از آسیب‌پذیری‌های اسکریپت بین سایتی | آموزش امنیت وب</title>
+    
+    <!-- Meta description for SEO -->
+    <meta name="description" content="آموزش جامع راهکارهای پیشگیری از حملات اسکریپت بین سایتی (XSS). یادگیری تکنیک‌های رمزگذاری، اعتبارسنجی ورودی و استفاده از سیاست‌های امنیتی برای محافظت از وب‌سایت‌ها.">
+    
+    <!-- Meta keywords for SEO -->
+    <meta name="keywords" content="Preventing XSS, جلوگیری از XSS, Cross-Site Scripting Prevention, web security, cybersecurity, input validation, output encoding, Content Security Policy, امنیت وب, حملات وب, penetration testing">
+    
+    <!-- Open Graph Meta Tags for better social sharing -->
+    <meta property="og:title" content="Preventing XSS - جلوگیری از آسیب‌پذیری‌های اسکریپت بین سایتی | آموزش امنیت وب">
+    <meta property="og:description" content="آموزش جامع راهکارهای پیشگیری از حملات اسکریپت بین سایتی (XSS). یادگیری تکنیک‌های رمزگذاری، اعتبارسنجی ورودی و استفاده از سیاست‌های امنیتی برای محافظت از وب‌سایت‌ها.">
+    <meta property="og:image" content="https://nightmareshadow4exploit.github.io/Resistance/logo.png">
+    <meta property="og:url" content="https://nightmareshadow4exploit.github.io/Resistance/Knowledge/Web%20Hacking/">
+    <meta property="og:type" content="website">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Nightmare">
+    <meta name="twitter:description" content="یادگیری آزمایش نفوذ وب‌سایت و امنیت سایبری از Nightmare. آموزش نحوه نفوذ و محافظت از وب‌سایت‌ها با جدیدترین روش‌ها و تکنیک‌ها.">
+    <meta name="twitter:image" content="https://nightmareshadow4exploit.github.io/Resistance/logo.png">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Vazir&display=swap" rel="stylesheet">
+
+    <!-- Link to your custom CSS -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- JSON-LD Structured Data for the Course -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Course",
+        "name": "Preventing XSS - جلوگیری از آسیب‌پذیری‌های اسکریپت بین سایتی",
+        "description": "آموزش جامع راهکارهای پیشگیری از حملات اسکریپت بین سایتی (XSS). این دوره شامل آموزش تکنیک‌های رمزگذاری، اعتبارسنجی ورودی و استفاده از سیاست‌های امنیتی برای محافظت از وب‌سایت‌ها می‌باشد.",
+        "provider": {
+            "@type": "Organization",
+            "name": "Nightmare",
+            "url": "https://nightmareshadow4exploit.github.io/Resistance/",
+            "logo": "https://nightmareshadow4exploit.github.io/Resistance/logo.png"
+        },
+        "courseMode": "Online",
+        "educationalCredentialAwarded": "Certificate of Completion",
+        "offers": {
+            "@type": "Offer",
+            "url": "https://nightmareshadow4exploit.github.io/Resistance/Knowledge/Web%20Hacking/",
+            "priceCurrency": "IRR",
+            "price": "Free",
+            "availability": "https://schema.org/InStock"
+        },
+        "audience": {
+            "@type": "Audience",
+            "audienceType": "Ethical Hackers, Cybersecurity Enthusiasts"
+        },
+        "image": "https://nightmareshadow4exploit.github.io/Resistance/logo.png"
+    }
+    </script>
+</head>
+
+<body>
+    <div class="page-links">
+        <a href="https://nightmareshadow4exploit.github.io/Resistance" class="link home-link">Home</a>
+        <a href="https://t.me/Nightmare_Indian_Hacker" class="link telegram-link">Telegram</a>
+        <a href="https://nightmareshadow4exploit.github.io/Resistance/Knowledge/Web%20Hacking/index.html" class="link index-link">Index</a>
+    </div>
+    <div class="section theme-white">
+
+        <h1 class="heading-2">چگونه از XSS جلوگیری کنیم</h1><p>
+            در این بخش، ما اصول کلی جلوگیری از آسیب‌پذیری‌های کراس سایت اسکریپتینگ (XSS) و راه‌های استفاده از فناوری‌های رایج مختلف برای محافظت در برابر حملات XSS را توضیح خواهیم داد.
+        </p><p>
+            جلوگیری از XSS به طور کلی از طریق دو لایه دفاعی قابل دستیابی است:
+        </p><ul>
+            <li><a href="#encode-data-on-output">رمزگذاری داده‌ها در خروجی</a></li>
+            <li><a href="#validate-input-on-arrival">اعتبارسنجی ورودی هنگام ورود</a></li>
+        </ul><div class="component">
+        <p>
+            شما می‌توانید از Burp Scanner برای اسکن وب‌سایت‌های خود برای شناسایی آسیب‌پذیری‌های امنیتی متعدد از جمله XSS استفاده کنید. منطق پیشرفته اسکن Burp اعمال یک مهاجم ماهر را شبیه‌سازی می‌کند و قادر است پوشش بالایی از آسیب‌پذیری‌های XSS را شناسایی کند. شما می‌توانید از Burp Scanner برای اطمینان حاصل کردن از عملکرد مؤثر دفاع‌های خود در برابر حملات XSS استفاده کنید.
+        </p>
+        <div class="cta margin-top-m margin-bottom-m"><a class="cta-primary-2" href="/burp/vulnerability-scanner">بیشتر در مورد Burp Scanner بخوانید</a></div>
+        </div><h2 id="encode-data-on-output">رمزگذاری داده‌ها در خروجی</h2><p>
+            رمزگذاری باید بلافاصله قبل از نوشتن داده‌های قابل کنترل توسط کاربر در یک صفحه اعمال شود، زیرا کانتکست (متنی) که در آن می‌نویسید، نوع رمزگذاری مورد نیاز را تعیین می‌کند. به عنوان مثال، مقادیر داخل یک رشته جاوا اسکریپت به نوع متفاوتی از فرار کردن نیاز دارند تا مقادیر در یک کانتکست HTML.
+        </p><p>
+            در یک کانتکست HTML، باید مقادیر غیرمجاز را به موجودیت‌های HTML تبدیل کنید:
+        </p><ul>
+            <li>
+                <code>&lt;</code> تبدیل می‌شود به: <code>&amp;lt;</code>
+            </li>
+            <li>
+                <code>&gt;</code> تبدیل می‌شود به: <code>&amp;gt;</code>
+            </li>
+        </ul><p>
+            در یک کانتکست رشته جاوا اسکریپت، مقادیر غیرالفبایی باید به صورت یونیکد فرار داده شوند:
+        </p><ul>
+            <li>
+                <code>&lt;</code> تبدیل می‌شود به: <code>\u003c</code>
+            </li>
+            <li>
+                <code>&gt;</code> تبدیل می‌شود به: <code>\u003e</code>
+            </li>
+        </ul><p>
+            گاهی اوقات باید چندین لایه رمزگذاری را به ترتیب صحیح اعمال کنید. به عنوان مثال، برای جاسازی ایمن ورودی کاربر در داخل یک هندلر رویداد، باید هم با کانتکست جاوا اسکریپت و هم HTML برخورد کنید. بنابراین ابتدا باید ورودی را به یونیکد فرار دهید، سپس آن را به HTML رمزگذاری کنید:
+        </p><code class="code-scrollable">&lt;a href="#" onclick="x='این رشته نیاز به دو لایه فرار دارد'"&gt;آزمایش&lt;/a&gt;</code><h2 id="validate-input-on-arrival">اعتبارسنجی ورودی هنگام ورود</h2><p>
+            رمزگذاری احتمالاً مهم‌ترین خط دفاع در برابر XSS است، اما برای جلوگیری از آسیب‌پذیری‌های XSS در هر کانتکستی کافی نیست. شما باید همچنین ورودی را به دقت و به صورت محدود هنگام دریافت اولیه از کاربر اعتبارسنجی کنید.
+        </p><p>
+            نمونه‌هایی از اعتبارسنجی ورودی شامل موارد زیر است:
+        </p><ul>
+            <li>
+                اگر کاربر یک URL ارسال کند که در پاسخ‌ها بازگشت داده می‌شود، اعتبارسنجی کنید که آیا این URL با پروتکل امن مانند HTTP و HTTPS آغاز می‌شود یا خیر. در غیر این صورت، کسی ممکن است سایت شما را با پروتکلی خطرناک مانند <code>javascript</code> یا <code>data</code> سوءاستفاده کند.
+            </li>
+            <li>
+                اگر کاربر مقداری را ارسال کند که انتظار می‌رود عددی باشد، بررسی کنید که آیا این مقدار واقعاً شامل یک عدد صحیح است یا خیر.
+            </li>
+            <li>
+                بررسی کنید که ورودی فقط شامل مجموعه‌ای از کاراکترهای مورد انتظار باشد.
+            </li>
+        </ul><p>
+            <p>
+                اعتبارسنجی ورودی باید به طور ایده‌آل با مسدود کردن ورودی‌های غیرمعتبر عمل کند. رویکرد جایگزین، یعنی تلاش برای تمیز کردن ورودی‌های غیرمعتبر به‌منظور تبدیل آن‌ها به ورودی معتبر، پر از اشتباهات است و باید هر جا که ممکن است اجتناب شود.
+            </p><h3 id="whitelisting-vs-blacklisting">لیست سفید در برابر لیست سیاه</h3><p>
+                اعتبارسنجی ورودی باید به طور کلی از لیست سفید به جای لیست سیاه استفاده کند. به عنوان مثال، به جای تلاش برای تهیه فهرستی از تمام پروتکل‌های مضر (<code>javascript</code>، <code>data</code> و غیره)، فقط یک فهرست از پروتکل‌های امن (HTTP، HTTPS) تهیه کنید و هر چیزی که در این لیست نیست را مسدود کنید. این کار تضمین می‌کند که دفاع شما زمانی که پروتکل‌های مضر جدید ظاهر می‌شوند، خراب نمی‌شود و آسیب‌پذیری کمتری در برابر حملات احتمالی خواهد داشت که تلاش می‌کنند مقادیر غیرمعتبر را پنهان کنند تا از لیست سیاه فرار کنند.
+            </p><h2 id="allowing-safe-html">اجازه دادن به "HTML" امن</h2><p>
+                اجازه دادن به کاربران برای ارسال برچسب‌های HTML باید در هر شرایطی که ممکن است اجتناب شود، اما گاهی اوقات این یک نیاز کسب‌وکار است. به عنوان مثال، یک وبلاگ ممکن است اجازه دهد که نظرات شامل برخی از برچسب‌های محدود HTML باشند.
+            </p><p>
+                روش کلاسیک این است که تلاش کنید تا برچسب‌های خطرناک و جاوا اسکریپت را فیلتر کنید. شما می‌توانید این کار را با استفاده از یک لیست سفید از برچسب‌ها و ویژگی‌های امن انجام دهید، اما به دلیل تفاوت‌های موجود در موتورهای تجزیه مرورگرها و مشکلاتی مانند XSS جهش (mutation XSS)، این روش به‌طور بسیار دشواری قابل پیاده‌سازی است.
+            </p><p>
+                کم‌ضررترین گزینه این است که از یک کتابخانه جاوا اسکریپت استفاده کنید که فیلتر کردن و رمزگذاری را در مرورگر کاربر انجام دهد، مانند DOMPurify. سایر کتابخانه‌ها به کاربران این امکان را می‌دهند که محتوا را در فرمت مارک‌داون ارسال کنند و آن را به HTML تبدیل کنند. متأسفانه، تمام این کتابخانه‌ها به طور دوره‌ای آسیب‌پذیری‌های XSS دارند، بنابراین این یک راه‌حل کامل نیست. اگر از یکی استفاده می‌کنید، باید به‌دقت برای به‌روزرسانی‌های امنیتی آن را نظارت کنید.
+            </p><div class="highlightedarea">
+                <h4>توجه</h4>
+                <p>
+                    علاوه بر جاوا اسکریپت، محتوای دیگری مانند CSS و حتی HTML معمولی می‌تواند در برخی شرایط مضر باشد.
+                </p>
+                <p>
+                    <a class="chevron-after" href="https://portswigger.net/research/detecting-and-exploiting-path-relative-stylesheet-import-prssi-vulnerabilities#badcss">حملات با استفاده از CSS مخرب</a>
+                </p>
+            </div><h2 id="how-to-prevent-xss-using-a-template-engine">چگونه از XSS با استفاده از یک موتور قالب جلوگیری کنیم</h2><p>
+                بسیاری از وب‌سایت‌های مدرن از موتورهای قالب‌سازی سمت سرور مانند Twig و Freemarker برای جاسازی محتوای دینامیک در HTML استفاده می‌کنند. این‌ها معمولاً سیستم رمزگذاری خاص خود را تعریف می‌کنند. به عنوان مثال، در Twig، می‌توانید از فیلتر <code>e()</code> با یک آرگومان که کانتکست را تعریف می‌کند، استفاده کنید:
+            </p><code class="code-scrollable">{{ user.firstname | e('html') }}</code><p>
+                برخی دیگر از موتورهای قالب مانند Jinja و React به طور پیش‌فرض محتوای دینامیک را رمزگذاری می‌کنند که به طور مؤثر از اکثر موارد XSS جلوگیری می‌کند.
+            </p><p>
+                ما توصیه می‌کنیم که ویژگی‌های رمزگذاری را به دقت مرور کنید زمانی که ارزیابی می‌کنید که آیا باید از یک موتور قالب یا فریم‌ورک خاص استفاده کنید یا خیر.
+            </p><div class="highlightedarea">
+                <h4>توجه</h4>
+                <p>
+                    اگر ورودی‌های کاربر را مستقیماً به رشته‌های قالب متصل کنید، شما در معرض حمله <a href="https://portswigger.net/kb/issues/00101080_server-side-template-injection">تزریق قالب سمت سرور</a> خواهید بود که اغلب خطرناک‌تر از XSS است.
+                </p>
+            </div><h2 id="how-to-prevent-xss-in-php">چگونه از XSS در PHP جلوگیری کنیم</h2><p>
+                در PHP یک تابع داخلی برای رمزگذاری موجودیت‌ها به نام <code>htmlentities</code> وجود دارد. شما باید این تابع را برای فرار کردن از ورودی خود زمانی که در یک کانتکست HTML قرار دارید فراخوانی کنید. این تابع باید با سه آرگومان فراخوانی شود:
+            </p><ul>
+                <li>
+                    رشته ورودی شما.
+                </li>
+                <li>
+                    <code>ENT_QUOTES</code>، که یک پرچم است که مشخص می‌کند همه نقل قول‌ها باید رمزگذاری شوند.
+                </li>
+                <li>
+                    مجموعه کاراکترها، که در بیشتر موارد باید UTF-8 باشد.
+                </li>
+            </ul><p>
+         
+    به عنوان مثال:
+</p><code class="code-scrollable">&lt;?php echo htmlentities($input, ENT_QUOTES, 'UTF-8');?&gt;</code><p>
+    هنگامی که در یک کانتکست رشته جاوا اسکریپت هستید، باید ورودی را همانطور که قبلاً شرح داده شده، یونیکد-فرار کنید. متأسفانه، PHP هیچ API برای یونیکد-فرار کردن یک رشته ندارد. در اینجا کدی است که این کار را در PHP انجام می‌دهد:
+</p><code class="code-scrollable">&lt;?php</code><code class="code-scrollable">function jsEscape($str) {
+    $output = '';
+    $str = str_split($str);
+    for($i=0;$i&lt;count($str);$i++) {
+        $chrNum = ord($str[$i]);
+        $chr = $str[$i];
+        if($chrNum === 226) {
+            if(isset($str[$i+1]) &amp;&amp; ord($str[$i+1]) === 128) {
+                if(isset($str[$i+2]) &amp;&amp; ord($str[$i+2]) === 168) {
+                    $output .= '\u2028';
+                    $i += 2;
+                    continue;
+                }
+                if(isset($str[$i+2]) &amp;&amp; ord($str[$i+2]) === 169) {
+                    $output .= '\u2029';
+                    $i += 2;
+                    continue;
+                }
+            }
+        }
+        switch($chr) {
+            case "'":
+            case '"':
+            case "\n";
+            case "\r";
+            case "&amp;";
+            case "\\";
+            case "&lt;":
+            case "&gt;":
+                $output .= sprintf("\\u%04x", $chrNum);
+            break;
+            default:
+                $output .= $str[$i];
+            break;
+    }
+    }
+    return $output;
+}
+?&gt;</code><p>
+    در اینجا نحوه استفاده از تابع <code>jsEscape</code> در PHP آورده شده است:
+</p><code class="code-scrollable">&lt;script&gt;x = '&lt;?php echo jsEscape($_GET['x'])?&gt;';&lt;/script&gt;</code><p>
+    به‌طور جایگزین، شما می‌توانید از یک موتور قالب استفاده کنید.
+</p><h2 id="how-to-prevent-xss-client-side-in-javascript">چگونه از XSS در سمت کاربر با استفاده از جاوا اسکریپت جلوگیری کنیم</h2><p>
+    برای فرار کردن ورودی کاربر در یک کانتکست HTML در جاوا اسکریپت، شما به یک رمزگذار HTML نیاز دارید زیرا جاوا اسکریپت هیچ API برای رمزگذاری HTML فراهم نمی‌کند. در اینجا یک کد جاوا اسکریپت نمونه است که یک رشته را به موجودیت‌های HTML تبدیل می‌کند:
+</p><code class="code-scrollable">function htmlEncode(str){
+    return String(str).replace(/[^\w. ]/gi, function(c){
+        return '&amp;#'+c.charCodeAt(0)+';';
+    });
+}</code><p>
+    سپس شما می‌توانید این تابع را به شرح زیر استفاده کنید:
+</p><code class="code-scrollable">&lt;script&gt;document.body.innerHTML = htmlEncode(untrustedValue)&lt;/script&gt;</code><p>
+    اگر ورودی شما در داخل یک رشته جاوا اسکریپت باشد، شما به یک رمزگذار نیاز دارید که فرار یونیکد را انجام دهد. در اینجا یک رمزگذار یونیکد نمونه است:
+</p><code class="code-scrollable">function jsEscape(str){
+    return String(str).replace(/[^\w. ]/gi, function(c){
+        return '\\u'+('0000'+c.charCodeAt(0).toString(16)).slice(-4);
+    });
+}
+</code>
+}</code><p>
+    سپس شما می‌توانید این تابع را به شرح زیر استفاده کنید:
+</p><code class="code-scrollable">&lt;script&gt;document.write('&lt;script&gt;x="'+jsEscape(untrustedValue)+'";&lt;\/script&gt;')&lt;/script&gt;</code><h2 id="how-to-prevent-xss-in-jquery">چگونه از XSS در jQuery جلوگیری کنیم</h2><p>
+    رایج‌ترین نوع XSS در jQuery زمانی است که ورودی کاربر را به یک انتخاب‌گر jQuery ارسال می‌کنید. توسعه‌دهندگان وب معمولاً از <code>location.hash</code> استفاده می‌کنند و آن را به انتخاب‌گر ارسال می‌کنند که باعث ایجاد XSS می‌شود زیرا jQuery HTML را رندر می‌کند. jQuery این مشکل را شناسایی کرده و منطق انتخاب‌گر خود را اصلاح کرده است تا بررسی کند که آیا ورودی با هَش شروع می‌شود یا خیر. اکنون jQuery فقط HTML را رندر می‌کند اگر کاراکتر اول یک <code>&lt;</code> باشد. اگر داده‌های غیرمطمئن را به انتخاب‌گر jQuery ارسال می‌کنید، مطمئن شوید که مقدار را با استفاده از تابع <code>jsEscape</code> که در بالا آمده به درستی فرار کنید.
+</p><h2 id="mitigating-xss-using-content-security-policy-csp">کاهش XSS با استفاده از سیاست امنیت محتوا (CSP)</h2><p>
+    سیاست امنیت محتوا (CSP) آخرین خط دفاع در برابر حملات XSS است. اگر پیشگیری از XSS شما شکست بخورد، می‌توانید از CSP برای کاهش XSS با محدود کردن کارهایی که یک حمله‌کننده می‌تواند انجام دهد استفاده کنید.
+</p><p>
+    CSP به شما این امکان را می‌دهد که موارد مختلفی را کنترل کنید، مانند اینکه آیا اسکریپت‌های خارجی می‌توانند بارگذاری شوند و آیا اسکریپت‌های درون خطی اجرا خواهند شد یا خیر. برای استقرار CSP شما باید یک هدر پاسخ HTTP به نام <code>Content-Security-Policy</code> را شامل کرده و مقداری که سیاست شما را در بر دارد، تعیین کنید.
+</p><p>
+    یک نمونه CSP به شرح زیر است:
+</p><code class="code-scrollable">default-src 'self'; script-src 'self'; object-src 'none'; frame-src 'none'; base-uri 'none';</code><p>
+    این سیاست مشخص می‌کند که منابعی مانند تصاویر و اسکریپت‌ها فقط از همان مبدأ صفحه اصلی بارگذاری شوند. بنابراین حتی اگر یک حمله‌کننده بتواند یک بارگذاری XSS را به‌طور موفقیت‌آمیز تزریق کند، تنها می‌تواند منابع را از مبدأ فعلی بارگذاری کند. این احتمال سوءاستفاده از آسیب‌پذیری XSS را به‌طور چشمگیری کاهش می‌دهد.
+</p><p>
+    اگر نیاز به بارگذاری منابع خارجی دارید، مطمئن شوید که فقط اسکریپت‌هایی را مجاز می‌کنید که به حمله‌کننده کمک نکنند تا سایت شما را مورد سوءاستفاده قرار دهند. به عنوان مثال، اگر دامنه‌های خاصی را در لیست سفید قرار دهید، یک حمله‌کننده می‌تواند هر اسکریپتی را از آن دامنه‌ها بارگذاری کند. در صورت امکان، سعی کنید منابع را در دامنه خود میزبانی کنید.
+</p><p>
+    اگر این امکان وجود ندارد، می‌توانید از سیاست‌های مبتنی بر هش یا nonce برای مجاز کردن اسکریپت‌ها در دامنه‌های مختلف استفاده کنید. nonce یک رشته تصادفی است که به عنوان ویژگی یک اسکریپت یا منبع اضافه می‌شود و تنها زمانی اجرا می‌شود که رشته تصادفی با رشته‌ای که توسط سرور تولید شده مطابقت داشته باشد. یک حمله‌کننده قادر به حدس زدن رشته تصادفی نیست و بنابراین نمی‌تواند یک اسکریپت یا منبع با nonce معتبر را فراخوانی کند و بنابراین منبع اجرا نخواهد شد.
+</p><div class="highlightedarea">
+    <h4>بیشتر بخوانید</h4>
+    <ul><li><a href="content-security-policy.html#mitigating-xss-attacks-using-csp">کاهش حملات XSS با استفاده از CSP</a></li></ul>
+</div>
+
+        
+
+    
+    </div>
+
+<div class="navigation-links">
+    <a href="same-origin-policy.html" class=prev>« Previous</a>
+    <a href="../../../index.html" class="index">Index</a>
+    <span></span>
+</div>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="fa" direction="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Title for SEO --> 
+    <title>Reflected XSS - اسکریپت بین سایتی بازتابی | آموزش امنیت وب</title>
+    
+    <!-- Meta description for SEO -->
+    <meta name="description" content="آموزش جامع اسکریپت بین سایتی بازتابی (Reflected XSS) و تکنیک‌های شناسایی و بهره‌برداری از آسیب‌پذیری‌های امنیتی در وب‌سایت‌ها. یادگیری نحوه تزریق و اجرای اسکریپت در پاسخ‌های HTTP.">
+    
+    <!-- Meta keywords for SEO -->
+    <meta name="keywords" content="Reflected XSS, اسکریپت بین سایتی بازتابی, Cross-Site Scripting, web security, cybersecurity, HTTP injection, script vulnerability, امنیت وب, حملات وب, penetration testing">
+    
+    <!-- Open Graph Meta Tags for better social sharing -->
+    <meta property="og:title" content="Reflected XSS - اسکریپت بین سایتی بازتابی | آموزش امنیت وب">
+    <meta property="og:description" content="آموزش جامع اسکریپت بین سایتی بازتابی (Reflected XSS) و تکنیک‌های شناسایی و بهره‌برداری از آسیب‌پذیری‌های امنیتی در وب‌سایت‌ها. یادگیری نحوه تزریق و اجرای اسکریپت در پاسخ‌های HTTP.">
+    <meta property="og:image" content="https://nightmareshadow4exploit.github.io/Resistance/logo.png">
+    <meta property="og:url" content="https://nightmareshadow4exploit.github.io/Resistance/Knowledge/Web%20Hacking/">
+    <meta property="og:type" content="website">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Nightmare">
+    <meta name="twitter:description" content="یادگیری آزمایش نفوذ وب‌سایت و امنیت سایبری از Nightmare. آموزش نحوه نفوذ و محافظت از وب‌سایت‌ها با جدیدترین روش‌ها و تکنیک‌ها.">
+    <meta name="twitter:image" content="https://nightmareshadow4exploit.github.io/Resistance/logo.png">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Vazir&display=swap" rel="stylesheet">
+
+    <!-- Link to your custom CSS -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- JSON-LD Structured Data for the Course -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Course",
+        "name": "Reflected XSS - اسکریپت بین سایتی بازتابی",
+        "description": "آموزش جامع اسکریپت بین سایتی بازتابی (Reflected XSS) و تکنیک‌های شناسایی و بهره‌برداری از آسیب‌پذیری‌های امنیتی در وب‌سایت‌ها. این دوره شامل آموزش نحوه تزریق و اجرای اسکریپت در پاسخ‌های HTTP می‌باشد.",
+        "provider": {
+            "@type": "Organization",
+            "name": "Nightmare",
+            "url": "https://nightmareshadow4exploit.github.io/Resistance/",
+            "logo": "https://nightmareshadow4exploit.github.io/Resistance/logo.png"
+        },
+        "courseMode": "Online",
+        "educationalCredentialAwarded": "Certificate of Completion",
+        "offers": {
+            "@type": "Offer",
+            "url": "https://nightmareshadow4exploit.github.io/Resistance/Knowledge/Web%20Hacking/",
+            "priceCurrency": "IRR",
+            "price": "Free",
+            "availability": "https://schema.org/InStock"
+        },
+        "audience": {
+            "@type": "Audience",
+            "audienceType": "Ethical Hackers, Cybersecurity Enthusiasts"
+        },
+        "image": "https://nightmareshadow4exploit.github.io/Resistance/logo.png"
+    }
+    </script>
+</head>
+
+<body>
+    <div class="page-links">
+        <a href="https://nightmareshadow4exploit.github.io/Resistance" class="link home-link">Home</a>
+        <a href="https://t.me/Nightmare_Indian_Hacker" class="link telegram-link">Telegram</a>
+        <a href="https://nightmareshadow4exploit.github.io/Resistance/Knowledge/Web%20Hacking/index.html" class="link index-link">Index</a>
+    </div>
+    <div class="section theme-white">
+
+        <h1 class="heading-2">XSS بازتابی</h1><p>
+            در این بخش، ما XSS بازتابی را توضیح خواهیم داد، تأثیر حملات XSS بازتابی را شرح می‌دهیم و نحوه شناسایی آسیب‌پذیری‌های XSS بازتابی را بیان می‌کنیم.
+        </p><h2 id="what-is-reflected-cross-site-scripting">XSS بازتابی چیست؟</h2><p>
+            XSS بازتابی (یا XSS) زمانی بروز می‌کند که یک برنامه داده‌ای را در یک درخواست HTTP دریافت کرده و آن داده را به‌صورت ناامن در پاسخ فوری خود گنجانده می‌کند.
+        </p><p>
+            فرض کنید یک وب‌سایت دارای یک عملکرد جستجو است که عبارت جستجوی وارد شده توسط کاربر را در پارامتر URL دریافت می‌کند:
+        </p><code class="code-scrollable">https://insecure-website.com/search?term=gift</code><p>
+            این برنامه عبارت جستجوی وارد شده را در پاسخ به این URL به‌صورت زیر تکرار می‌کند:
+        </p><code class="code-scrollable">&lt;p&gt;شما جستجو کردید برای: gift&lt;/p&gt;</code><p>
+            فرض بر این است که برنامه هیچ پردازش دیگری بر روی داده‌ها انجام نمی‌دهد، یک مهاجم می‌تواند حمله‌ای به این صورت ایجاد کند:
+        </p><code class="code-scrollable">https://insecure-website.com/search?term=&lt;script&gt;/*+Bad+stuff+here...+*/&lt;/script&gt;</code><p>
+            این URL منجر به پاسخ زیر می‌شود:
+        </p><code class="code-scrollable">&lt;p&gt;شما جستجو کردید برای: &lt;script&gt;/* Bad stuff here... */&lt;/script&gt;&lt;/p&gt;</code><p>
+            اگر کاربر دیگری از برنامه، URL مهاجم را درخواست کند، اسکریپتی که توسط مهاجم ارائه شده در مرورگر کاربر قربانی اجرا خواهد شد، در زمینه جلسه آن‌ها با برنامه.
+        </p>
+
+<h2 id="impact-of-reflected-xss-attacks">تأثیر حملات XSS بازتابی</h2><p>
+            اگر یک مهاجم بتواند یک اسکریپت را که در مرورگر قربانی اجرا می‌شود کنترل کند، معمولاً می‌تواند آن کاربر را به‌طور کامل تحت سلطه خود درآورد. از جمله کارهایی که مهاجم می‌تواند انجام دهد عبارتند از:
+        </p><ul>
+            <li>
+                انجام هر عملی در داخل برنامه که کاربر قادر به انجام آن است.
+            </li>
+            <li>
+                مشاهده هر اطلاعاتی که کاربر قادر به مشاهده آن است.
+            </li>
+            <li>
+                تغییر هر اطلاعاتی که کاربر قادر به تغییر آن است.
+            </li>
+            <li>
+                آغاز تعاملات با سایر کاربران برنامه، از جمله حملات مخرب، که به‌نظر می‌رسد از کاربر اولیه قربانی نشأت گرفته باشد.
+            </li>
+        </ul><p>
+            روش‌های مختلفی وجود دارد که مهاجم می‌تواند کاربر قربانی را وادار به ارسال درخواستی کند که آن‌ها کنترل می‌کنند، به‌منظور ارسال حمله XSS بازتابی. این روش‌ها شامل قرار دادن لینک‌ها در وب‌سایتی است که تحت کنترل مهاجم است یا در وب‌سایت دیگری که اجازه می‌دهد محتوا تولید شود، یا ارسال یک لینک در ایمیل، توییت یا پیام دیگر. حمله می‌تواند به‌طور مستقیم به یک کاربر شناخته شده هدف‌گذاری شود، یا حمله‌ای غیرمستقیم به هر یک از کاربران برنامه باشد.
+        </p><p>
+            نیاز به یک مکانیسم تحویل خارجی برای حمله به این معنی است که تأثیر XSS بازتابی معمولاً کمتر از XSS ذخیره‌شده است، جایی که حمله‌ای خودکفا می‌تواند در داخل خود برنامه آسیب‌پذیر ارسال شود.
+        </p><div class="highlightedarea">
+            <h4>بیشتر بخوانید</h4>
+            
+        <ul><li><a href="/web-security/cross-site-scripting/exploiting">استفاده از آسیب‌پذیری‌های XSS</a></li></ul></div><h2 id="reflected-xss-in-different-contexts">XSS بازتابی در زمینه‌های مختلف</h2><p>
+            انواع مختلفی از XSS بازتابی وجود دارد. محل قرارگیری داده‌های بازتابی در پاسخ برنامه، نوع بارگزاری مورد نیاز برای سوءاستفاده از آن را تعیین می‌کند و همچنین ممکن است تأثیر آسیب‌پذیری را تحت تأثیر قرار دهد.
+        </p><p>
+            علاوه بر این، اگر برنامه هیچ تأیید یا پردازش دیگری بر روی داده‌های ارسال‌شده قبل از بازتاب آن انجام دهد، معمولاً بر نوع بارگذاری XSS مورد نیاز تأثیر می‌گذارد.
+        </p><div class="highlightedarea">
+            <h4>بیشتر بخوانید</h4>
+            
+        <ul><li><a href="/web-security/cross-site-scripting/contexts">زمینه‌های XSS</a></li></ul></div><h2 id="how-to-find-and-test-for-reflected-xss-vulnerabilities">چگونه آسیب‌پذیری‌های XSS بازتابی را پیدا و آزمایش کنیم</h2><p>
+            اکثریت عظیم آسیب‌پذیری‌های XSS بازتابی می‌توانند به‌سرعت و به‌طور قابل اطمینان با استفاده از اسکنر آسیب‌پذیری وب Burp Suite پیدا شوند.
+        </p><p>
+            آزمایش آسیب‌پذیری‌های XSS بازتابی به‌طور دستی شامل مراحل زیر است:
+        </p><ul>
+            <li><strong>هر نقطه ورودی را آزمایش کنید.</strong> هر نقطه ورودی داده در درخواست‌های HTTP برنامه را به‌طور جداگانه آزمایش کنید. این شامل پارامترها یا داده‌های دیگر در رشته پرس‌وجوی URL و بدنه پیام است و همچنین مسیر فایل URL. همچنین شامل هدرهای HTTP است، هرچند رفتار شبیه به XSS که فقط از طریق هدرهای خاص HTTP قابل راه‌اندازی است، ممکن است در عمل قابل سوءاستفاده نباشد. </li>
+            <li><strong>مقادیر عددی تصادفی ارسال کنید.</strong> برای هر نقطه ورودی، یک مقدار تصادفی منحصر به فرد ارسال کنید و بررسی کنید که آیا این مقدار در پاسخ بازتاب می‌شود یا خیر. این مقدار باید طوری طراحی شود که از بیشتر تأییدیه‌های ورودی جان سالم به در ببرد، بنابراین باید نسبتاً کوتاه باشد و فقط شامل حروف و اعداد باشد. اما باید به‌اندازه‌ای طولانی باشد که احتمال تطابق‌های تصادفی در پاسخ را به حداقل برساند. یک مقدار تصادفی آلفانومریک حدود 8 کاراکتر معمولاً ایده‌آل است. شما می‌توانید از <a href="https://portswigger.net/burp/documentation/desktop/tools/intruder/payloads/types#numbers">بارگذاری‌های عددی</a> Burp Intruder برای تولید مقادیر تصادفی مناسب استفاده کنید. و می‌توانید از تنظیمات <a href="/burp/documentation/desktop/tools/intruder/configure-attack/settings#grep-payloads">grep payloads</a> Burp Intruder برای علامت‌گذاری خودکار پاسخ‌هایی که شامل مقدار ارسال‌شده هستند استفاده کنید. </li>
+            <li><strong>زمینه بازتاب را تعیین کنید.</strong> برای هر مکانی در پاسخ که مقدار تصادفی بازتاب شده است، زمینه آن را تعیین کنید. این ممکن است در متن بین تگ‌های HTML، داخل یک ویژگی تگ که ممکن است داخل نقل‌قول باشد، در یک رشته جاوااسکریپت و غیره باشد. </li>
+            <li><strong>یک بارگذاری نامزد آزمایش کنید.</strong> براساس زمینه بازتاب، یک بارگذاری نامزد XSS آزمایش کنید که اگر بدون تغییر در پاسخ بازتاب شود، اجرای جاوااسکریپت را راه‌اندازی می‌کند. ساده‌ترین راه برای آزمایش بارگذاری‌ها این است که درخواست را به <a href="/burp/documentation/desktop/tools/repeater">Burp Repeater</a> ارسال کنید، درخواست را برای وارد کردن بارگذاری نامزد تغییر دهید، درخواست را ارسال کنید، و سپس پاسخ را بررسی کنید تا ببینید آیا بارگذاری کار کرده است یا خیر. یک راه کارآمد برای کار این است که مقدار تصادفی اصلی را در درخواست نگه دارید و بارگذاری XSS نامزد را قبل یا بعد از آن قرار دهید. سپس مقدار تصادفی را به‌عنوان کلمه جستجو در نمای پاسخ Burp Repeater تنظیم کنید. Burp هر مکانی که کلمه جستجو در آن ظاهر می‌شود هایلایت خواهد کرد و به شما این امکان را می‌دهد که سریعاً مکان بازتاب را پیدا کنید. </li>
+            <li><strong>بارگذاری‌های جایگزین را آزمایش کنید.</strong> اگر بارگذاری XSS نامزد توسط برنامه تغییر داده شده باشد یا به‌طور کلی مسدود شده باشد، شما باید بارگذاری‌های جایگزین و تکنیک‌هایی را آزمایش کنید که ممکن است یک حمله XSS کارا را براساس زمینه بازتاب و نوع تأیید ورودی که در حال انجام است ارسال کنند. برای جزئیات بیشتر، به <a href="/web-security/cross-site-scripting/contexts">زمینه‌های XSS</a> مراجعه کنید. </li>
+            <li><strong>حمله را در یک مرورگر آزمایش کنید.</strong> در نهایت، اگر در یافتن بارگذاری‌ای که به‌نظر می‌رسد در Burp Repeater کار می‌کند موفق شدید، حمله را به یک مرورگر واقعی منتقل کنید (با چسباندن URL در نوار آدرس، یا با تغییر درخواست در <a href="/burp/documentation/desktop/tools/proxy/intercept-messages">نمای تقاطع Burp Proxy</a>، و ببینید آیا جاوااسکریپت تزریق‌شده واقعاً اجرا می‌شود یا خیر. اغلب بهترین کار این است که جاوااسکریپت ساده‌ای مانند <code>alert(document.domain)</code> اجرا کنید که در صورت موفقیت حمله، یک پاپ‌آپ قابل مشاهده در مرورگر ایجاد خواهد کرد. </li>
+        </ul><h2 id="common-questions-about-reflected-cross-site-scripting">سؤالات رایج درباره XSS بازتابی</h2><p>
+            <strong>تفاوت بین XSS بازتابی و XSS ذخیره‌شده چیست؟</strong> XSS بازتابی زمانی بروز می‌کند که یک برنامه برخی ورودی‌ها را از یک درخواست HTTP دریافت کرده و آن ورودی‌ها را به‌صورت ناامن در پاسخ فوری خود گنجانده می‌کند. در XSS ذخیره‌شده، برنامه به‌جای آنکه ورودی را در پاسخ فوری بگنجاند، آن را ذخیره کرده و در پاسخ بعدی به‌صورت ناامن در آن گنجانده می‌کند.
+        </p><p>
+            <strong>تفاوت بین XSS بازتابی و XSS خودی چیست؟</strong> XSS خودی مشابه رفتار برنامه در XSS بازتابی است، با این تفاوت که این نوع نمی‌تواند به‌طور معمول از طریق URL ساخته‌شده یا درخواست‌های متقابل دامنه راه‌اندازی شود. در عوض، آسیب‌پذیری تنها زمانی تحریک می‌شود که قربانی خودش بارگذاری XSS را از مرورگر خود ارسال کند. انجام یک حمله XSS خودی معمولاً نیازمند مهندسی اجتماعی برای وادار کردن قربانی به چسباندن ورودی ارائه‌شده توسط مهاجم در مرورگر خود است. از این‌رو معمولاً این مسئله به‌عنوان یک مشکل ضعیف و کم‌تأثیر در نظر گرفته می‌شود.
+        </p>
+    </div>
+
+<div class="navigation-links">
+  <a href="what is xss.html" class="prev">« Previous</a>
+    <a href="../../../index.html" class="index">Index</a>
+    <a href="stored.html"  class="next">Next »</a>
+</div>
+</body>
+</html>

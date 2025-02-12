@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="fa" direction="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Title for SEO --> 
+    <title>Client-Side Template Injection (CSTI) - تزریق الگوی سمت مشتری | آموزش امنیت وب</title>
+    
+    <!-- Meta description for SEO -->
+    <meta name="description" content="آموزش جامع تزریق الگوی سمت مشتری (CSTI) و نحوه شناسایی و مقابله با حملات XSS در چارچوب‌های سمت کلاینت مانند AngularJS. راهنمای کامل امنیت وب‌سایت.">
+    
+    <!-- Meta keywords for SEO -->
+    <meta name="keywords" content="CSTI, Client-Side Template Injection, تزریق الگوی سمت مشتری, XSS, AngularJS, امنیت وب, web security, cybersecurity, sandbox injection">
+    
+    <!-- Open Graph Meta Tags for better social sharing -->
+    <meta property="og:title" content="Client-Side Template Injection (CSTI) - تزریق الگوی سمت مشتری | آموزش امنیت وب">
+    <meta property="og:description" content="آموزش جامع تزریق الگوی سمت مشتری (CSTI) و نحوه شناسایی و مقابله با حملات XSS در چارچوب‌های سمت کلاینت مانند AngularJS. راهنمای کامل امنیت وب‌سایت.">
+    <meta property="og:image" content="https://nightmareshadow4exploit.github.io/Resistance/logo.png">
+    <meta property="og:url" content="https://nightmareshadow4exploit.github.io/Resistance/Knowledge/Web%20Hacking/">
+    <meta property="og:type" content="website">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Nightmare">
+    <meta name="twitter:description" content="یادگیری آزمایش نفوذ وب‌سایت و امنیت سایبری از Nightmare. آموزش نحوه نفوذ و محافظت از وب‌سایت‌ها با جدیدترین روش‌ها و تکنیک‌ها.">
+    <meta name="twitter:image" content="https://nightmareshadow4exploit.github.io/Resistance/logo.png">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Vazir&display=swap" rel="stylesheet">
+
+    <!-- Link to your custom CSS -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- JSON-LD Structured Data for the Course -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Course",
+        "name": "Client-Side Template Injection (CSTI) - تزریق الگوی سمت مشتری",
+        "description": "آموزش جامع تزریق الگوی سمت مشتری (CSTI) و نحوه شناسایی و مقابله با حملات XSS در چارچوب‌های سمت کلاینت مانند AngularJS. این دوره شامل آموزش تکنیک‌های نفوذ و محافظت از وب‌سایت می‌باشد.",
+        "provider": {
+            "@type": "Organization",
+            "name": "Nightmare",
+            "url": "https://nightmareshadow4exploit.github.io/Resistance/",
+            "logo": "https://nightmareshadow4exploit.github.io/Resistance/logo.png"
+        },
+        "courseMode": "Online",
+        "educationalCredentialAwarded": "Certificate of Completion",
+        "offers": {
+            "@type": "Offer",
+            "url": "https://nightmareshadow4exploit.github.io/Resistance/Knowledge/Web%20Hacking/",
+            "priceCurrency": "IRR",
+            "price": "Free",
+            "availability": "https://schema.org/InStock"
+        },
+        "audience": {
+            "@type": "Audience",
+            "audienceType": "Ethical Hackers, Cybersecurity Enthusiasts"
+        },
+        "image": "https://nightmareshadow4exploit.github.io/Resistance/logo.png"
+    }
+    </script>
+</head>
+
+<body>
+    <div class="page-links">
+        <a href="https://nightmareshadow4exploit.github.io/Resistance" class="link home-link">Home</a>
+        <a href="https://t.me/Nightmare_Indian_Hacker" class="link telegram-link">Telegram</a>
+        <a href="https://nightmareshadow4exploit.github.io/Resistance/Knowledge/Web%20Hacking/index.html" class="link index-link">Index</a>
+    </div>
+    <div class="section theme-white">
+
+        <h1 class="heading-2">تزریق الگوی سمت مشتری</h1><p>
+            در این بخش، آسیب‌پذیری‌های تزریق قالب سمت کلاینت و نحوه استفاده از آنها برای حملات XSS را بررسی خواهیم کرد. این تکنیک حمله توسط تیم تحقیقاتی ما پیشگام شد - در <a href="https://portswigger.net/research/xss-without-html-client-side-template-injection-with-angularjs">XSS بدون HTML: الگوی سمت مشتری بیشتر بخوانید
+            تزریق با AngularJS</a>. اگرچه تزریق قالب سمت سرویس گیرنده یک مسئله عمومی است، ما روی نمونه هایی از چارچوب AngularJS تمرکز خواهیم کرد زیرا این رایج ترین است. ما توضیح خواهیم داد که چگونه می توانید اکسپلویت هایی را ایجاد کنید که از sandbox AngularJS فرار می کنند و چگونه می توانید از ویژگی های AngularJS برای دور زدن خط مشی امنیت محتوا (CSP) استفاده کنید.
+        </p><h2 id="what-is-client-side-template-injection">تزریق الگوی سمت مشتری چیست؟</h2><p>
+            آسیب‌پذیری‌های تزریق قالب سمت کلاینت زمانی به وجود می‌آیند که برنامه‌هایی که از چارچوب قالب سمت کلاینت استفاده می‌کنند، ورودی کاربر را به صورت پویا در صفحات وب جاسازی می‌کنند. هنگام رندر کردن یک صفحه، فریمورک آن را برای عبارات قالب اسکن می کند و هر چیزی را که با آن مواجه می شود اجرا می کند. یک مهاجم می تواند با ارائه یک عبارت الگوی مخرب که یک حمله اسکریپت بین سایتی (XSS) را راه اندازی می کند، از این مورد سوء استفاده کند.
+        </p><h2 id="what-is-the-angularjs-sandbox">Sandbox AngularJS چیست؟</h2><p>
+ </p><h2 id="what-is-the-angularjs-sandbox">Sandbox AngularJS چیست؟</h2><p>
+            جعبه شنی AngularJS مکانیزمی است که از دسترسی به اشیاء بالقوه خطرناک، مانند <code>window</code> یا <code>document</code> در عبارات قالب AngularJS جلوگیری می کند. همچنین از دسترسی به ویژگی های بالقوه خطرناک مانند <code>__proto__</code> جلوگیری می کند. علیرغم اینکه توسط تیم AngularJS یک مرز امنیتی در نظر گرفته نمی شود، جامعه توسعه دهندگان گسترده تر به طور کلی چیز دیگری فکر می کنند. اگرچه دور زدن جعبه شنی در ابتدا چالش برانگیز بود، اما محققان امنیتی راه های متعددی را برای انجام این کار کشف کرده اند. در نتیجه، در نهایت از AngularJS در نسخه 1.6 حذف شد. با این حال، بسیاری از برنامه های قدیمی هنوز از نسخه های قدیمی AngularJS استفاده می کنند و در نتیجه ممکن است آسیب پذیر باشند.
+        </p><h2 id="how-does-the-angularjs-sandbox-work">چگونه جعبه ایمنی AngularJS کار می کند؟</h2><p>
+            سندباکس با تجزیه یک عبارت، بازنویسی جاوا اسکریپت، و سپس استفاده از توابع مختلف برای آزمایش اینکه آیا کد بازنویسی شده حاوی اشیاء خطرناکی است یا خیر، کار می کند. برای مثال، تابع <code>ensureSafeObject()</code> بررسی می‌کند که آیا یک شی معین به خود ارجاع می‌دهد یا خیر. برای مثال، این یکی از راه‌های شناسایی شی <code>window</code> است. سازنده <code>Function</code> تقریباً به همین روش شناسایی می شود، با بررسی اینکه آیا ویژگی سازنده به خود ارجاع می دهد یا خیر.
+        </p><p>
+            تابع <code>ensureSafeMemberName()</code> دسترسی هر ویژگی شی را بررسی می کند و اگر دارای ویژگی های خطرناکی مانند <code>__proto__</code> یا <code>__lookupGetter__</code> باشد، شی مسدود می شود. تابع <code>ensureSafeFunction()</code> از فراخوانی <code>call()</code>، <code>apply()</code>، <code>bind()</code> یا <code>constructor()</code> جلوگیری می‌کند.
+        </p><p>
+            می‌توانید با مراجعه به <a href="http://jsfiddle.net/2zs2yv7o/1/">این کمانچه</a> و تعیین نقطه شکست در خط 13275 فایل <code>angular.js</code>، جعبه شنی را در عمل مشاهده کنید. متغیر <code>fnString</code> حاوی کد بازنویسی شده شما است، بنابراین می توانید ببینید که AngularJS چگونه آن را تبدیل می کند.
+        </p><h2 id="how-does-an-angularjs-sandbox-escape-work">یک Escape sandbox AngularJS چگونه کار می کند؟</h2><p>
+            فرار از جعبه شنی شامل فریب دادن جعبه شنی است تا تصور کند عبارت مخرب بی‌خطر است. شناخته شده ترین escape از تابع تغییر یافته <code>charAt()</code> به صورت سراسری در یک عبارت استفاده می کند:
+        </p><code class="code-scrollable">'a'.constructor.prototype.charAt=[].join</code><p>
+            هنگامی که در ابتدا کشف شد، AngularJS از این اصلاح جلوگیری نکرد. حمله با بازنویسی تابع با استفاده از روش <code>[].join</code> کار می‌کند، که باعث می‌شود تابع <code>charAt()</code> به جای یک کاراکتر خاص، همه کاراکترهای ارسال شده به آن را برگرداند. با توجه به منطق تابع <code>isIdent()</code> در AngularJS، آنچه را که فکر می کند یک کاراکتر واحد در برابر چندین کاراکتر است مقایسه می کند. از آنجایی که کاراکترهای منفرد همیشه کمتر از چندین کاراکتر هستند، تابع <code>isIdent()</code> همیشه true را برمی گرداند، همانطور که در مثال زیر نشان داده شده است:
+        </p><code class="code-scrollable">isIdent = function(ch) {
+    return ('a' &lt;= ch &amp;&amp; ch &lt;= 'z' || 'A' &lt;= ch &amp;&amp; ch &lt;= 'Z' || '_' === ch || ch === '$');
+}
+isIdent('x9=9a9l9e9r9t9(919)')</code><p>
+            Once the <code>isIdent()</code>تابع فریب خورده است، می توانید جاوا اسکریپت مخرب را تزریق کنید. برای مثال، عبارتی مانند <code>$eval('x=alert(1)')</code> مجاز است زیرا AngularJS هر کاراکتری را به عنوان یک شناسه در نظر می‌گیرد. توجه داشته باشید که ما باید از تابع <code>$eval()</code> AngularJS استفاده کنیم زیرا بازنویسی تابع <code>charAt()</code> تنها زمانی اعمال می‌شود که کد sandbox اجرا شود. این تکنیک سپس جعبه شنی را دور می زند و اجازه اجرای دلخواه جاوا اسکریپت را می دهد.
+            پژوهش PortSwigger <a href="https://portswigger.net/research/xss-without-html-client-side-template-injection-with-angularjs">چندین بار جعبه ایمنی AngularJS را به طور جامع شکسته است</a>.
+        </p><h3 id="constructing-an-advanced-angularjs-sandbox-escape">ساخت یک Escape پیشرفته AngularJS sandbox</h3><p>
+			بنابراین شما یاد گرفته‌اید که چگونه یک Sandbox Escape پایه کار می‌کند، اما ممکن است با سایت‌هایی مواجه شوید که محدودیت‌های بیشتری برای استفاده از کاراکترها دارند. به عنوان مثال، یک سایت ممکن است شما را از استفاده از نقل قول های دوتایی یا تکی منع کند. در این شرایط، باید از توابعی مانند <code>String.fromCharCode()</code> برای تولید کاراکترهای خود استفاده کنید. اگرچه AngularJS از دسترسی به سازنده <code>String</code> در یک عبارت جلوگیری می‌کند، شما می‌توانید با استفاده از ویژگی سازنده یک رشته، به جای آن، آن را دور بزنید. این بدیهی است که به یک رشته نیاز دارد، بنابراین برای ساخت حمله ای مانند این، باید راهی برای ایجاد یک رشته بدون استفاده از نقل قول های تکی یا دوگانه پیدا کنید.
+		</p><p>
+			در یک Sandbox Escape استاندارد، از <code>$eval()</code> برای اجرای بارگذاری جاوا اسکریپت خود استفاده می کنید، اما در آزمایشگاه زیر، تابع <code>$eval()</code> تعریف نشده است. خوشبختانه ما می توانیم به جای آن از فیلتر <code>orderBy</code> استفاده کنیم. نحو معمولی فیلتر <code>orderBy</code> به شرح زیر است:
+		</p><code class="code-scrollable">[123]|orderBy:'Some string'</code><p>
+			توجه داشته باشید که عملگر <code>|</code> معنای متفاوتی با جاوا اسکریپت دارد. به طور معمول، این یک عملیات <code>OR</code> بیتی است، اما در AngularJS یک عملیات فیلتر را نشان می دهد. در کد بالا، آرایه <code>[123] </code> در سمت چپ را به فیلتر <code>orderBy</code> در سمت راست ارسال می کنیم. دو نقطه نشان دهنده آرگومان برای ارسال به فیلتر است که در این مورد یک رشته است. فیلتر <code>orderBy</code> معمولاً برای مرتب‌سازی یک شی استفاده می‌شود، اما یک عبارت را نیز می‌پذیرد، به این معنی که می‌توانیم از آن برای ارسال بار استفاده کنیم.
+		</p><p>
+			اکنون باید تمام ابزارهای مورد نیاز برای مقابله با آزمایشگاه بعدی را داشته باشید.
+		</p>
+        <h2 id="how-does-an-angularjs-csp-bypass-work">بای پس AngularJS CSP چگونه کار می کند؟</h2><p>
+            دور زدن خط مشی امنیتی محتوا (CSP) به روشی مشابه با خروجی های استاندارد جعبه ایمنی کار می کند، اما معمولاً شامل مقداری تزریق HTML است. هنگامی که حالت CSP در AngularJS فعال است، عبارات قالب را به طور متفاوتی تجزیه می کند و از استفاده از سازنده <code>Function</code> اجتناب می کند. این بدان معنی است که فرار استاندارد جعبه شنی شرح داده شده در بالا دیگر کار نخواهد کرد.
+        </p><p>
+            بسته به خط مشی خاص، CSP رویدادهای جاوا اسکریپت را مسدود می کند. با این حال، AngularJS رویدادهای خود را تعریف می کند که می تواند به جای آن استفاده شود. هنگامی که در داخل یک رویداد است، AngularJS یک شی <code>$event</code> ویژه را تعریف می کند، که به سادگی به شی رویداد مرورگر ارجاع می دهد. می توانید از این شی برای انجام یک بای پس CSP استفاده کنید. در Chrome، یک ویژگی خاص در شی <code>$event/event</code> به نام <code>path</code> وجود دارد. این ویژگی شامل آرایه ای از اشیاء است که باعث می شود رویداد اجرا شود. آخرین ویژگی همیشه شی <code>window</code> است که می‌توانیم از آن برای اجرای یک فرار از جعبه سند استفاده کنیم. با ارسال این آرایه به فیلتر <code>orderBy</code>، می‌توانیم آرایه را برشماریم و از آخرین عنصر (شئ <code>window</code>) برای اجرای یک تابع سراسری مانند <code>alert()</code> استفاده کنیم. کد زیر این را نشان می دهد:
+        </p><code class="code-scrollable">&lt;input autofocus ng-focus="$event.path|orderBy:'[].constructor.from([1],alert)'"&gt;</code><p>
+            توجه داشته باشید که از تابع <code>from()</code> استفاده می شود، که به شما امکان می دهد یک شی را به یک آرایه تبدیل کنید و یک تابع داده شده (مشخص شده در آرگومان دوم) را روی هر عنصر آرایه فراخوانی کنید. در این مورد، تابع <code>alert()</code> را فراخوانی می کنیم. ما نمی‌توانیم تابع را مستقیماً فراخوانی کنیم زیرا جعبه ایمنی AngularJS کد را تجزیه می‌کند و تشخیص می‌دهد که شی <code>window</code> برای فراخوانی یک تابع استفاده می‌شود. استفاده از تابع <code>from()</code> در عوض به طور موثر شی <code>window</code> را از جعبه شنی پنهان می کند و به ما امکان می دهد کد مخرب را تزریق کنیم.
+		</p><p>PortSwigger Research <a href="https://portswigger.net/research/angularjs-csp-bypass-in-56-characters">created a CSP bypass using AngularJS in 56 characters using this technique</a>.</p><h3 id="bypassing-a-csp-with-an-angularjs-sandbox-escape">Bypassing a CSP with an AngularJS sandbox escape</h3><p>
+			این آزمایشگاه بعدی از یک محدودیت طول استفاده می کند، بنابراین بردار فوق کار نخواهد کرد. به منظور بهره برداری از آزمایشگاه، باید به روش های مختلفی برای پنهان کردن شی <code>window</code> از جعبه شنی AngularJS فکر کنید. یکی از راه های انجام این کار استفاده از تابع <code>array.map()</code> به صورت زیر است:
+		</p><code class="code-scrollable">[1].map(alert)</code><p>
+			<code>map()</code> یک تابع را به عنوان آرگومان می پذیرد و آن را برای هر آیتم در آرایه فراخوانی می کند. این کار جعبه شنی را دور می زند زیرا ارجاع به تابع <code>alert()</code> بدون ارجاع صریح به <code>پنجره</code> استفاده می شود. برای حل این آزمایشگاه، روش‌های مختلفی را برای اجرای <code>alert()</code> بدون فعال کردن شناسایی <code>window</code> AngularJS امتحان کنید.
+		</p>
+
+        <h2 id="how-to-prevent-client-side-template-injection-vulnerabilities">نحوه جلوگیری از آسیب پذیری های تزریق قالب سمت سرویس گیرنده</h2><p>
+            برای جلوگیری از آسیب‌پذیری‌های تزریق قالب سمت سرویس گیرنده، از استفاده از ورودی نامعتبر کاربر برای تولید الگوها یا عبارات خودداری کنید. اگر این عملی نیست، قبل از جاسازی آن در قالب های سمت سرویس گیرنده، سینتکس عبارت قالب را از ورودی کاربر فیلتر کنید.
+        </p><p>
+            توجه داشته باشید که کدگذاری HTML برای جلوگیری از حملات تزریق قالب در سمت سرویس گیرنده کافی نیست، زیرا فریم ورک ها قبل از مکان یابی و اجرای عبارات قالب، یک رمزگشایی HTML از محتوای مرتبط را انجام می دهند.
+        </p>
+        
+
+    
+    </div>
+
+<div class="navigation-links">
+  <a href="contexts.html" class="prev">« Previous</a>
+    <a href="../../../index.html" class="index">Index</a>
+    <a href="content-security-policy.html"  class="next">Next »</a>
+
+    
+</div>
+</body>
+</html>

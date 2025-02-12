@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SQLi | آزمایشگاه - 3</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+  <h1>SQLi | آزمایشگاه - 3</h1>
+  <hr>
+  <h2>Lab: SQL injection attack, querying the database type and version on MySQL and Microsoft</h2>
+  <strong>This lab contains a SQL injection vulnerability in the product category filter. You can use a UNION attack to retrieve the results from an injected query.
+<br><br>
+    To solve the lab, display the database version string.
+    <br>
+    </strong>
+    <a href="https://portswigger.net/web-security/sql-injection/examining-the-database/lab-querying-database-version-mysql-microsoft">You can visit from here.  </a>
+    <hr>
+    <p>Our Aim to display the database version.</p>
+
+    <p>So without wasting our time we will ACCESS THE LAB, as we know that the vulnerability is in product category filter.</p>
+    <p>We will click on:</p>
+    <img src="imgs/3-01.png" alt="Fast">
+
+    <p>As we want to get the verion of database of Microsoft, you can use <a href="">cheat sheat</a>, and will use UNION to get the version.</p>
+    <p>But, before perfoming UNION attack, we have to define the numbers of columns a database has.</p>
+    <p>So lets try adding ORDER BY METHOD:</p>
+    <img src="imgs/4-01.png" alt="adding order by method.">
+
+    <p>But if you test it practically, it will show an error: </p>
+    <img src="imgs/4-02.png" alt="Error">
+
+    <p>And that because of COMMENTS, COMMENTS can be different for different databases:</p>
+    <img src="imgs/4-03.png" alt="Commensts for differnt DB">
+    <p>So we will now try to test every COMMENT, but none works except for this</p>
+    <pre><code>' order by 1 -- </code></pre>
+    <p>its comment for MySQL, because for MySQL we have to give a space after --</p>
+
+    <p>So now lets see how much columns does it have, by giving this payload:</p>
+    <pre><code>' order by 2 -- </code></pre>
+<p>By testing this, we now know that it only uses 2 columns</p>
+<hr>
+    <p>From the above points we concluded that the databases has two columns and its MySQL database.So we need to use payload that is acceptable in MySQL:</p>
+    <img src="imgs/3-06.png" alt="databases version">
+
+
+    <pre><code>' UNION SELECT SELECT @@version, null -- </code></pre>
+
+
+    <p></p>
+  </div>
+
+</body>
+</html>

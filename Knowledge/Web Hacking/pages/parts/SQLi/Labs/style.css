@@ -1,0 +1,218 @@
+/* General Styles */
+body {
+    font-family: 'Vazir', 'Tahoma', sans-serif; /* Use Persian-friendly fonts */
+    line-height: 1.8;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    /* direction: rtl; Set direction to RTL for Persian */
+    text-align: right; /* Align text to the right */
+}
+
+h1, h3 {
+    color: #2c3e50;
+    text-align: right; /* Align headers to the right */
+}
+
+a {
+    color: #3498db;
+    text-decoration: none;
+    direction: rtl; /* Ensure links follow RTL format */
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Highlight Parentheses */
+p, li {
+    font-size: 1rem;
+    color: #333;
+    text-align: right; /* Align text to the right */
+}
+
+p span.highlight, li span.highlight {
+    background-color: #7f8c8d;
+    font-weight: bold;
+    color: white;
+}
+
+/* Preformatted Text and Code */
+pre {
+    background-color: #ebf0f2;
+    color: #333;
+    padding: 1rem;
+    border: 1px solid #eaeaea;
+    border-radius: 5px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    direction: ltr; /* Code blocks are usually LTR */
+    text-align: left; /* Align code to the left */
+}
+
+code {
+    /* background-color: #f4f4f4; */
+    color: #333;
+    padding: 0.2rem 0.4rem;
+    border-radius: 3px;
+    font-size: 0.95rem;
+    direction: ltr; /* Code snippets are LTR */
+    text-align: left;
+}
+
+/* Read More Section */
+.read_more {
+    background-color: #ecf0f1;
+    border: 1px solid #bdc3c7;
+    padding: 1rem;
+    margin: 1rem 0;
+    border-radius: 5px;
+    text-align: right;
+    direction: rtl;
+}
+
+.read_more p {
+    font-weight: bold;
+    margin: 0 0 0.5rem;
+}
+
+.read_more a {
+    color: #2980b9;
+    font-weight: bold;
+}
+
+.read_more a:hover {
+    text-decoration: underline;
+}
+
+/* Warning Section */
+.warning {
+    background-color: #fbe9e7;
+    color: #d32f2f;
+    border-right: 5px solid #d32f2f; /* Change to border-right for RTL */
+    padding: 1rem;
+    margin: 1rem 0;
+    border-radius: 5px;
+    text-align: right;
+    direction: rtl;
+}
+
+.warning p {
+    margin: 0;
+    font-weight: bold;
+}
+
+/* Warning Section */
+.note {
+    background-color: #fbe9e7;
+    color: lightcoral;
+    border-right: 5px solid lightcoral; /* Change to border-right for RTL */
+    padding: 1rem;
+    margin: 1rem 0;
+    border-radius: 5px;
+    text-align: right;
+    direction: rtl;
+}
+
+.note p {
+    margin: 0;
+    font-weight: bold;
+}
+/* Container */
+.container {
+    max-width: 800px;
+    margin: auto;
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    direction: rtl; /* Ensure overall container aligns RTL */
+    text-align: right;
+}
+
+/* Topic Links */
+.container a {
+    display: inline-block;
+    margin-bottom: 0.5rem;
+}
+
+/* Images */
+img {
+    max-width: 100%;
+    height: auto;
+    margin: 1rem 0;
+}
+
+/* Thanks Section */
+.thanksPS {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #7f8c8d;
+    direction: rtl; /* Adjust alignment */
+}
+
+
+
+
+.top-links {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.top-links a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    font-size: 1em;
+    transition: color 0.3s;
+}
+
+.top-links a:hover {
+    color: #0056b3;
+}
+
+
+  /* Style for tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table th, table td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+table th {
+    background-color: #f2f2f2;
+    color: #333;
+}
+
+table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+table tr:hover {
+    background-color: #f1f1f1;
+}
+
+table td {
+    color: #555;
+}
+
+/* Optional: Add spacing at the top and bottom of the table */
+table {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+/* Optional: Style the borders */
+table, th, td {
+    border: 1px solid #ddd;
+}
+

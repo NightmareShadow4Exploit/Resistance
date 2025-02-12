@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="fa" direction="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Title for SEO --> <!-- the whole site is written by مجتبی -->
+    <title>Content Security Policy (CSP) - خط مشی امنیت محتوا | آموزش امنیت وب</title>
+    
+    <!-- Meta description for SEO -->
+    <meta name="description" content="آموزش جامع Content Security Policy (CSP) و نحوه پیاده‌سازی آن برای مقابله با حملات XSS. یادگیری تنظیمات و دستورالعمل‌های CSP برای امنیت وب‌سایت.">
+    
+    <!-- Meta keywords for SEO -->
+    <meta name="keywords" content="CSP, Content Security Policy, خط مشی امنیت محتوا, امنیت وب, XSS, script-src, same-origin policy, web security, cybersecurity">
+    
+    <!-- Open Graph Meta Tags for better social sharing -->
+    <meta property="og:title" content="Content Security Policy (CSP) - خط مشی امنیت محتوا | آموزش امنیت وب">
+    <meta property="og:description" content="آموزش جامع Content Security Policy (CSP) و نحوه پیاده‌سازی آن برای مقابله با حملات XSS. یادگیری تنظیمات و دستورالعمل‌های CSP برای امنیت وب‌سایت.">
+    <meta property="og:image" content="https://nightmareshadow4exploit.github.io/Resistance/logo.png">
+    <meta property="og:url" content="https://nightmareshadow4exploit.github.io/Resistance/Knowledge/Web%20Hacking/">
+    <meta property="og:type" content="website">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Nightmare">
+    <meta name="twitter:description" content="یادگیری آزمایش نفوذ وب‌سایت و امنیت سایبری از Nightmare. آموزش نحوه نفوذ و محافظت از وب‌سایت‌ها با جدیدترین روش‌ها و تکنیک‌ها.">
+    <meta name="twitter:image" content="https://nightmareshadow4exploit.github.io/Resistance/logo.png">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Vazir&display=swap" rel="stylesheet">
+
+    <!-- Link to your custom CSS -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- JSON-LD Structured Data for the Course -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Course",
+        "name": "Content Security Policy (CSP) - خط مشی امنیت محتوا",
+        "description": "آموزش جامع Content Security Policy (CSP) و نحوه پیاده‌سازی آن برای مقابله با حملات XSS. این دوره شامل آموزش تنظیمات و دستورالعمل‌های CSP برای افزایش امنیت وب‌سایت می‌باشد.",
+        "provider": {
+            "@type": "Organization",
+            "name": "Nightmare",
+            "url": "https://nightmareshadow4exploit.github.io/Resistance/",
+            "logo": "https://nightmareshadow4exploit.github.io/Resistance/logo.png"
+        },
+        "courseMode": "Online",
+        "educationalCredentialAwarded": "Certificate of Completion",
+        "offers": {
+            "@type": "Offer",
+            "url": "https://nightmareshadow4exploit.github.io/Resistance/Knowledge/Web%20Hacking/",
+            "priceCurrency": "IRR",
+            "price": "Free",
+            "availability": "https://schema.org/InStock"
+        },
+        "audience": {
+            "@type": "Audience",
+            "audienceType": "Ethical Hackers, Cybersecurity Enthusiasts"
+        },
+        "image": "https://nightmareshadow4exploit.github.io/Resistance/logo.png"
+    }
+    </script>
+    </head>
+
+<body>
+    <div class="page-links">
+        <a href="https://nightmareshadow4exploit.github.io/Resistance" class="link home-link">Home</a>
+        <a href="https://t.me/Nightmare_Indian_Hacker" class="link telegram-link">Telegram</a>
+        <a href="https://nightmareshadow4exploit.github.io/Resistance/Knowledge/Web%20Hacking/index.html" class="link index-link">Index</a>
+    </div>
+    
+    <div class="section theme-white">
+
+        <h1 class="heading-2">Content security policy / خط مشی امنیت محتوا </h1><p>
+            در این بخش، خط‌مشی امنیت محتوا را توضیح می‌دهیم و نحوه استفاده از CSP را برای کاهش برخی حملات رایج شرح می‌دهیم.
+        </p><h2 id="what-is-csp-content-security-policy">CSP (خط مشی امنیت محتوا) چیست؟</h2><p>
+            CSP یک مکانیسم امنیتی مرورگر است که هدف آن کاهش XSS و برخی حملات دیگر است. این کار با محدود کردن منابع (مانند اسکریپت ها و تصاویر) که یک صفحه می تواند بارگذاری کند و محدود کردن اینکه آیا یک صفحه می تواند توسط صفحات دیگر قاب شود یا خیر کار می کند.
+        </p><p>
+            برای فعال کردن CSP، یک پاسخ باید شامل یک سرصفحه پاسخ HTTP به نام <code>Content-Security-Policy</code> با مقداری حاوی خط مشی باشد. سیاست خود شامل یک یا چند دستورالعمل است که با نقطه ویرگول از هم جدا شده اند.
+        </p><h2 id="mitigating-xss-attacks-using-csp">کاهش حملات XSS با استفاده از CSP</h2><p>
+            دستورالعمل زیر فقط به اسکریپت‌ها اجازه می‌دهد تا از <a href="same-origin-policy.html">Same Origin Policy / همان مبدا</a> خود صفحه بارگیری شوند:
+        </p><code class="code-scrollable">script-src 'self'</code><p>
+            دستورالعمل زیر فقط به اسکریپت ها اجازه بارگیری از یک دامنه خاص را می دهد:
+        </p><code class="code-scrollable">script-src https://scripts.normal-website.com</code><p>
+            هنگام مجاز کردن اسکریپت ها از دامنه های خارجی باید مراقب باشید. اگر راهی برای یک مهاجم برای کنترل محتوایی که از دامنه خارجی ارائه می شود وجود داشته باشد، ممکن است بتواند حمله ای را انجام دهد. برای مثال، شبکه‌های تحویل محتوا (CDN) که از نشانی‌های اینترنتی برای هر مشتری استفاده نمی‌کنند، مانند <code>ajax.googleapis.com</code>، نباید مورد اعتماد قرار گیرند، زیرا اشخاص ثالث می‌توانند محتوا را در دامنه‌های خود دریافت کنند.
+        </p><p>
+            علاوه بر فهرست سفید دامنه‌های خاص، خط‌مشی امنیت محتوا دو روش دیگر را نیز برای تعیین منابع مورد اعتماد ارائه می‌دهد: nonces و هش:
+        </p><ul>
+            <li>
+                دستورالعمل CSP می تواند یک nonce (یک مقدار تصادفی) را مشخص کند و همان مقدار باید در برچسبی که یک اسکریپت را بارگذاری می کند استفاده شود. اگر مقادیر مطابقت نداشته باشند، اسکریپت اجرا نخواهد شد. برای اینکه به عنوان یک کنترل موثر باشد، nonce باید به طور ایمن در هر بارگذاری صفحه ایجاد شود و توسط مهاجم قابل حدس زدن نباشد.
+            </li>
+            <li>
+                دستورالعمل CSP می تواند یک هش از محتویات اسکریپت مورد اعتماد را مشخص کند. اگر هش اسکریپت واقعی با مقدار مشخص شده در دستورالعمل مطابقت نداشته باشد، اسکریپت اجرا نخواهد شد. اگر محتوای اسکریپت تغییر کند، مطمئناً باید مقدار هش مشخص شده در دستورالعمل را به روز کنید.
+            </li>
+        </ul><p>
+			این کاملاً معمول است که یک CSP منابعی مانند مسدود کردن را مسدود کند <code>script</code>. با این حال، بسیاری از CSP ها درخواست های تصویر را مجاز می دانند. این بدان معنی است که شما اغلب می توانید استفاده کنید <code>img</code> برای مثال، عناصری برای درخواست به سرورهای خارجی به منظور افشای توکن‌های CSRF.
+		</p><p>
+			برخی از مرورگرها، مانند کروم، تعدیل نشانه‌گذاری آویزان داخلی دارند که درخواست‌های حاوی نویسه‌های خاص، مانند خطوط جدید خام، رمزگذاری نشده یا براکت‌های زاویه را مسدود می‌کند.
+        </p><p>
+            برخی از سیاست ها محدودتر هستند و از همه اشکال درخواست های خارجی جلوگیری می کنند. با این حال، هنوز هم می‌توان <a href="https://portswigger.net/research/evading-csp-with-dom-based-dangling-markup">این محدودیت‌ها را با ایجاد برخی تعاملات با کاربر برطرف کرد</a>. برای دور زدن این شکل از خط‌مشی، باید یک عنصر HTML را تزریق کنید که با کلیک روی آن، هر چیزی که توسط عنصر تزریق‌شده محصور شده است را ذخیره و به یک سرور خارجی ارسال می‌کند.
+		</p>
+        <h2 id="mitigating-dangling-markup-attacks-using-csp">کاهش حملات نشانه گذاری آویزان با استفاده از CSP</h2><p>
+            دستورالعمل زیر فقط به تصاویر اجازه می دهد تا از همان مبدا خود صفحه بارگیری شوند:
+        </p><code class="code-scrollable">img-src 'self'</code><p>
+            دستورالعمل زیر فقط به تصاویر اجازه می دهد تا از یک دامنه خاص بارگذاری شوند:
+        </p><code class="code-scrollable">img-src https://images.normal-website.com</code><p>
+            توجه داشته باشید که این خط‌مشی‌ها از برخی سوءاستفاده‌های نشانه‌گذاری آویزان جلوگیری می‌کنند، زیرا یک راه آسان برای گرفتن داده‌ها بدون تعامل کاربر، استفاده از تگ <code>img</code> است. با این حال، از سایر اکسپلویت‌ها، مانند مواردی که یک تگ anchor با ویژگی آویزان <code>href</code> تزریق می‌کنند، جلوگیری نمی‌کند.
+		</p><h2 id="bypassing-csp-with-policy-injection">دور زدن CSP با تزریق خط مشی</h2><p>
+			ممکن است با وب سایتی روبرو شوید که ورودی را به خط مشی واقعی منعکس می کند، به احتمال زیاد در الف <code>report-uri</code> بخشنامه اگر سایت پارامتری را نشان می‌دهد که می‌توانید کنترل کنید، می‌توانید یک نقطه ویرگول برای اضافه کردن دستورالعمل‌های CSP خود تزریق کنید. معمولا این <code>report-uri</code> دستورالعمل نهایی در لیست است. این بدان معناست که شما باید دستورالعمل‌های موجود را بازنویسی کنید تا از این آسیب‌پذیری استفاده کنید و خط‌مشی را دور بزنید.
+		</p><p>
+            به طور معمول، امکان بازنویسی یک موجود وجود ندارد <code>script-src</code> بخشنامه با این حال، کروم اخیراً آن را معرفی کرده است <code>script-src-elem</code> دستورالعمل، که به شما امکان می دهد کنترل کنید <code>script</code> eleرویدادها، اما نه رویدادها. مهم این است که این دستورالعمل جدید به شما این امکان را می دهد<a href="https://portswigger.net/research/bypassing-csp-with-policy-injection">overwrite existing <code>script-src</code> directives</a>. با استفاده از این دانش، باید بتوانید آزمایشگاه زیر را حل کنید.
+		</p>
+
+        <h2 id="protecting-against-clickjacking-using-csp">محافظت در برابر کلیک جک با استفاده از CSP</h2><p>
+            دستورالعمل زیر فقط به صفحه اجازه می دهد تا توسط صفحات دیگری از همان مبدا قاب شود:
+        </p><code class="code-scrollable">frame-ancestors 'self'</code><p>
+            دستورالعمل زیر به طور کلی از قاب بندی جلوگیری می کند:
+        </p><code class="code-scrollable">frame-ancestors 'none'</code><p>
+            استفاده از خط مشی امنیتی محتوا برای جلوگیری از جک کردن کلیک انعطاف پذیرتر از استفاده از هدر X-Frame-Options است زیرا می توانید چندین دامنه را مشخص کنید و از حروف عام استفاده کنید. به عنوان مثال:        </p><code class="code-scrollable">frame-ancestors 'self' https://normal-website.com https://*.robust-website.com</code><p>
+                CSP همچنین هر فریم را در سلسله مراتب فریم والد تأیید می کند، در حالی که<code>X-Frame-Options</code> فقط قاب سطح بالا را تأیید می کند.
+        </p><p>
+            استفاده از CSP برای محافظت در برابر حملات کلیک جک توصیه می شود. شما همچنین می توانید این را با<code>X-Frame-Options</code> hهدر برای ایجاد محافظت در مرورگرهای قدیمی که از CSP پشتیبانی نمی کنند، مانند اینترنت اکسپلورر.
+        </p>
+        
+        
+
+    
+    </div>
+
+<div class="navigation-links">
+    <a href="contexts-client-side-template-injection.html" class="prev">« Previous</a>
+    <a href="../../../index.html" class="index">Index</a>
+    <a href= "same-origin-policy.html" class="next">Next »</a>
+</div>
+</body>
+</html>
