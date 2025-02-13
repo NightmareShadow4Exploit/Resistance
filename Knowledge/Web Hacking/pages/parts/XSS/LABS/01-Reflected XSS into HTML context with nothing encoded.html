@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="fa" direction="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Title for SEO -->
+    <title>آزمایشگاه XSS بازتابی در زمینه HTML - مجتبی</title>
+    
+    <!-- Meta description for SEO -->
+    <meta name="description" content="آموزش و تحلیل آسیب‌پذیری XSS بازتابی در زمینه HTML. یادگیری نحوه اجرای حملات Cross-Site Scripting و راه‌های محافظت از وب‌سایت‌ها.">
+    
+    <!-- Meta keywords for SEO -->
+    <meta name="keywords" content="XSS, حمله XSS بازتابی, امنیت وب, آسیب‌پذیری وب, هک اخلاقی, آموزش امنیت سایبری,XSS, reflective XSS attack, web security, web vulnerability, ethical hacking, cyber security training ">
+    
+    <!-- Open Graph Meta Tags for better social sharing -->
+    <meta property="og:title" content="آزمایشگاه XSS بازتابی در زمینه HTML">
+    <meta property="og:description" content="آموزش عملی آسیب‌پذیری XSS بازتابی و نحوه اجرای حملات Cross-Site Scripting">
+    <meta property="og:image" content="https://nightmareshadow4exploit.github.io/Resistance/logo.png">
+    <meta property="og:url" content="https://nightmareshadow4exploit.github.io/Resistance/Knowledge/Web%20Hacking/pages/parts/XSS/LABS/01-Reflected XSS into HTML context with nothing encoded.html">
+    <meta property="og:type" content="article">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="آزمایشگاه XSS بازتابی در زمینه HTML">
+    <meta name="twitter:description" content="آموزش عملی آسیب‌پذیری XSS بازتابی و نحوه اجرای حملات Cross-Site Scripting">
+    <meta name="twitter:image" content="https://nightmareshadow4exploit.github.io/Resistance/logo.png">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Vazir&display=swap" rel="stylesheet">
+
+    <!-- Link to your custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- JSON-LD Structured Data for the Course -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Course",
+        "name":"آزمایشگاه XSS بازتابی در زمینه HTML",
+        "description": "آموزش عملی آسیب‌پذیری XSS بازتابی و نحوه اجرای حملات Cross-Site Scripting در محیط وب",
+        "provider": {
+            "@type": "Organization",
+            "name": "Nightmare",
+            "url": "https://nightmareshadow4exploit.github.io/Resistance/",
+            "logo": "https://nightmareshadow4exploit.github.io/Resistance/logo.png"
+        },
+        "courseMode": "Online",
+        "educationalCredentialAwarded": "Certificate of Completion",
+        "offers": {
+            "@type": "Offer",
+            "url": "https://nightmareshadow4exploit.github.io/Resistance/Knowledge/Web%20Hacking/pages/parts/XSS/LABS/01-Reflected XSS into HTML context with nothing encoded.html",
+            "priceCurrency": "IRR",
+            "price": "Free",
+            "availability": "https://schema.org/InStock"
+        },
+        "audience": {
+            "@type": "Audience",
+            "audienceType": "Ethical Hackers, Cybersecurity Enthusiasts"
+        },
+        "image": "https://nightmareshadow4exploit.github.io/Resistance/logo.png"
+    }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="page-links">
+            <a href="https://nightmareshadow4exploit.github.io/Resistance" class="link home-link">خانه</a>
+            <a href="https://t.me/Nightmare_Indian_Hacker" class="link telegram-link">تلگرام</a>
+            <a href="https://nightmareshadow4exploit.github.io/Resistance/Knowledge/Web%20Hacking/index.html" class="link index-link">فهرست</a>
+        </div>
+    
+        <h2>حمله XSS بازتابی در زمینه HTML بدون کدگذاری</h2>
+    
+        <a href="https://portswigger.net/web-security/cross-site-scripting/reflected/lab-html-context-nothing-encoded" class="lab-link">بازدید از آزمایشگاه</a>
+        
+        <p>
+            این آزمایشگاه دارای یک آسیب‌پذیری ساده XSS بازتابی در قابلیت جستجو است.
+            برای حل آزمایشگاه، حمله XSS را اجرا کنید که تابع <code>alert()</code> را فعال کند.
+        </p>
+        
+        <hr>
+        
+        <img src="imgs/lab1-home.png" alt="صفحه اصلی برای XSS">
+        <p>اولین چیزی که در اینجا مشاهده می‌کنید، یک جعبه جستجو است.</p>
+        <p>در یک سناریوی واقعی، باید تمامی بخش‌های صفحه یا وب‌سایت را بررسی کنید تا آسیب‌پذیری را پیدا کنید.</p>
+        
+        <h3>آزمایش آسیب‌پذیری</h3>
+        <p>می‌توانید XSS را با وارد کردن این بارگذاری در جعبه جستجو آزمایش کنید:</p>
+        <pre><code>&lt;script&gt;alert(1)&lt;/script&gt;</code></pre>
+    
+        <strong class="green-c">حل شد</strong>
+        
+        <hr>
+        
+        <h3>چرا این کار می‌کند؟</h3>
+        <p>زمانی که این بارگذاری را وارد می‌کنیم:</p>
+        <img src="imgs/02.png" alt="مثال ورودی بارگذاری">
+        
+        <p>برنامه ورودی کاربر را مستقیماً در خروجی HTML وارد می‌کند، مانند این:</p>
+        <img src="imgs/03.png" alt="رندر شدن HTML با بارگذاری">
+        
+        <p>
+            چون برنامه به درستی ورودی کاربر را فرار نمی‌دهد یا ضدعفونی نمی‌کند، مرورگر آن را به عنوان HTML/JavaScript واقعی تفسیر می‌کند.
+            می‌توانید این مورد را بیشتر با وارد کردن یک تگ <code>&lt;h1&gt;</code> یا <code>&lt;h2&gt;</code> یا اعمال استایل‌ها آزمایش کنید:
+        </p>
+        
+        <img src="imgs/04.png" alt="مثال متن استایل شده">
+        <img src="imgs/05.png" alt="نتیجه استایل شده">
+        
+        <hr>
+        
+        <p class="thanksPS">
+            این مستندات به لطف کمک‌ها و منابع ارائه شده توسط PortSwigger امکان‌پذیر شده است.
+        </p>
+        
+        <div class="navigation-links">
+            <a href="../../../../index.html" class="index">فهرست</a>
+            <a href="#" class="next">بعدی »</a>
+        </div>
+    </div>
+    
+
+</body>
+</html>
