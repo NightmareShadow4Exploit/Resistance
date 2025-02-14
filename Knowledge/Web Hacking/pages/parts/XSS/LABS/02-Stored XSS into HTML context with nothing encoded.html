@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="fa" direction="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Title for SEO -->
+    <title>آموزش حمله XSS ذخیره‌شده - راهنمای جامع امنیت وب | مجتبی</title>
+    
+    <!-- Meta description for SEO -->
+    <meta name="description" content="آموزش تخصصی حمله XSS ذخیره‌شده در زمینه HTML. یادگیری نحوه شناسایی و اجرای حملات Cross-Site Scripting توسط مجتبی، متخصص امنیت اطلاعات.">
+    
+    <!-- Meta keywords for SEO -->
+    <meta name="keywords" content="XSS, حمله XSS, امنیت وب, هک اخلاقی, آموزش هک, حمله ذخیره‌شده, Cross-Site Scripting, پنتست, آسیب‌پذیری وب">
+    
+    <!-- Open Graph Meta Tags for better social sharing -->
+    <meta property="og:title" content="آموزش حمله XSS ذخیره‌شده - راهنمای جامع امنیت وب">
+    <meta property="og:description" content="یادگیری تخصصی حملات XSS ذخیره‌شده و راهکارهای امنیتی در وب‌سایت‌ها">
+    <meta property="og:image" content="https://nightmareshadow4exploit.github.io/Resistance/logo.png">
+    <meta property="og:url" content="https://nightmareshadow4exploit.github.io/Resistance/Knowledge/Web%20Hacking/pages/parts/XSS/LABS/02-Stored XSS into HTML context with nothing encoded.html">
+    <meta property="og:type" content="article">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="آموزش حمله XSS ذخیره‌شده | Nightmare">
+    <meta name="twitter:description" content="آموزش تخصصی حملات XSS ذخیره‌شده و راهکارهای محافظت از وب‌سایت‌ها">
+    <meta name="twitter:image" content="https://nightmareshadow4exploit.github.io/Resistance/logo.png">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Vazir&display=swap" rel="stylesheet">
+
+    <!-- Link to your custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- JSON-LD Structured Data for the Course -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Course",
+        "name": "آموزش حمله XSS ذخیره‌شده",
+        "description": "دوره جامع آموزش حملات Cross-Site Scripting (XSS) ذخیره‌شده و راهکارهای امنیتی در وب‌سایت‌ها",
+        "provider": {
+            "@type": "Organization",
+            "name": "Nightmare",
+            "url": "https://nightmareshadow4exploit.github.io/Resistance/",
+            "logo": "https://nightmareshadow4exploit.github.io/Resistance/logo.png"
+        },
+        "courseMode": "Online",
+        "educationalCredentialAwarded": "گواهی تکمیل دوره امنیت وب",
+        "offers": {
+            "@type": "Offer",
+            "url": "https://nightmareshadow4exploit.github.io/Resistance/Knowledge/Web%20Hacking/",
+            "priceCurrency": "IRR",
+            "price": "0",
+            "availability": "https://schema.org/InStock"
+        },
+        "audience": {
+            "@type": "Audience",
+            "audienceType": "هکرهای اخلاقی، علاقه‌مندان به امنیت سایبری"
+        },
+        "image": "https://nightmareshadow4exploit.github.io/Resistance/logo.png"
+    }
+    </script>
+</head>
+<body>
+
+    <div class="container">
+        <nav class="page-links">
+            <a href="https://nightmareshadow4exploit.github.io/Resistance" class="link home-link">خانه</a>
+            <a href="https://t.me/Nightmare_Indian_Hacker" class="link telegram-link">تلگرام</a>
+            <a href="https://nightmareshadow4exploit.github.io/Resistance/Knowledge/Web%20Hacking/index.html" class="link index-link">فهرست</a>
+        </nav>
+    
+        <h2>آزمایشگاه: حمله ذخیره‌شده XSS در زمینه HTML (بدون کدگذاری)</h2>
+        
+        <p>
+            این آزمایشگاه دارای یک آسیب‌پذیری ذخیره‌شده در برابر حملات XSS در بخش نظرات است.
+            هدف شما ارسال نظری است که هنگام مشاهده پست، کد جاوااسکریپت را اجرا کند.
+        </p>
+        
+        <a href="https://portswigger.net/web-security/cross-site-scripting/stored/lab-html-context-nothing-encoded" class="lab-link">مشاهده آزمایشگاه</a>
+        
+        <hr>
+
+        <h3>درک حمله ذخیره‌شده XSS</h3>
+        <p>
+            برخلاف <strong>XSS انعکاسی</strong> که اسکریپت مخرب در URL نمایش داده می‌شود:
+        </p>
+        <img src="imgs/06.png" alt="مثال XSS انعکاسی که پیلود را در URL نشان می‌دهد">
+        <p><strong>XSS ذخیره‌شده</strong> پیلود را در پایگاه داده سایت ذخیره می‌کند.
+            این بدان معناست که هر بازدیدکننده‌ای هنگام مراجعه به صفحه آلوده، به‌طور خودکار حمله را فعال می‌کند.
+        </p>
+
+        <p>
+            در حمله XSS ذخیره‌شده، اسکریپت مخرب به‌طور دائم در وب‌سایت ذخیره می‌شود،
+            که آن را خطرناک‌تر می‌کند. قربانی نیازی به کلیک روی یک لینک مخرب ندارد؛
+            بلکه فقط با مشاهده صفحه، کد اجرا می‌شود.
+        </p>
+
+        <hr>
+
+        <h3>پیدا کردن ورودی آسیب‌پذیر</h3>
+        <p>
+            برای بهره‌برداری از XSS ذخیره‌شده، باید یک فیلد ورودی پیدا کنیم که با پایگاه داده تعامل داشته باشد.
+            در این آزمایشگاه، بخش نظرات آسیب‌پذیر است.
+        </p>
+
+        <img src="imgs/07.png" alt="دکمه مشاهده پست">
+
+        <p>برای پیدا کردن بخش نظرات به پایین صفحه بروید:</p>
+
+        <img src="imgs/08.png" alt="بخش نظرات">
+
+        <h3>تزریق یک اسکریپت مخرب</h3>
+        <p>کد جاوااسکریپت زیر را در کادر نظرات وارد کنید:</p>
+
+        <pre><code>&lt;script&gt;alert(1)&lt;/script&gt;</code></pre>
+
+        <img src="imgs/09.png" alt="تزریق اسکریپت در بخش نظرات">
+
+        <p class="success-message"><strong>موفقیت!</strong> اکنون، هر زمان که کسی صفحه را مشاهده کند، اسکریپت به‌طور خودکار اجرا خواهد شد.</p>
+
+        <hr>
+
+        <p class="thanksPS">
+            این مستندات با کمک منابع ارائه‌شده توسط <strong>PortSwigger</strong> تهیه شده است.
+        </p>
+
+        <div class="navigation-links">
+            <a href="01-Reflected XSS into HTML context with nothing encoded.html" class="prev">« قبلی</a>
+            <a href="../../../../index.html" class="index">فهرست</a>
+            <a href="#" class="next">بعدی »</a>
+        </div>
+    </div>
+
+</body>
+</html>
