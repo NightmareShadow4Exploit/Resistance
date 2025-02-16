@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>آموزش DOM XSS - نحوه حمله و جلوگیری | Nightmare</title>
+
+    <!-- Meta description for SEO -->
+    <meta name="description" content="آموزش نحوه اجرای حملات DOM XSS و جلوگیری از آن در امنیت وب. یاد بگیرید چگونه از آسیب‌پذیری‌ها سوءاستفاده کنید و از وب‌سایت‌ها محافظت کنید.">
+
+    <!-- Meta keywords for SEO -->
+    <meta name="keywords" content="DOM XSS, XSS, هک وب, امنیت سایبری, آزمایش نفوذ, Nightmare, آموزش امنیت, هکر اخلاقی, JavaScript">
+
+    <!-- Open Graph Meta Tags for better social sharing -->
+    <meta property="og:title" content="آموزش DOM XSS - نحوه حمله و جلوگیری | Nightmare">
+    <meta property="og:description" content="یاد بگیرید چگونه از حملات DOM XSS سوءاستفاده کنید و وب‌سایت‌ها را ایمن کنید. آموزش کامل از Nightmare.">
+    <meta property="og:image" content="https://nightmareshadow4exploit.github.io/Resistance/logo.png">
+    <meta property="og:url" content="https://nightmareshadow4exploit.github.io/Resistance/Knowledge/Web%20Hacking/">
+    <meta property="og:type" content="website">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Nightmare">
+    <meta name="twitter:description" content="یادگیری آزمایش نفوذ وب‌سایت و امنیت سایبری از Nightmare. آموزش نحوه نفوذ و محافظت از وب‌سایت‌ها با جدیدترین روش‌ها و تکنیک‌ها.">
+    <meta name="twitter:image" content="https://nightmareshadow4exploit.github.io/Resistance/logo.png">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Vazir&display=swap" rel="stylesheet">
+
+    <!-- Link to your custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- JSON-LD Structured Data for the Course -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Course",
+        "name": "آموزش DOM XSS - حمله و جلوگیری",
+        "description": "یک دوره آموزشی رایگان برای یادگیری نحوه اجرای حملات DOM XSS و ایمن‌سازی برنامه‌های وب.",
+        "provider": {
+            "@type": "Organization",
+            "name": "Nightmare",
+            "url": "https://nightmareshadow4exploit.github.io/Resistance/",
+            "logo": "https://nightmareshadow4exploit.github.io/Resistance/logo.png"
+        },
+        "courseMode": "Online",
+        "educationalCredentialAwarded": "Certificate of Completion",
+        "offers": {
+            "@type": "Offer",
+            "url": "https://nightmareshadow4exploit.github.io/Resistance/Knowledge/Web%20Hacking/",
+            "priceCurrency": "IRR",
+            "price": "Free",
+            "availability": "https://schema.org/InStock"
+        },
+        "audience": {
+            "@type": "Audience",
+            "audienceType": "Ethical Hackers, Cybersecurity Enthusiasts"
+        },
+        "image": "https://nightmareshadow4exploit.github.io/Resistance/logo.png"
+    }
+    </script>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- Navigation -->
+        <nav class="page-links">
+            <a href="https://nightmareshadow4exploit.github.io/Resistance" class="link home-link">خانه</a>
+            <a href="https://t.me/Nightmare_Indian_Hacker" class="link telegram-link">تلگرام</a>
+            <a href="https://nightmareshadow4exploit.github.io/Resistance/Knowledge/Web%20Hacking/index.html" class="link index-link">فهرست</a>
+        </nav>
+
+        <!-- Main Content -->
+        <section class="content">
+            <h1>DOM XSS در document.write Sink</h1>
+            
+            <p>این آزمایشگاه شامل یک آسیب‌پذیری <strong>DOM-based XSS</strong> در قابلیت ردیابی جستجو است. این مشکل به دلیل استفاده از تابع <code>document.write</code> در جاوا اسکریپت به وجود می‌آید.</p>
+
+            <p>برای حل این آزمایشگاه، یک حمله XSS انجام دهید که تابع <code>alert</code> را اجرا کند.</p>
+
+            <a href="https://portswigger.net/web-security/cross-site-scripting/dom-based/lab-document-write-sink" class="btn">حل آزمایشگاه</a>
+        </section>
+
+        <hr>
+
+        <!-- Explanation of DOM XSS -->
+        <section class="explanation">
+            <h2>DOM XSS چیست؟</h2>
+
+            <p>حمله <strong>DOM-based XSS</strong> زمانی رخ می‌دهد که یک مهاجم <code>DOM</code> را در مرورگر قربانی دستکاری می‌کند. در این روش، کد جاوا اسکریپت در سمت کاربر اجرا می‌شود بدون اینکه HTML اولیه تغییر کند.</p>
+        </section>
+
+        <hr>
+
+        <!-- Attack Execution -->
+        <section class="attack-guide">
+            <h2>چگونه حمله را اجرا کنیم؟</h2>
+
+            <p>برای سوءاستفاده از این آسیب‌پذیری، کافی است که کد زیر را در URL قرار دهید:</p>
+
+            <pre><code>&lt;script&gt;alert(1)&lt;/script&gt;</code></pre>
+
+            <p>سپس با استفاده از کلید <strong>F12</strong> یا گزینه <strong>Inspect Element</strong> صفحه را بررسی کنید.</p>
+
+            <p>در ابزار Inspect، بخش آسیب‌پذیر کد را مشاهده خواهید کرد:</p>
+            <img src="imgs/10.png" alt="کد آسیب‌پذیر در Inspect Element">
+
+            <p>برای خروج از مقدار <code>src</code> و اجرای کد خود، می‌توان از تکنیک‌های خروج از نقل‌قول‌ها استفاده کرد:</p>
+
+            <pre><code>">&lt;svg onload=alert(1)&gt;</code></pre>
+
+            <p>اکنون اگر مجدداً صفحه را بررسی کنید، کد شما اجرا شده و آزمایشگاه حل شده است:</p>
+            <img src="imgs/11.png" alt="اجرای کد حمله XSS در مرورگر">
+        </section>
+
+        <p>
+            ما از علامت `"` استفاده می‌کنیم تا از مقدار `src` خارج شویم، سپس تگ `<svg>` را اضافه کرده  
+            و دستوری قرار می‌دهیم که هنگام بارگذاری، یک هشدار (`alert(1)`) نمایش دهد.
+        </p>
+        
+        <p>ساده است.</p>
+        <hr>
+
+        <!-- Credit and Navigation -->
+        <section class="credits">
+            <p class="thanksPS">
+                این مستندات با کمک منابع ارائه‌شده توسط <strong>PortSwigger</strong> تهیه شده است.
+            </p>
+
+            <div class="navigation-links">
+                <a href="02-Stored XSS into HTML context with nothing encoded.html" class="prev">« قبلی</a>
+                <a href="../../../../index.html" class="index">فهرست</a>
+                <a href="#" class="next">بعدی »</a>
+            </div>
+        </section>
+
+    </div>
+
+</body>
+</html>
+
+
+
+
+
