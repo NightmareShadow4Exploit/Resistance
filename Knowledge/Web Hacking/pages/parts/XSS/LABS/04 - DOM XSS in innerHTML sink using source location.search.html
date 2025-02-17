@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Title for SEO -->
+    <title>آموزش نفوذ به وب‌سایت - XSS مبتنی بر DOM</title>
+    
+    <!-- Meta description for SEO -->
+    <meta name="description" content="آموزش کامل تست نفوذ و امنیت وب‌سایت با XSS مبتنی بر DOM. یادگیری نحوه ایجاد حملات XSS و مقابله با آنها.">
+    
+    <!-- Meta keywords for SEO -->
+    <meta name="keywords" content="XSS, امنیت وب, هک اخلاقی, تست نفوذ, جاوااسکریپت, امنیت سایبری">
+    
+    <!-- Open Graph Meta Tags for better social sharing -->
+    <meta property="og:title" content="آموزش نفوذ به وب‌سایت - XSS مبتنی بر DOM">
+    <meta property="og:description" content="آموزش کامل تست نفوذ و امنیت وب‌سایت با XSS مبتنی بر DOM. یادگیری نحوه ایجاد حملات XSS و مقابله با آنها.">
+    <meta property="og:image" content="https://nightmareshadow4exploit.github.io/Resistance/logo.png">
+    <meta property="og:url" content="https://nightmareshadow4exploit.github.io/Resistance/Knowledge/Web%20Hacking/">
+    <meta property="og:type" content="website">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Nightmare">
+    <meta name="twitter:description" content="یادگیری آزمایش نفوذ وب‌سایت و امنیت سایبری از Nightmare. آموزش نحوه نفوذ و محافظت از وب‌سایت‌ها با جدیدترین روش‌ها و تکنیک‌ها.">
+    <meta name="twitter:image" content="https://nightmareshadow4exploit.github.io/Resistance/logo.png">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Vazir&display=swap" rel="stylesheet">
+    
+    <!-- Link to your custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- JSON-LD Structured Data for the Course -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Course",
+        "name": "آموزش XSS مبتنی بر DOM",
+        "description": "یادگیری نحوه اجرای حملات XSS مبتنی بر DOM و جلوگیری از آنها.",
+        "provider": {
+            "@type": "Organization",
+            "name": "Nightmare",
+            "url": "https://nightmareshadow4exploit.github.io/Resistance/",
+            "logo": "https://nightmareshadow4exploit.github.io/Resistance/logo.png"
+        },
+        "courseMode": "Online",
+        "educationalCredentialAwarded": "Certificate of Completion",
+        "offers": {
+            "@type": "Offer",
+            "url": "https://nightmareshadow4exploit.github.io/Resistance/Knowledge/Web%20Hacking/",
+            "priceCurrency": "IRR",
+            "price": "Free",
+            "availability": "https://schema.org/InStock"
+        },
+        "audience": {
+            "@type": "Audience",
+            "audienceType": "Ethical Hackers, Cybersecurity Enthusiasts"
+        },
+        "image": "https://nightmareshadow4exploit.github.io/Resistance/logo.png"
+    }
+    </script>
+</head>
+<body>
+<div class="container">
+      <!-- Navigation -->
+      <nav class="page-links">
+        <a href="https://nightmareshadow4exploit.github.io/Resistance" class="link home-link">خانه</a>
+        <a href="https://t.me/Nightmare_Indian_Hacker" class="link telegram-link">تلگرام</a>
+        <a href="https://nightmareshadow4exploit.github.io/Resistance/Knowledge/Web%20Hacking/index.html" class="link index-link">فهرست</a>
+    </nav>
+    <h2>حمله XSS در <code>innerHTML</code> با استفاده از <code>location.search</code></h2>
+
+    <p>
+        این آزمایش شامل یک <strong>آسیب‌پذیری XSS مبتنی بر DOM</strong> در قابلیت جستجوی بلاگ است.  
+        این آسیب‌پذیری به دلیل استفاده از مقداردهی به <code>innerHTML</code> ایجاد می‌شود که محتوای یک عنصر <code>div</code> را با داده‌های <code>location.search</code> به‌روزرسانی می‌کند.
+    </p>
+
+    <p>
+        برای حل این آزمایش، یک <strong>حمله XSS</strong> انجام دهید که تابع <code>alert</code> را اجرا کند.
+    </p>
+
+    <a href="https://portswigger.net/web-security/cross-site-scripting/dom-based/lab-innerhtml-sink" target="_blank">🔹 حل آزمایش</a>
+
+    <hr>
+
+    <h3>درک نحوه بهره‌برداری</h3>
+
+    <p>
+        ساخت یک کد مخرب (Payload) مؤثر نیازمند درک نحوه پردازش تکنیک‌های تزریق در مرورگرها و فریمورک‌های مختلف است.  
+        برخی از Payload‌ها در برخی محیط‌ها کار می‌کنند، اما برخی دیگر نه. در اینجا دو <strong>راهنمای ضروری</strong> برای کمک به شما آورده شده است:
+    </p>
+
+    <ul>
+        <li>🔹 <a href="https://cheatsheetseries.owasp.org/cheatsheets/XSS_Filter_Evasion_Cheat_Sheet.html" target="_blank">راهنمای دور زدن فیلتر XSS از OWASP</a></li>
+        <li>🔹 <a href="https://portswigger.net/web-security/cross-site-scripting/cheat-sheet" target="_blank">راهنمای XSS از PortSwigger</a></li>
+    </ul>
+
+    <hr>
+
+    <h3>ایجاد کد مخرب (Payload)</h3>
+
+    <p>از آنجا که این سناریو فقط از <strong>HTML و JavaScript ساده</strong> (بدون فریمورک) استفاده می‌کند، می‌توان از Payload زیر استفاده کرد:</p>
+
+    <pre><code>&lt;img src=1 onerror=alert(1)&gt;</code></pre>
+
+    <h4>چگونه کار می‌کند؟</h4>
+
+    <ul>
+        <li>ما یک تگ <code>&lt;img&gt;</code> ایجاد می‌کنیم.</li>
+        <li>ویژگی <code>onerror</code> هنگامی که تصویر بارگذاری نشود، فعال می‌شود.</li>
+        <li>از آنجا که مقدار <code>src=1</code> نامعتبر است، باعث ایجاد خطا می‌شود.</li>
+        <li>مدیریت‌کننده <code>onerror</code> کد <code>alert(1)</code> را اجرا کرده و یک هشدار نمایش می‌دهد.</li>
+    </ul>
+
+    <p>
+        اگر شما با <strong>HTML و JavaScript</strong> پایه آشنا باشید، این حمله برای شما ساده خواهد بود.  
+        تسلط بر این مفاهیم به شما کمک می‌کند تا Payloadهای XSS پیشرفته‌تری در سناریوهای مختلف طراحی کنید.
+    </p>
+
+
+        <!-- Credit and Navigation -->
+        <section class="credits">
+            <p class="thanksPS">
+                این مستندات با کمک منابع ارائه‌شده توسط <strong>PortSwigger</strong> تهیه شده است.
+            </p>
+
+            <div class="navigation-links">
+                <a href="03- DOM XSS in document.write sink using source location.search.html" class="prev">« قبلی</a>
+                <a href="../../../../index.html" class="index">فهرست</a>
+                <a href="#" class="next">بعدی »</a>
+            </div>
+        </section>
+</div>
+</body>
+</html>
